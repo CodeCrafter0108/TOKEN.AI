@@ -17,7 +17,11 @@ createWeb3Modal({
   projectId,
   enableAnalytics: true,
   enableOnramp: true,
-  defaultChain: config.chains[0]
+  defaultChain: config.chains[0],
+  themeMode: 'light',
+  themeVariables: {
+    '--w3m-font-family': 'Montserrat, sans-serif',
+  }
 });
 
 export default function Web3ModalProvider({ children, initialState }: { children: ReactNode; initialState?: State }) {

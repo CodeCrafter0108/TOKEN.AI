@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { FieldsFocused, LauncherTypeData } from './types';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
-import { InpupWrapper } from '../InputWrapper';
-import { useState } from 'react';
+import  InpupWrapper  from '../InputWrapper';
+import { useCallback, useMemo, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema, SUPPORTED_FORMATS } from './schema';
 import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
@@ -24,7 +24,9 @@ export const LaunchForm = () => {
   const onSubmit = (data: LauncherTypeData) => console.log(data);
 
   const files = watch('imageUrl');
-  const previewUrl: string | null = files?.length ? URL.createObjectURL(files[0]) : null;
+  const previewUrl = useMemo(() => {
+    return files?.length ? URL.createObjectURL(files[0]) : null;
+  }, [files]);
 
   const [fieldsFocused, setFieldsFocused] = useState<FieldsFocused>({
     name: false,
@@ -36,21 +38,24 @@ export const LaunchForm = () => {
     description: false
   });
 
-  const handleFocus = (fieldName: keyof LauncherTypeData) => {
+  const handleFocus = useCallback((fieldName: keyof LauncherTypeData) => {
     setFieldsFocused((prev) => ({ ...prev, [fieldName]: true }));
-  };
+  }, []);
 
-  const handleBlur = (fieldName: keyof LauncherTypeData) => {
+  const handleBlur = useCallback((fieldName: keyof LauncherTypeData) => {
     setFieldsFocused((prev) => ({ ...prev, [fieldName]: false }));
-  };
+  }, []);
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    const droppedFiles: FileList = e.dataTransfer.files;
-    if (droppedFiles) {
-      setValue('imageUrl', droppedFiles);
-    }
-  };
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      const droppedFiles: FileList = e.dataTransfer.files;
+      if (droppedFiles) {
+        setValue('imageUrl', droppedFiles);
+      }
+    },
+    [setValue]
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete='off' autoCorrect='off'>
@@ -58,7 +63,6 @@ export const LaunchForm = () => {
         label='Name'
         htmlFor='name'
         isActive={fieldsFocused.name || !!watch('name')}
-        isError={!!errors.name}
         textError={errors.name?.message}
       >
         <Input
@@ -71,7 +75,6 @@ export const LaunchForm = () => {
         label='Symbol'
         htmlFor='symbol'
         isActive={fieldsFocused.symbol || !!watch('symbol')}
-        isError={!!errors.symbol}
         textError={errors.symbol?.message}
       >
         <Input
@@ -84,7 +87,6 @@ export const LaunchForm = () => {
         label='Supply'
         htmlFor='supply'
         isActive={fieldsFocused.supply || !!watch('supply')}
-        isError={!!errors.supply}
         textError={errors.supply?.message}
       >
         <Input
@@ -93,7 +95,7 @@ export const LaunchForm = () => {
           onBlur={() => handleBlur('supply')}
           onChange={(e) => {
             const value = validateNumberInputValue(e.target.value);
-            setValue('supply', value);
+            setValue('supply', value, { shouldValidate: true });
           }}
         />
       </InpupWrapper>
@@ -101,7 +103,6 @@ export const LaunchForm = () => {
         label='Website Url'
         htmlFor='websiteUrl'
         isActive={fieldsFocused.websiteUrl || !!watch('websiteUrl')}
-        isError={!!errors.websiteUrl}
         textError={errors.websiteUrl?.message}
       >
         <Input
@@ -114,7 +115,6 @@ export const LaunchForm = () => {
         label='Social URL'
         htmlFor='socialUrl'
         isActive={fieldsFocused.socialUrl || !!watch('socialUrl')}
-        isError={!!errors.socialUrl}
         textError={errors.socialUrl?.message}
       >
         <Input
@@ -127,7 +127,6 @@ export const LaunchForm = () => {
         label='Chat URL'
         htmlFor='chatUrl'
         isActive={fieldsFocused.chatUrl || !!watch('chatUrl')}
-        isError={!!errors.chatUrl}
         isRequired={false}
         textError={errors.chatUrl?.message}
       >
@@ -137,7 +136,6 @@ export const LaunchForm = () => {
         label='Description'
         htmlFor='description'
         isActive={fieldsFocused.description || !!watch('description')}
-        isError={!!errors.description}
         textError={errors.description?.message}
       >
         <Input
@@ -147,11 +145,7 @@ export const LaunchForm = () => {
         />
       </InpupWrapper>
 
-      <Input
-        type='file'
-        {...register('imageUrl', { required: true })}
-        onDrop={handleDrop}
-      />
+      <Input type='file' {...register('imageUrl', { required: true })} onDrop={handleDrop} />
       {errors.imageUrl && <span>{errors.imageUrl.message}</span>}
       {previewUrl && SUPPORTED_FORMATS.includes(files?.[0]?.type) && (
         <div

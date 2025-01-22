@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
 import { headers } from 'next/headers';
-
 import { cookieToInitialState } from 'wagmi';
-
+import { montserrat } from '@/styles/fonts';
 import { config } from '@/providers/WagmiProvider/config';
 import Web3ModalProvider from '@/providers/WagmiProvider/provider';
 import StyledComponentsProvider from '@/providers/StyledComponentsProvider/provider';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -21,9 +23,15 @@ export default async function RootLayout({
   const initialState = cookieToInitialState(config, (await headers()).get('cookie'));
   return (
     <html lang='en'>
-      <body>
+      <body className={montserrat.className}>
+        <Script src='./scripts/jquery-3.6.4.min.js' strategy='beforeInteractive' />
+        <Script src='/scripts/animationCursor.js' strategy='afterInteractive' />
         <StyledComponentsProvider>
-          <Web3ModalProvider initialState={initialState}>{children}</Web3ModalProvider>
+          <Web3ModalProvider initialState={initialState}>
+            <Header />
+            <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>{children}</main>
+            <Footer />
+          </Web3ModalProvider>
         </StyledComponentsProvider>
       </body>
     </html>

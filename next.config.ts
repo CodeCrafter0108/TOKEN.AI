@@ -12,7 +12,9 @@ const nextConfig: NextConfig = {
 
     return config;
   },
-
+  env: {
+    NEXT_PUBLIC_WALLET_CONNECT_API_KEY: process.env.NEXT_PUBLIC_NEXT_PUBLIC_WALLET_CONNECT_API_KEY,
+  },
   experimental: {
     turbo: {
       rules: {
@@ -21,7 +23,8 @@ const nextConfig: NextConfig = {
           as: '*.js'
         }
       },
-    }
+    },
+
   },
 
   reactStrictMode: true,

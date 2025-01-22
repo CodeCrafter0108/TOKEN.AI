@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { memo, ReactNode } from 'react';
 import { Container, Error, InputContainer, Label } from './styles';
 
 interface InputWrapperProps {
@@ -6,19 +6,20 @@ interface InputWrapperProps {
   label: string;
   htmlFor: string;
   isActive: boolean;
-  isError: boolean;
   textError?: string;
   isRequired?: boolean
 }
 
-export const InpupWrapper = ({ children, label, htmlFor, isActive, isError, textError, isRequired = true }: InputWrapperProps) => {
+const InpupWrapper = ({ children, label, htmlFor, isActive, textError, isRequired = true }: InputWrapperProps) => {
   return (
     <Container>
-      <InputContainer $isError={isError}>
+      <InputContainer $isError={!!textError}>
         <Label htmlFor={htmlFor} $isActive={isActive} $isRequired={isRequired}>{label}</Label>
         {children}
       </InputContainer>
-      {isError && <Error>{textError}</Error>}
+      {textError && <Error>{textError}</Error>}
     </Container>
   );
 };
+
+export default memo(InpupWrapper);
