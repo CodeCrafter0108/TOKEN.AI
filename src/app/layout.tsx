@@ -8,7 +8,7 @@ import Web3ModalProvider from '@/providers/WagmiProvider/provider';
 import StyledComponentsProvider from '@/providers/StyledComponentsProvider/provider';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import Script from 'next/script';
+// import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -24,8 +24,8 @@ export default async function RootLayout({
   return (
     <html lang='en'>
       <body className={montserrat.className}>
-        <Script src='./scripts/jquery-3.6.4.min.js' strategy='beforeInteractive' />
-        <Script src='/scripts/animationCursor.js' strategy='afterInteractive' />
+        {/* <Script src='./scripts/jquery-3.6.4.min.js' strategy='beforeInteractive' />
+        <Script src='/scripts/animationCursor.js' strategy='afterInteractive' /> */}
         <StyledComponentsProvider>
           <Web3ModalProvider initialState={initialState}>
             <Header />

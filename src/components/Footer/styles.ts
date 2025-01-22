@@ -8,41 +8,46 @@ export const StyledFooter = styled.footer`
 `;
 
 export const Wrapper = styled.div`
-  padding-top: 1.75rem;
+  padding-top: 28px;
   display: flex;
   justify-content: space-between;
 
   @media screen and (min-width: ${Breakpoints.md}) {
-    padding: 2.25rem 0;
+    padding: 36px 0;
   }
 `;
 
 export const BlockWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
 `;
 
 export const Title = styled.div`
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.14px;
 `;
 
 export const StyledLink = styled(Link)`
-  font-size: 0.875rem;
+  font-size: 14px;
   letter-spacing: -0.14px;
   line-height: 1.5;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--accent-clr);
+  }
 `;
 
 export const Copyright = styled.p`
   color: var(--secondary-text-clr);
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 300;
   letter-spacing: -0.14px;
 
   @media screen and (min-width: ${Breakpoints.md}) {
-    margin-top: 2.5rem;
+    margin-top: 40px;
   }
 `;
 
@@ -59,9 +64,9 @@ export const LogoWrapper = styled.div`
 export const MobileContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding-bottom: 1.75rem;
-  padding-top: 0.75rem;
+  gap: 12px;
+  padding-bottom: 28px;
+  padding-top: 12px;
 
   @media screen and (min-width: ${Breakpoints.md}) {
     display: none;

@@ -32,12 +32,6 @@ export interface TextProps extends BoxProps {
     tabular?: boolean;
 }
 
-// export interface FadeInProps {
-//     height?: string;
-//     delay?: string;
-//     duration?: number;
-// }
-
 export interface AbsoluteProps {
     top?: string;
     right?: string;
@@ -45,13 +39,5 @@ export interface AbsoluteProps {
     left?: string;
     zIndex?: number;
     width?: string;
-    height?: string;
-}
-
-export interface ContainerProps {
-    paddingMobile?: string;
-}
-
-export interface PageContainerProps {
     height?: string;
 }

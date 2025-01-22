@@ -2,7 +2,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 export const LogoLink = styled(Link)`
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: 600;
   line-height: 1.5;
 

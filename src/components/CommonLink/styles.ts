@@ -6,7 +6,7 @@ export const StyledLink = styled(Link)<{ $variants: LinkVariants }>`
   display: flex;
   justify-content: center;
   text-align: center;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 600;
   border-radius: 8px;
   background-color: transparent;
@@ -23,7 +23,7 @@ export const StyledLink = styled(Link)<{ $variants: LinkVariants }>`
         return `
           color: var(--white-clr);
           background-color: var(--primary-clr);
-          padding: 0.75rem 1.5rem; 
+          padding: 12px 24px; 
           box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1); 
 
           &:hover {

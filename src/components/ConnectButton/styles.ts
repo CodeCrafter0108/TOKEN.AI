@@ -4,25 +4,27 @@ import Button from '../Button';
 export const StyledConnectButton = styled(Button)`
   position: relative;
 
-  span {
-    :last-child {
-      color: transparent;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+  .text-primary {
+    color: inherit;
+    transition: color 0.3s ease;
+  }
+
+  .text-secondary {
+    color: transparent;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: color 0.3s ease;
   }
 
   &:hover {
-    span {
-      :first-child {
-        color: transparent;
-      }
+    .text-primary {
+      color: transparent;
+    }
 
-      :last-child {
-        color: var(--primary-clr);
-      }
+    .text-secondary {
+      color: var(--primary-clr);
     }
   }
 `;

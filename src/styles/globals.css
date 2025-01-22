@@ -10,14 +10,18 @@
 
   --error-clr: #C0211B;
   --footer-bg-clr: #E7E6F4;
+  --header-bg-clr: #E9EFF7;
 
-  --not-found-bd-clr: #F6FAFF;
+  --box-bg-clr: #F6FAFF;
+  --badge-bg-clr: #4467FF;
+
+  --mobile-header-height: 60px;
 }
 
 html,
 body {
   overflow-x: hidden;
-  font-size: 1rem;
+  font-size: 16px;
   color: var(--primary-text-clr);
   user-select: none;
 }
@@ -36,7 +40,6 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  transition: all 0.2s ease;
 }
 
 a {

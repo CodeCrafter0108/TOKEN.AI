@@ -1,7 +1,7 @@
 import Stars from '@/assets/icons/stars.svg';
 import { Title, Wrapper } from './styles';
 
-export const MarqueeItem = () => {
+export const DeFAI = () => {
   return (
     <Wrapper>
       <Title>DeFAI</Title>

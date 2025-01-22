@@ -1,6 +1,6 @@
 import Marquee from 'react-fast-marquee';
 import { Wrapper } from './styles';
-import { MarqueeItem } from './components/MarqueeItem';
+import { DeFAI } from '../DeFAI';
 
 interface MarqueeWrapperProps {
   direction?: 'left' | 'right' | 'up' | 'down';
@@ -14,7 +14,7 @@ export const MarqueeAnimation = ({ direction = 'right' }: MarqueeWrapperProps) =
         direction={direction}
       >
         {Array(100).fill(0).map((__, index) => (
-          <MarqueeItem key={index} />
+          <DeFAI key={index} />
         ))}
       </Marquee>
     </Wrapper>

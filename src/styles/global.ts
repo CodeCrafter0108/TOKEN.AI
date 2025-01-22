@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { background, color, flexbox, grid, layout, position, space } from 'styled-system';
-import { AbsoluteProps, BoxProps, ContainerProps, FlexProps, GridProps, PageContainerProps, TextProps } from './types';
+import { AbsoluteProps, BoxProps, FlexProps, GridProps, TextProps } from './types';
 import { Breakpoints } from '@/styles/breakpoints';
 
 const Box = styled.div<BoxProps>`
@@ -35,10 +35,10 @@ export const Grid = styled(Box)<GridProps>`
 export const Text = styled.span<TextProps>`
   font-size: ${({ fontSize }) => fontSize || '14px'};
   font-weight: ${({ fontWeight }) => fontWeight || 'normal'};
-  line-height: ${({ lineHeight }) => lineHeight || '1.45'};
-  letter-spacing: ${({ letterSpacing }) => letterSpacing || '0.5px'};
+  line-height: ${({ lineHeight }) => lineHeight || '1.5'};
+  letter-spacing: ${({ letterSpacing }) => letterSpacing || 'normal'};
   text-align: ${({ textAlign }) => textAlign || 'left'};
-  color: ${({ color }) => color || '#fff'};
+  color: ${({ color }) => color || '#262626'};
   white-space: ${({ wrap }) => wrap || 'unset'};
   height: ${({ height }) => height || 'auto'};
   text-transform: ${({ uppercase }) => (uppercase ? 'uppercase' : 'none')};
@@ -59,10 +59,10 @@ export const Text = styled.span<TextProps>`
   }
 `;
 
-export const Container = styled.div<ContainerProps>`
+export const Container = styled.div`
   width: 100%;
   height: 100%;
-  padding: 0 0.75rem;
+  padding: 0 12px;
 
   max-width: 1920px;
   margin: 0 auto;
@@ -72,33 +72,33 @@ export const Container = styled.div<ContainerProps>`
   flex-direction: column;
 
   @media screen and (min-width: ${Breakpoints.md}) {
-    padding: 0 1.25rem;
+    padding: 0 20px;
   }
 
   @media screen and (min-width: ${Breakpoints.lg}) {
-    padding: 0 2.5rem;
+    padding: 0 40px;
   }
 
   @media screen and (min-width: ${Breakpoints.xl}) {
-    padding: 0 7.5rem;
+    padding: 0 120px;
   }
 
   @media screen and (min-width: ${Breakpoints.xxl}) {
-    padding: 0 3.75rem;
+    padding: 0 60px;
   }
 `;
 
-export const PageContainer = styled.div<PageContainerProps>`
+export const PageContainer = styled.div`
   position: relative;
-  display: grid;
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 12px;
 
-  padding: 24px;
-  height: ${({ height }) => height || 'unset'};
+  padding: 40px 0;
 
-  @media screen and (max-width: ${Breakpoints.lg}) {
-    padding: 0;
-    padding-bottom: 30px;
+  @media screen and (max-width: ${Breakpoints.md}) {
+    gap: 24px;
   }
 `;
 
@@ -134,19 +134,3 @@ export const BackgroundWrapper = styled.div`
     object-fit: cover;
   }
 `;
-
-// export const FadeIn = styled.div<FadeInProps>`
-//     height: ${({ height }) => height || '100%'};
-//     animation: fadeIn ${({ duration = 0.3 }) => `${duration}s`} ease forwards;
-//     animation-delay: ${({ delay }) => delay || '0s'};
-//     opacity: 0;
-
-//     @keyframes fadeIn {
-//         0% {
-//             opacity: 0;
-//         }
-//         100% {
-//             opacity: 1;
-//         }
-//     }
-// `;

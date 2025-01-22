@@ -1,3 +1,4 @@
+import { Breakpoints } from '@/styles/breakpoints';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -9,8 +10,12 @@ export const Wrapper = styled.div`
 `;
 
 export const NavigationWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 2rem;
+  display: none;
+
+  @media screen and (min-width: ${Breakpoints.md}) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
+  }
 `;

@@ -3,8 +3,8 @@ import { ButtonVariants } from './types';
 
 export const StyledButton = styled.button<{ $variants: ButtonVariants }>`
   cursor: pointer;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.875rem;
+  padding: 12px 24px;
+  font-size: 14px;
   font-weight: 600;
   border-radius: 8px;
   background-color: transparent;

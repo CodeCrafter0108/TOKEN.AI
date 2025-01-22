@@ -19,9 +19,15 @@ export const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
   gap: 4px;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--accent-clr);
+  }
 `;
 
 export const TitleNetwork = styled.span`
-  font-size: 0.875rem;
+  font-size: 14px;
   line-height: 1.5;
 `;
