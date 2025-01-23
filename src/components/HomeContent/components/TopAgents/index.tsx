@@ -3,7 +3,7 @@ import { LinkVariants } from '@/components/CommonLink/types';
 import { AppRoutes } from '@/constants/routes';
 import { Flex, H3 } from '@/styles/global';
 import Arrow from '@/assets/icons/right-arrow.svg';
-import { LinkText, LinkContent, TopAgentsHeader } from './styles';
+import { LinkText, LinkContent } from './styles';
 import { AgentCard } from '@/components/AgentCard';
 
 export const TopAgents = () => {
