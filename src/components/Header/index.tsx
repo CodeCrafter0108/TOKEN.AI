@@ -18,14 +18,14 @@ export const Header = () => {
         <Container>
           <Wrapper>
             <Logo />
-            <NavigationWrapper onClick={(e) => e.stopPropagation()}>
+            <NavigationWrapper>
               <Navigation />
               <ConnectButton styles={{ width: '165px' }} />
             </NavigationWrapper>
-            <Burger onClick={() => setIsOpen((prev) => !prev)} isOpened={isOpen} />
+            <Burger setIsOpen={setIsOpen} isOpen={isOpen} />
           </Wrapper>
         </Container>
-        <MobileMenu isOpen={isOpen} />
+        <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen}/>
       </header>
       <MarqueeAnimation />
     </>

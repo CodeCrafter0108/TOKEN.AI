@@ -1,12 +1,10 @@
 import Link from 'next/link';
-import styled, { RuleSet } from 'styled-components';
+import styled from 'styled-components';
 
-export const Wrapper = styled.div<{ $styles?: RuleSet<object> }>`
+export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
-
-  ${({ $styles }) => $styles && $styles};
 `;
 
 export const IconWrapper = styled.div`

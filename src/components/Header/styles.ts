@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 70px;
+  background-color: var(--header-bg-clr);
 `;
 
 export const NavigationWrapper = styled.div`

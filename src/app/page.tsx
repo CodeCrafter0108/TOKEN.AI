@@ -1,7 +1,16 @@
-
 'use client';
-import { PageContainer } from '@/styles/global';
+import { HomeContent } from '@/components/HomeContent';
+import PageTransition from '@/components/PageTransition';
+import { Container, PageContainer } from '@/styles/global';
 
 export default function Home() {
-  <PageContainer>Hello World!</PageContainer>;
+  return (
+    <Container>
+      <PageTransition>
+        <PageContainer>
+          <HomeContent />
+        </PageContainer>
+      </PageTransition>
+    </Container>
+  );
 }

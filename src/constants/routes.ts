@@ -3,5 +3,5 @@ export enum AppRoutes {
   TRADE = '/trade',
   LAUNCHER = '/launcher',
   MY_AGENTS = '/my-agents',
-  ALL_AGENTS = '/all-agents',
+  AGENTS = '/agents',
 }
