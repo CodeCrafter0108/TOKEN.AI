@@ -24,7 +24,7 @@ export const StyledLink = styled(Link)<{ $variants: LinkVariants }>`
           color: var(--white-clr);
           background-color: var(--primary-clr);
           padding: 12px 24px; 
-          box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1); 
+          box-shadow: var(--box-shadow); 
 
           &:hover {
               color: var(--accent-clr);

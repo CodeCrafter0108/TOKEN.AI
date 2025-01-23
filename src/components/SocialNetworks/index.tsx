@@ -1,18 +1,18 @@
 import Discord from '@/assets/icons/discord.svg';
 import Twitter from '@/assets/icons/x.svg';
 import Telegram from '@/assets/icons/telegram.svg';
-import Planet from '@/assets/icons/telegram.svg';
+import Planet from '@/assets/icons/planet.svg';
 import { IconWrapper, TitleNetwork, StyledLink, Wrapper } from './styles';
-import { RuleSet } from 'styled-components';
+import React from 'react';
 
 interface SocialNetworksProps {
   position?: 'card' | 'footer';
-  styles?: RuleSet<object>;
+  styles?: React.CSSProperties;
 }
 
 export const SocialNetworks = ({ styles, position = 'footer' }: SocialNetworksProps) => {
   return (
-    <Wrapper $styles={styles}>
+    <Wrapper style={styles}>
       {position === 'footer' ? (
         <StyledLink href={'#'} target={'_blank'} rel={'noreferrer'}>
           <IconWrapper>

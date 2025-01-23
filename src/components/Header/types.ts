@@ -1,4 +1,6 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface BurgerProps {
-  isOpened: boolean;
-  onClick: () => void;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>> 
 }

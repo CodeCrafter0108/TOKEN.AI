@@ -1,9 +1,9 @@
-import { BurgerProps } from "../../types";
+import { BurgerProps } from '../../types';
 import { BurgerWrapper } from './styles';
 
-export const Burger: React.FC<BurgerProps> = ({ isOpened, onClick }) => {
+export const Burger = ({ isOpen, setIsOpen}: BurgerProps) => {
   return (
-    <BurgerWrapper $isOpened={isOpened} onClick={onClick}>
+    <BurgerWrapper $isOpen={isOpen} onClick={() => setIsOpen((prev) => !prev)}>
       <span></span>
       <span></span>
       <span></span>

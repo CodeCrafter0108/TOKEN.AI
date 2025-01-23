@@ -1,5 +1,4 @@
 'use client';
-
 import { PageTitle } from '@/components/PageTitle';
 import PageTransition from '@/components/PageTransition';
 import { Container, PageContainer } from '@/styles/global';
