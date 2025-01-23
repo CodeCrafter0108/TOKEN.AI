@@ -36,8 +36,8 @@ body {
 body {
   display: flex;
   flex-direction: column;
-  max-width: 100vw;
-  min-height: 100vh;
+  max-width: 100dvw;
+  min-height: 100dvh;
   background: var(--background-clr);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
