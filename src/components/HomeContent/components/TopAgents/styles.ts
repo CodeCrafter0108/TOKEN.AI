@@ -7,7 +7,7 @@ export const NextSlide = styled(Button)`
   top: 50%;
   transform: translateY(-50%);
   svg {
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
 
   :disabled {
@@ -26,7 +26,7 @@ export const PrevSlide = styled(Button)`
   transform: translateY(-50%);
 
   svg {
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
 
 

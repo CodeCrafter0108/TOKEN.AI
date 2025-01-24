@@ -1,12 +1,17 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const StyledInput = styled.input`
-  padding-top: 23px;
   height: 100%;
-  padding: 23px 12px 4px 12px;
+  font-weight: 500;
   font-size: 14px;
   line-height: 1.5;
-  color: #ffffff;
+
+  ::placeholder {
+    color: #898c90;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
   background: none;
   border: none;
   outline: none;

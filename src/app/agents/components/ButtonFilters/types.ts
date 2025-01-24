@@ -1,0 +1,1 @@
+export type FilterOption = "all" | "top" | "latest" | "marketcap";

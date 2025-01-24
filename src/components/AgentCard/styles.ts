@@ -3,11 +3,11 @@ import Image from 'next/image';
 import styled from 'styled-components';
 
 export const Container = styled(Box)`
-  min-width: 284px;
-  max-width: 286px;
-  margin: 4px 2px;
+  min-width: 280px;
+  /* max-width: 286px; */
+  margin: 3px 2px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out; 
+  transition: all 0.2s ease-in-out;
   scale: 1;
 
   &:hover {

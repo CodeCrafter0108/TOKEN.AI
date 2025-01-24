@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ButtonVariants } from './types';
 
-export const StyledButton = styled.button<{ $variants: ButtonVariants }>`
+export const StyledButton = styled.button<{ $variants: ButtonVariants; $isSelected?: boolean }>`
   cursor: pointer;
   padding: 12px 24px;
   font-size: 14px;
@@ -9,7 +9,7 @@ export const StyledButton = styled.button<{ $variants: ButtonVariants }>`
   border-radius: 8px;
   background-color: transparent;
   border: 1.5px solid var(--primary-clr);
-  transition: all 0.1s ease-in-out;
+  transition: all 0.2s ease-in-out;
   box-shadow: var(--box-shadow);
 
   &:disabled {
@@ -17,7 +17,7 @@ export const StyledButton = styled.button<{ $variants: ButtonVariants }>`
     pointer-events: none;
   }
 
-  ${({ $variants }) => {
+  ${({ $variants, $isSelected }) => {
     switch ($variants) {
       case ButtonVariants.OUTLINE:
         return `
@@ -44,6 +44,17 @@ export const StyledButton = styled.button<{ $variants: ButtonVariants }>`
           padding: 0; 
           box-shadow: none;
         `;
+      case ButtonVariants.FILTER:
+        return `
+            background-color: var(--box-bg-clr);
+            box-shadow: none; 
+            border: ${$isSelected ? '1px solid var(--accent-clr)' : '1px solid transparent'};
+              svg path {
+                transition: all 0.2s ease-in-out;
+                color: ${$isSelected ? 'var(--accent-clr)' : 'var(--primary-clr)'};
+                  }
+            }
+          `;
     }
   }}
 `;

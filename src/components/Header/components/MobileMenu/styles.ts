@@ -26,5 +26,5 @@ export const Menu = styled(motion.div)`
 
 export const ButtonWrapper = styled.div`
   padding-top: 18px;
-  border-top: 1px solid rgba(137, 140, 144, 0.35);
+  border-top: 1px solid var(--border-clr);
 `

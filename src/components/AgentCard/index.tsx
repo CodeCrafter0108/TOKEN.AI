@@ -1,14 +1,16 @@
 import { Flex } from '@/styles/global';
 import { Description, AgentLogo, TokenLogo, MarketCapValue, Title, Container } from './styles';
 import { SocialNetworks } from '../SocialNetworks';
+import { RuleSet } from 'styled-components';
 
-// interface AgentCardProps {
-//   onClick: () => void;
-// }
+interface AgentCardProps {
+  // onClick: () => void;
+  styles?: RuleSet<object>;
+}
 
-export const AgentCard = () => {
+export const AgentCard = ({ styles }: AgentCardProps) => {
   return (
-    <Container onClick={() => console.log('click BOX')}>
+    <Container onClick={() => console.log('click BOX')} $styles={styles}>
       <Flex $gap={12} $align='center'>
         <div style={{ minWidth: '100px', minHeight: '100px', position: 'relative' }}>
           <AgentLogo

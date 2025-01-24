@@ -16,12 +16,12 @@ export const HomeContent = () => {
           <ListWrapper>
             <H3>Latest</H3>
             <AgentsList />
-            <LinkToTopAgent title='View all Latest' />
+            <LinkToTopAgent title='View all Latest' params='filter=latest'/>
           </ListWrapper>
           <ListWrapper>
             <H3>Top Market cap</H3>
             <AgentsList />
-            <LinkToTopAgent title='View all Top cap' />
+            <LinkToTopAgent title='View all Top cap' params='filter=marketcap'/>
           </ListWrapper>
         </Wrapper>
       </Content>
