@@ -1,16 +1,38 @@
-import { Box, Flex } from '@/styles/global';
-import { Description, AgentLogo, TokenLogo, MarketCapValue, Title } from './styles';
+import { Flex } from '@/styles/global';
+import { Description, AgentLogo, TokenLogo, MarketCapValue, Title, Container } from './styles';
 import { SocialNetworks } from '../SocialNetworks';
+
+// interface AgentCardProps {
+//   onClick: () => void;
+// }
 
 export const AgentCard = () => {
   return (
-    <Box style={{ minWidth: '288px', maxWidth: '288px' }}>
+    <Container onClick={() => console.log('click BOX')}>
       <Flex $gap={12} $align='center'>
-        <AgentLogo width={100} height={100} alt='Agent logo' src={'/temp/agent.png'} priority />
+        <div style={{ minWidth: '100px', minHeight: '100px', position: 'relative' }}>
+          <AgentLogo
+            fill
+            alt='Agent logo'
+            src={'/temp/agent.png'}
+            priority
+            style={{ objectFit: 'cover' }}
+            sizes='100%'
+          />
+        </div>
         <Flex $direction={'column'} $gap={6}>
           <Title>Token name</Title>
           <Flex $gap={4} $align='center'>
-            <TokenLogo src={'/temp/token.png'} alt='Token logo' width={12} height={12} priority />
+            <div style={{ minWidth: '16px', minHeight: '16px', position: 'relative' }}>
+              <TokenLogo
+                src={'/temp/token.png'}
+                alt='Token logo'
+                fill
+                sizes='100%'
+                priority
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
             <span>Token name</span>
           </Flex>
           <Flex $gap={4}>
@@ -23,6 +45,6 @@ export const AgentCard = () => {
       <Description>
         Creating cryptocurrency enables decentralized financial systems, allowing users to exchange
       </Description>
-    </Box>
+    </Container>
   );
 };

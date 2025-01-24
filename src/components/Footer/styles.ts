@@ -33,7 +33,7 @@ export const StyledLink = styled(Link)`
   font-size: 14px;
   letter-spacing: -0.14px;
   line-height: 1.5;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in-out;
 
   &:hover {
     color: var(--accent-clr);

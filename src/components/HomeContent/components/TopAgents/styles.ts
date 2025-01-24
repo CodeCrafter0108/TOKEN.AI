@@ -1,14 +1,40 @@
+import Button from '@/components/Button';
 import styled from 'styled-components';
 
-export const LinkText = styled.span`
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.14px;
+export const NextSlide = styled(Button)`
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  svg {
+    transition: all 0.3s ease-in-out;
+  }
+
+  :disabled {
+    opacity: 0.5;
+  }
+
+  :hover {
+    color: var(--accent-clr);
+  }
 `;
 
-export const LinkContent = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-`;
+export const PrevSlide = styled(Button)`
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
 
+  svg {
+    transition: all 0.3s ease-in-out;
+  }
+
+
+  :disabled {
+    opacity: 0.5;
+  }
+
+  :hover {
+    color: var(--accent-clr);
+  }
+`;

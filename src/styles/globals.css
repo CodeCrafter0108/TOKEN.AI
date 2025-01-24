@@ -25,19 +25,15 @@
   --box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1);
 }
 
-html,
-body {
-  overflow-x: hidden;
-  font-size: 14px;
-  color: var(--primary-text-clr);
-  user-select: none;
-}
 
 body {
   display: flex;
+  overflow-x: hidden;
+  font-size: 14px;
   flex-direction: column;
   max-width: 100dvw;
   min-height: 100dvh;
+  color: var(--primary-text-clr);
   background: var(--background-clr);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -73,3 +69,21 @@ img,
 svg {
   display: block;
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--accent-clr);  
+}
+
+.swiper-button-next {
+  right: 0;
+}
+
+.swiper-button-prev {
+  left: 0;
+}
+
+/* .swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: var(--accent-clr);
+} */

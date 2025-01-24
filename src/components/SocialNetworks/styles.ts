@@ -18,7 +18,7 @@ export const StyledLink = styled(Link)`
   align-items: center;
   gap: 4px;
 
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in-out;
 
   &:hover {
     color: var(--accent-clr);

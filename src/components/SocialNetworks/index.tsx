@@ -12,7 +12,7 @@ interface SocialNetworksProps {
 
 export const SocialNetworks = ({ styles, position = 'footer' }: SocialNetworksProps) => {
   return (
-    <Wrapper style={styles}>
+    <Wrapper style={styles} onClick={(e) => e.stopPropagation()}>
       {position === 'footer' ? (
         <StyledLink href={'#'} target={'_blank'} rel={'noreferrer'}>
           <IconWrapper>

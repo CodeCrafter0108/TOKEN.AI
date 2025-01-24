@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import 'swiper/css';
+import 'swiper/css/navigation';
 import '@/styles/globals.css';
 import { headers } from 'next/headers';
 import { cookieToInitialState } from 'wagmi';

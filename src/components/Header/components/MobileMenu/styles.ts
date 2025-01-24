@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 export const Menu = styled(motion.div)`
-  position: absolute;
+  position: fixed;
   width: 100dvw;
-  height: 100%;
+  height: 100dvh;
   padding: 72px 24px 12px 24px;
 
   top: 0;

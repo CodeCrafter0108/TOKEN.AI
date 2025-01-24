@@ -1,3 +1,4 @@
+import { Breakpoints } from '@/styles/breakpoints';
 import Image from 'next/image';
 import styled from 'styled-components';
 
@@ -7,28 +8,55 @@ export const Container = styled.div`
   width: 100%;
   padding-bottom: 40px;
   gap: 24px;
-`;
 
-export const InfoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
+  @media screen and (min-width: ${Breakpoints.md}) {
+    flex-direction: row;
+  }
 `;
 
 export const ImageWrapper = styled.div`
+  flex: 1;
   display: flex;
   justify-content: center;
   width: 100%;
 `;
 
-export const StyledImage = styled(Image)``;
+export const InfoWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+
+  @media screen and (min-width: ${Breakpoints.md}) {
+    flex: 2;
+    align-items: flex-start;
+  }
+
+  @media screen and (min-width: 920px) {
+    flex: 1;
+  }
+`;
+
+export const StyledImage = styled(Image)`
+  @media screen and (min-width: ${Breakpoints.lg}) {
+    width: 508px;
+    height: 260px;
+  }
+`;
 
 export const Title = styled.h1`
+  max-width: 400px;
+  font-size: 24px;
+  line-height: 1.11;
+  letter-spacing: 0.72px;
+
+  @media screen and (min-width: ${Breakpoints.lg}) {
+    font-size: 36px;
+    max-width: 600px;
+  }
+
   span {
-    font-size: 24px;
-    line-height: 1.11;
-    letter-spacing: 0.72px;
     font-weight: 400;
 
     &:last-child {
@@ -48,10 +76,13 @@ export const ListItem = styled.li`
   padding-left: 16px;
 
   font-feature-settings:
-      'liga' off,
-      'clig' off;
-    font-size: 14px;
-    line-height: 1.6;
+    'liga' off,
+    'clig' off;
+  line-height: 1.6;
+
+  @media screen and (min-width: ${Breakpoints.xl}) {
+    font-size: 16px;
+  }
 `;
 
 export const ListItemTitle = styled.span`

@@ -10,7 +10,7 @@ export const StyledLink = styled(Link)<{ $variants: LinkVariants }>`
   font-weight: 600;
   border-radius: 8px;
   background-color: transparent;
-  transition: all 0.1s ease;
+  transition: all 0.1s ease-in-out;
 
   &:disabled {
     opacity: 0.5;

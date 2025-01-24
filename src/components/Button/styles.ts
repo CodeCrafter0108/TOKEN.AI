@@ -9,7 +9,7 @@ export const StyledButton = styled.button<{ $variants: ButtonVariants }>`
   border-radius: 8px;
   background-color: transparent;
   border: 1.5px solid var(--primary-clr);
-  transition: all 0.1s ease;
+  transition: all 0.1s ease-in-out;
   box-shadow: var(--box-shadow);
 
   &:disabled {
