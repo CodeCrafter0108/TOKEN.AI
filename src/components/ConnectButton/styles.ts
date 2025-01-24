@@ -6,7 +6,7 @@ export const StyledConnectButton = styled(Button)`
 
   .text-primary {
     color: inherit;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease-in-out;
   }
 
   .text-secondary {
@@ -15,7 +15,7 @@ export const StyledConnectButton = styled(Button)`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: color 0.3s ease;
+    transition: color 0.3s ease-in-out;
   }
 
   &:hover {

@@ -17,7 +17,7 @@ export const WalletInfo = styled.div`
   font-weight: 500;
   padding-bottom: 8px;
 
-  border-bottom: 1px solid rgba(137, 140, 144, 0.35);
+  border-bottom: 1px solid var(--border-clr);
 `;
 
 export const ButtonContent = styled.div`

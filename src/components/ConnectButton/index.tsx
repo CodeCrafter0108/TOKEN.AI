@@ -36,7 +36,7 @@ export default function ConnectButton({ styles }: ConnectButtonProps) {
           {isOpen ? (
             <span>
               <span>Connecting</span>
-              <PulseLoader color={'#262626'} size={4} cssOverride={{ marginLeft: '4px' }} speedMultiplier={0.7} />
+              <PulseLoader color={'var(--primary-clr)'} size={4} cssOverride={{ marginLeft: '4px' }} speedMultiplier={0.7} />
             </span>
           ) : (
             'Connect Wallet'

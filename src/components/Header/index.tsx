@@ -2,7 +2,7 @@
 import ConnectButton from '../ConnectButton';
 import { Logo } from '@/components/Logo/index';
 import { Container } from '@/styles/global';
-import { NavigationWrapper, Wrapper } from './styles';
+import { NavigationWrapper, Wrapper, StyledHeader } from './styles';
 import { MarqueeAnimation } from '../Marquee';
 import { Navigation } from './components/Navigation';
 import { Burger } from './components/Burger';
@@ -14,7 +14,7 @@ export const Header = () => {
 
   return (
     <>
-      <header>
+      <StyledHeader>
         <Container>
           <Wrapper>
             <Logo />
@@ -26,7 +26,7 @@ export const Header = () => {
           </Wrapper>
         </Container>
         <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen}/>
-      </header>
+      </StyledHeader>
       <MarqueeAnimation />
     </>
   );

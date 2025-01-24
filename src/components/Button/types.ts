@@ -1,5 +1,6 @@
 export enum ButtonVariants {
   OUTLINE,
   SOLID,
-  CLEAR
+  CLEAR,
+  FILTER
 };

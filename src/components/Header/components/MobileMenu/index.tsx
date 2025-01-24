@@ -18,7 +18,8 @@ export const MobileMenu = ({ isOpen, setIsOpen }: BurgerProps) => {
           animate={{ x: '0' }}
           exit={{ x: '100%' }}
           transition={{
-            type: 'linear',
+            type: 'tween',
+            ease: 'easeInOut',
             duration: 0.5
           }}
           onClick={(e) => e.stopPropagation()}

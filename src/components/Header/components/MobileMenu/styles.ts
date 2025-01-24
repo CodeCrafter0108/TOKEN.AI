@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 export const Menu = styled(motion.div)`
-  position: absolute;
+  position: fixed;
   width: 100dvw;
-  height: 100%;
+  height: 100dvh;
   padding: 72px 24px 12px 24px;
 
   top: 0;
@@ -26,5 +26,5 @@ export const Menu = styled(motion.div)`
 
 export const ButtonWrapper = styled.div`
   padding-top: 18px;
-  border-top: 1px solid rgba(137, 140, 144, 0.35);
+  border-top: 1px solid var(--border-clr);
 `

@@ -1,30 +1,82 @@
-import CommonLink from '@/components/CommonLink';
-import { LinkVariants } from '@/components/CommonLink/types';
-import { AppRoutes } from '@/constants/routes';
+import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
 import { Flex, H3 } from '@/styles/global';
-import Arrow from '@/assets/icons/right-arrow.svg';
-import { LinkText, LinkContent } from './styles';
 import { AgentCard } from '@/components/AgentCard';
+import { LinkToTopAgent } from '../LinkToTopAgent';
+import { useWindowSize } from '@/hooks/useWindowSize';
+import { NumberBreakpoints } from '@/styles/breakpoints';
+import { useRef} from 'react';
+import { ButtonVariants } from '@/components/Button/types';
+import ArrowLeft from '@/assets/icons/arrowChevronLeft.svg';
+import ArrowRight from '@/assets/icons/arrowChevronRight.svg';
+import { NextSlide, PrevSlide } from './styles';
 
 export const TopAgents = () => {
+  const { width } = useWindowSize();
+  const swiperRef = useRef<SwiperRef | null>(null);
+
+  const getSlidesPerView = (): number => {
+    if (width >= NumberBreakpoints.xxl) {
+      return 6;
+    }
+    if (width >= 1780) {
+      return 4;
+    }
+    if (width >= NumberBreakpoints.xl) {
+      return 4;
+    }
+    if (width >= 1000) {
+      return 3;
+    }
+    if (width >= NumberBreakpoints.md) {
+      return 2;
+    }
+    return 1;
+  };
+
+  const slides = Array(16).fill(0);
+  const disableNavigation = slides.length <= getSlidesPerView();
+
   return (
     <div>
       <Flex $justify='space-between' $align='center'>
         <H3>Top Agents</H3>
-        <CommonLink href={AppRoutes.AGENTS} variants={LinkVariants.CLEAR} style={{ padding: '12px 0' }}>
-          <LinkContent>
-            <LinkText>View all top agents</LinkText>
-            <Arrow />
-          </LinkContent>
-        </CommonLink>
+        <LinkToTopAgent title='View all top agents' params='filter=top'/>
       </Flex>
 
-      <Flex $gap={16}>
-        <AgentCard />
-        <AgentCard />
-        <AgentCard />
-        <AgentCard />
-      </Flex>
+      <div style={{ position: 'relative' }}>
+        <NextSlide
+          variants={ButtonVariants.CLEAR}
+          onClick={() => swiperRef?.current?.swiper.slideNext()}
+          disabled={disableNavigation}
+        >
+          <ArrowLeft width={40} height={40} />
+        </NextSlide>
+        <Swiper
+          spaceBetween={12}
+          loop={true}
+          slidesPerView={getSlidesPerView()}
+          autoplay={{ delay: 1000, disableOnInteraction: false }}
+          speed={1000}
+          ref={swiperRef}
+          // onSlideChange={handleSlideChange}
+          style={{ margin: '0  35px' }}
+          modules={[Autoplay]}
+        >
+          {slides.map((_, index) => (
+            <SwiperSlide key={index}>
+              <AgentCard />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <PrevSlide
+          variants={ButtonVariants.CLEAR}
+          onClick={() => swiperRef?.current?.swiper.slidePrev()}
+          disabled={disableNavigation}
+        >
+          <ArrowRight width={40} height={40} />
+        </PrevSlide>
+      </div>
     </div>
   );
 };

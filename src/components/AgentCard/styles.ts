@@ -1,5 +1,19 @@
+import { Box } from '@/styles/global';
 import Image from 'next/image';
 import styled from 'styled-components';
+
+export const Container = styled(Box)`
+  min-width: 280px;
+  /* max-width: 286px; */
+  margin: 3px 2px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  scale: 1;
+
+  &:hover {
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.3);
+  }
+`;
 
 export const AgentLogo = styled(Image)`
   border-radius: 4px;
@@ -25,6 +39,7 @@ export const Title = styled.span`
 
 export const MarketCapValue = styled(Title)`
   font-weight: 700;
+  font-size: 14px;
 `;
 
 export const Description = styled.p`
