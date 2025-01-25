@@ -1,4 +1,5 @@
 import { Box, Flex } from '@/styles/global';
+import Arrow from '@/assets/icons/right-arrow.svg';
 import {
   List,
   ListItem,
@@ -8,10 +9,16 @@ import {
   TokenLogo,
   Title,
   TokenSymbol,
-  StyledLink
+  StyledLink,
+  AgentLogoWrapper,
+  TokenLogoWrapper
 } from './styles';
 
-export const AgentsList = () => {
+interface AgentCardProps {
+  hasArrow?: boolean;
+}
+
+export const AgentsList = ({ hasArrow = true }: AgentCardProps): React.JSX.Element => {
   return (
     <Box style={{ padding: '12px', gap: '0px' }}>
       <List>
@@ -20,7 +27,7 @@ export const AgentsList = () => {
           .map((_, index) => (
             <ListItem key={index}>
               <StyledLink href={'#'}>
-                <div style={{ minWidth: '60px', minHeight: '60px', position: 'relative' }}>
+                <AgentLogoWrapper>
                   <AgentLogo
                     fill
                     alt='Agent logo'
@@ -29,11 +36,11 @@ export const AgentsList = () => {
                     style={{ objectFit: 'cover' }}
                     sizes='100%'
                   />
-                </div>
+                </AgentLogoWrapper>
                 <InfoWrapper>
                   <Title>Token name</Title>
                   <Flex $gap={4} $align='center'>
-                    <div style={{ minWidth: '16px', minHeight: '16px', position: 'relative' }}>
+                    <TokenLogoWrapper>
                       <TokenLogo
                         src={'/temp/token.png'}
                         alt='Token logo'
@@ -42,7 +49,7 @@ export const AgentsList = () => {
                         priority
                         style={{ objectFit: 'cover' }}
                       />
-                    </div>
+                    </TokenLogoWrapper>
                     <TokenSymbol>Token name</TokenSymbol>
                   </Flex>
                   <Flex $gap={4} $align='baseline'>
@@ -50,6 +57,11 @@ export const AgentsList = () => {
                     <MarketCapValue>$31M</MarketCapValue>
                   </Flex>
                 </InfoWrapper>
+                {hasArrow && (
+                  <Flex $justify='flex-end' $align='center' style={{ width: 'auto' }}>
+                    <Arrow />
+                  </Flex>
+                )}
               </StyledLink>
             </ListItem>
           ))}

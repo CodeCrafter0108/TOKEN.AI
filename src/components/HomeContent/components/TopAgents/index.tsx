@@ -22,7 +22,7 @@ export const TopAgents = () => {
     if (width >= 1780) {
       return 4;
     }
-    if (width >= NumberBreakpoints.xl) {
+    if (width >= 1480) {
       return 4;
     }
     if (width >= 1000) {
@@ -53,14 +53,13 @@ export const TopAgents = () => {
           <ArrowLeft width={40} height={40} />
         </NextSlide>
         <Swiper
-          spaceBetween={12}
+          spaceBetween={8}
           loop={true}
           slidesPerView={getSlidesPerView()}
           autoplay={{ delay: 1000, disableOnInteraction: false }}
           speed={1000}
           ref={swiperRef}
-          // onSlideChange={handleSlideChange}
-          style={{ margin: '0  35px' }}
+          style={{ margin: '0  30px' }}
           modules={[Autoplay]}
         >
           {slides.map((_, index) => (

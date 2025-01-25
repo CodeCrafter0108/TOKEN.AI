@@ -15,7 +15,7 @@ export const BackGround = ({ children }: BackGroundProps) => {
         quality={100}
         priority
         fill
-        // sizes='100vw'
+        sizes='100vw'
         style={{
           objectFit: 'cover',
           zIndex: -1,

@@ -4,12 +4,12 @@ import { Wrapper, Content, Title, Description } from "./styles";
 interface NoDataProps {
   title: string;
   description: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   children?: React.ReactNode;
   styles?: React.CSSProperties;
 }
 
-export const NoData = ({title, description, icon, styles, children}: NoDataProps) => {
+export const NoData = ({title, description, icon = null, styles, children}: NoDataProps) => {
   return (
     <Wrapper style={styles}>
       <Content>

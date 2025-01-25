@@ -41,7 +41,7 @@ export const StyledLink = styled(Link)`
 export const InfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
   width: 100%;
 
   @media screen and (min-width: ${Breakpoints.md}) {
@@ -50,6 +50,22 @@ export const InfoWrapper = styled.div`
     align-items: center;
     gap: 36px;
   }
+`;
+
+export const AgentLogoWrapper = styled.div`
+  min-width: 60px;
+  min-height: 60px;
+  max-width: 60px;
+  max-height: 60px;
+  position: relative;
+`;
+
+export const TokenLogoWrapper = styled.div`
+  min-width: 16px;
+  min-height: 16px;
+  max-width: 16px;
+  max-height: 16px;
+  position: relative;
 `;
 
 export const AgentLogo = styled(Image)`
