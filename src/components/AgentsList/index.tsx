@@ -33,7 +33,6 @@ export const AgentsList = ({ hasArrow = true }: AgentCardProps): React.JSX.Eleme
                     alt='Agent logo'
                     src={'/temp/agent.png'}
                     priority
-                    style={{ objectFit: 'cover' }}
                     sizes='100%'
                   />
                 </AgentLogoWrapper>

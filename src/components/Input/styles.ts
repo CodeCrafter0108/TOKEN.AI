@@ -6,8 +6,12 @@ export const StyledInput = styled.input`
   font-size: 14px;
   line-height: 1.5;
 
+  &[type='file'] {
+    display: none; 
+  }
+
   ::placeholder {
-    color: #898c90;
+    color: var(--placeholder-clr);
     font-weight: 500;
     line-height: 1.5;
   }

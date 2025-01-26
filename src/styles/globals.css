@@ -14,10 +14,14 @@
   );
 
   --white-clr: #ffffff;
-
   --error-clr: #c0211b;
+  --required-clr: #A10500;
+  --placeholder-clr: #898C90;
+  
   --footer-bg-clr: #e7e6f4;
   --header-bg-clr: #e9eff7;
+  --field-bg-clr: #ECF2F9;
+
 
   --box-bg-clr: #f6faff;
   --badge-bg-clr: #4467ff;

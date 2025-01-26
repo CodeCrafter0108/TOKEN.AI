@@ -1,15 +1,15 @@
 'use client';
 import { PageTitle } from '@/components/PageTitle';
-import PageTransition from '@/components/PageTransition';
+import AnimatedWrapper from '@/components/AnimatedWrapper';
 import { Container, PageContainer } from '@/styles/global';
 
 export default function Trade() {
   return (
     <Container>
       <PageContainer>
-        <PageTransition>
+        <AnimatedWrapper>
           <PageTitle title='Trade' subTitle='Easily trade your tokens' />
-        </PageTransition>
+        </AnimatedWrapper>
       </PageContainer>
     </Container>
   );
