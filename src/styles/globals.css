@@ -22,6 +22,8 @@
   --header-bg-clr: #e9eff7;
   --field-bg-clr: #ECF2F9;
 
+  --modal-hover-clr: #e4ebff;
+
 
   --box-bg-clr: #f6faff;
   --badge-bg-clr: #4467ff;
@@ -36,6 +38,7 @@ body {
   display: flex;
   overflow-x: hidden;
   font-size: 14px;
+  line-height: 1.5;
   flex-direction: column;
   max-width: 100dvw;
   min-height: 100dvh;
@@ -64,6 +67,7 @@ input:focus {
 button {
   cursor: pointer;
   font-family: var(--font-montserrat);
+  line-height: 1.5;
 }
 
 ul,

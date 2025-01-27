@@ -12,6 +12,8 @@ interface InputWrapperProps {
   value: string;
   textError?: string;
   isRequired?: boolean;
+  isDisabled?: boolean;
+  hasCheckIcon?: boolean;
 }
 
 const InpupWrapper = ({
@@ -21,17 +23,19 @@ const InpupWrapper = ({
   isActive,
   textError,
   isRequired = true,
-  value
+  value,
+  isDisabled = false,
+  hasCheckIcon = true
 }: InputWrapperProps) => {
   return (
     <Container>
-      <InputContainer $isError={!!textError}>
+      <InputContainer $isError={!!textError} $isDisabled={isDisabled}>
         <Label htmlFor={htmlFor} $isActive={isActive} $isRequired={isRequired}>
           {label}
         </Label>
         {children}
         <AnimatePresence>
-          {!textError && value && (
+          {!textError && value && hasCheckIcon && (
             <AnimatedWrapper>
               <Check />
             </AnimatedWrapper>

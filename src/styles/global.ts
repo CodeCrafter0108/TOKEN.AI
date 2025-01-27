@@ -39,10 +39,6 @@ export const PageContainer = styled.div`
   gap: 24px;
 
   padding: 40px 0;
-
-  /* @media screen and (max-width: ${Breakpoints.md}) {
-    gap: 24px;
-  } */
 `;
 
 export const PageSearchWrapper = styled.div`

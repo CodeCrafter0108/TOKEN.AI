@@ -9,7 +9,7 @@ export const Menu = styled(motion.div)`
   padding: 72px 24px 12px 24px;
 
   top: 0;
-  z-index: 150;
+  z-index: 30;
 
   background: var(--header-bg-clr);
 

@@ -13,7 +13,6 @@ export const textStyles = css`
 
   font-size: 18px;
   font-weight: 700;
-  line-height: 1.5;
   text-transform: uppercase;
 
   @media screen and (min-width: 420px) {
@@ -28,13 +27,11 @@ export const textStyles = css`
 export const Title = styled.h2`
   font-size: 16px;
   font-weight: 700;
-  line-height: 1.5;
 `;
 
 export const Description = styled.p`
   font-size: 12px;
   font-weight: 500;
-  line-height: 1.5;
 `;
 
 export const VideoWrapper = styled.div`

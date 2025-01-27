@@ -11,7 +11,7 @@ const Search = ({ placeholder = 'Search agents...', styles }: SearchProps): JSX.
   return (
     <InputWrapper style={styles}>
       <Icon />
-      <Input placeholder={placeholder} />
+      <Input placeholder={placeholder} style={{padding: '12px 16px 12px 40px'}}/>
     </InputWrapper>
   );
 };

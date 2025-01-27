@@ -52,22 +52,6 @@ export const InfoWrapper = styled.div`
   }
 `;
 
-export const AgentLogoWrapper = styled.div`
-  min-width: 60px;
-  min-height: 60px;
-  max-width: 60px;
-  max-height: 60px;
-  position: relative;
-`;
-
-export const TokenLogoWrapper = styled.div`
-  min-width: 16px;
-  min-height: 16px;
-  max-width: 16px;
-  max-height: 16px;
-  position: relative;
-`;
-
 export const AgentLogo = styled(Image)`
   border-radius: 4px;
   object-fit: cover;

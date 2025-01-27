@@ -7,7 +7,7 @@ export const Container = styled.div`
   height: 67px;
 `;
 
-export const InputContainer = styled.div<{ $isError: boolean }>`
+export const InputContainer = styled.div<{ $isError: boolean, $isDisabled: boolean }>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -16,10 +16,8 @@ export const InputContainer = styled.div<{ $isError: boolean }>`
   overflow: hidden;
   background: var(--field-bg-clr);
   border: 1px solid ${({ $isError }) => ($isError ? 'var(--error-clr)' : 'transparent')};
-  outline: 1px solid ${({ $isError }) => ($isError ? 'var(--error-clr)' : 'none')};
+  outline: 1px solid ${({ $isError }) => ($isError ? 'var(--error-clr)' : 'transparent')};
   transition: all 0.2s ease-in-out;
-
-  padding: 12px 28px 0 12px;
 
   width: 100%;
   height: 44px;
@@ -27,6 +25,8 @@ export const InputContainer = styled.div<{ $isError: boolean }>`
   &:hover {
     border: 1px solid var(--accent-clr);
   }
+
+  ${({ $isDisabled }) => $isDisabled && `pointer-events: none;`}
 `;
 
 export const Check = styled(CheckIcon)`
@@ -54,9 +54,6 @@ export const Label = styled.label<{ $isActive: boolean; $isRequired: boolean }>`
     }`}
 
   color: var(--placeholder-clr);
-  line-height: 1.5;
 `;
 
-export const Error = styled.p`
-  line-height: 1.5;
-`;
+export const Error = styled.p``;

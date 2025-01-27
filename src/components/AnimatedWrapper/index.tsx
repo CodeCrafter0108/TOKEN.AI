@@ -15,6 +15,7 @@ const AnimatedWrapper = ({ children, duration = 0.5 }: AnimatedWrapperProps) => 
         duration,
         ease: 'easeInOut'
       }}
+      style={{display: 'flex', flexDirection: 'column', flex: 1}}
     >
       {children}
     </motion.div>

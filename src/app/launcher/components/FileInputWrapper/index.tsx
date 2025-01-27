@@ -4,7 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import AnimatedWrapper from '@/components/AnimatedWrapper';
 import { Container, Preview, PreviewWrapper, Label, Text } from './styles';
 import { ImageFieldType, LauncherTypeData } from '../LaunchForm/types';
-import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form';
+import { UseFormSetValue } from 'react-hook-form';
 import UploadIcon from '@/assets/icons/upload.svg';
 import DeleteIcon from '@/assets/icons/delete.svg';
 import { Flex } from '@/styles/global';
@@ -74,7 +74,7 @@ const FileInputWrapper = ({
                 <Button
                   variants={ButtonVariants.CLEAR}
                   onClick={() => {
-                    {/*@ts-expect-error* type field*/}
+                    { /*@ts-expect-error* type field*/}
                     setValue(field.name, undefined, { shouldValidate: true });
                   }}
                 >

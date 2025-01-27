@@ -10,7 +10,7 @@ export const StyledButton = styled.button<{ $variants: ButtonVariants; $isSelect
   background-color: transparent;
   border: 1.5px solid var(--primary-clr);
   transition: all 0.2s ease-in-out;
-  box-shadow: var(--box-shadow);
+  box-shadow: var(--box-shadow);          
 
   &:disabled {
     opacity: 0.5;
@@ -36,7 +36,17 @@ export const StyledButton = styled.button<{ $variants: ButtonVariants; $isSelect
       case ButtonVariants.SOLID:
         return `
           color: var(--white-clr);
-          background-color: var(--primary-clr);  
+          background-color: var(--primary-clr);
+          
+            &:hover {
+              color: var(--accent-clr);
+            }
+            
+            &:active {
+              color: var(--white-clr);
+              background-color: var(--accent-clr);
+              border-color: var(--accent-clr);
+            }
         `;
       case ButtonVariants.CLEAR:
         return `

@@ -34,16 +34,15 @@ const MAX_FILE_SIZE = 200 * 1024; //TODO change
 
 export const schema = yup
   .object({
-    name: yup.string().min(3, `${messages.min} 3`).max(24, `${messages.max} 24`).required(messages.required),
-    symbol: yup.string().min(3, `${messages.min} 3`).max(24, `${messages.max} 24`).required(messages.required),
+    name: yup.string().required(messages.required).min(3, `${messages.min} 3`).max(24, `${messages.max} 24`),
+    symbol: yup.string().required(messages.required).min(3, `${messages.min} 3`).max(24, `${messages.max} 24`),
     supply: yup.string().required(messages.required),
-    websiteUrl: yup.string().url(messages.url).required(messages.required),
-    socialUrl: yup.string().url(messages.url).required(messages.required),
+    websiteUrl: yup.string().required(messages.required).url(messages.url),
+    socialUrl: yup.string().required(messages.required).url(messages.url),
     chatUrl: yup.string().url(messages.url),
-    description: yup.string().min(3, `${messages.min} 3`).max(128, `${messages.max} 128`).required(messages.required),
+    description: yup.string().required(messages.required).min(3, `${messages.min} 3`).max(128, `${messages.max} 128`),
     imageUrl: yup
       .mixed<FileList>()
-      .nullable()
       .required('Image is required')
       .test('required', 'Image is required', (value) => !!value?.[0])
       .test('fileSize', 'File size must be less 1MB', (value) => {

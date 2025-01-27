@@ -1,7 +1,8 @@
 'use client';
 import { PageTitle } from '@/components/PageTitle';
 import AnimatedWrapper from '@/components/AnimatedWrapper';
-import { Container, PageContainer } from '@/styles/global';
+import { Container, Flex, PageContainer } from '@/styles/global';
+import { TradeForm } from '../../components/TradeForm';
 
 export default function Trade() {
   return (
@@ -9,6 +10,9 @@ export default function Trade() {
       <PageContainer>
         <AnimatedWrapper>
           <PageTitle title='Trade' subTitle='Easily trade your tokens' />
+          <Flex $align='center' $direction='column' $justify='center' style={{ flex: 1 }}>
+          <TradeForm />
+          </Flex>
         </AnimatedWrapper>
       </PageContainer>
     </Container>

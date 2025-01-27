@@ -7,7 +7,7 @@ export const Container = styled.div<{ $isDragging: boolean; $isError: boolean }>
   height: 120px;
   padding: 16px;
   border: 1px dashed ${({ $isDragging }) => ($isDragging ? 'var(--accent-clr)' : 'transparent')};
-  outline: 1px solid ${({ $isError }) => ($isError ? 'var(--error-clr)' : 'none')};
+  outline: 1px solid ${({ $isError }) => ($isError ? 'var(--error-clr)' : 'transparent')};
   border-radius: 8px;
   background-color: var(--field-bg-clr);
   margin-bottom: 24px;
@@ -30,7 +30,6 @@ export const Label = styled.label`
   display: inline-flex;
   color: var(--accent-clr);
   font-weight: 600;
-  line-height: 1.5;
   text-decoration-line: underline;
   text-decoration-style: solid;
   text-decoration-skip-ink: none;
@@ -42,5 +41,4 @@ export const Label = styled.label`
 
 export const Text = styled.span`
   color: var(--placeholder-clr);
-  line-height: 1.5;
 `;

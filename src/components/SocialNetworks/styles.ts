@@ -26,6 +26,4 @@ export const StyledLink = styled(Link)`
 `;
 
 export const TitleNetwork = styled.span`
-  font-size: 14px;
-  line-height: 1.5;
 `;

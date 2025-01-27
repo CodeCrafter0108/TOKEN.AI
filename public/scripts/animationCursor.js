@@ -10,7 +10,7 @@ let letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZウマャュマワク'.split('');
 mR = (n, i) => Math.floor(Math.random() * n) + i;
 
 inject = () => {
-  $('body').prepend('<canvas id="animationCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; pointer-events: none;"></canvas>');
+  $('body').prepend('<canvas id="animationCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; pointer-events: none;"></canvas>');
   can = document.querySelector('canvas');
   con = can.getContext('2d');
   init();
@@ -19,8 +19,8 @@ inject = () => {
 size = () => {
   can.height = 0;
   can.width = 0;
-  can.height = doc.height();
-  can.width = doc.width();
+  can.height = window.innerHeight;
+  can.width =  window.innerWidth;
 };
 
 $(window).on('resize', () => size());
@@ -31,8 +31,8 @@ init = () => {
 };
 
 doc.on('mousemove', (e) => {
-  mX = e.pageX;
-  mY = e.pageY;
+  mX = e.clientX;
+  mY = e.clientY;
   mouse = true;
 });
 

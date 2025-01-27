@@ -2,7 +2,7 @@
 import { memo, InputHTMLAttributes, ChangeEvent } from 'react';
 import { StyledInput } from './styles';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   value?: string;
 }

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 export const Form = styled.form`
   width: 100%;
+  max-width: 666px;
   display: flex;
   flex-direction: column;
   align-self: center;
@@ -15,7 +16,6 @@ export const GeneralInfo = styled.div`
 
 export const SectionTitle = styled.h4`
   font-weight: 600;
-  line-height: 1.5;
   padding-bottom: 24px;
 `;
 

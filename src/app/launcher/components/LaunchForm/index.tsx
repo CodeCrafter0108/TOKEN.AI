@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { FieldsFocused, ImageFieldType, LauncherTypeData } from './types';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
-import InpupWrapper from '../InputWrapper';
+import InpupWrapper from '../../../../components/InputWrapper';
 import { useCallback, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from './schema';
@@ -75,7 +75,7 @@ export const LaunchForm = () => {
   );
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} autoComplete='off' autoCorrect='off' style={{ maxWidth: '666px' }}>
+    <Form onSubmit={handleSubmit(onSubmit)} autoComplete='off' autoCorrect='off'>
       <GeneralInfo>
         <SectionTitle>General information</SectionTitle>
         <FieldPairContainer>
@@ -221,7 +221,7 @@ export const LaunchForm = () => {
           </FileInputWrapper>
         )}
       />
-      {isConnected ? <Button type='submit'>Submit</Button> : <ConnectButton />}
+      {isConnected ? <Button type='submit'>Create</Button> : <ConnectButton />}
     </Form>
   );
 };
