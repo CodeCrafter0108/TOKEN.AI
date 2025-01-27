@@ -41,7 +41,7 @@ export const StyledLink = styled(Link)`
 export const InfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
   width: 100%;
 
   @media screen and (min-width: ${Breakpoints.md}) {

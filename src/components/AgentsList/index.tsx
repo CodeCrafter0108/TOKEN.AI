@@ -1,17 +1,14 @@
 import { Box, Flex } from '@/styles/global';
-import {
-  List,
-  ListItem,
-  InfoWrapper,
-  AgentLogo,
-  MarketCapValue,
-  TokenLogo,
-  Title,
-  TokenSymbol,
-  StyledLink
-} from './styles';
+import Arrow from '@/assets/icons/right-arrow.svg';
+import { List, ListItem, InfoWrapper, MarketCapValue, Title, TokenSymbol, StyledLink } from './styles';
+import { ImageWithFallback } from '../ImageWithFallback';
+import { AppRoutes } from '@/constants/routes';
 
-export const AgentsList = () => {
+interface AgentCardProps {
+  hasArrow?: boolean;
+}
+
+export const AgentsList = ({ hasArrow = true }: AgentCardProps): React.JSX.Element => {
   return (
     <Box style={{ padding: '12px', gap: '0px' }}>
       <List>
@@ -19,30 +16,30 @@ export const AgentsList = () => {
           .fill(0)
           .map((_, index) => (
             <ListItem key={index}>
-              <StyledLink href={'#'}>
-                <div style={{ minWidth: '60px', minHeight: '60px', position: 'relative' }}>
-                  <AgentLogo
-                    fill
-                    alt='Agent logo'
-                    src={'/temp/agent.png'}
-                    priority
-                    style={{ objectFit: 'cover' }}
-                    sizes='100%'
-                  />
-                </div>
+              <StyledLink href={AppRoutes.TOKEN}>
+                <ImageWithFallback
+                  fill
+                  alt='Agent logo'
+                  src={'/temp/agent.png'}
+                  priority
+                  style={{ objectFit: 'cover', borderRadius: '4px' }}
+                  sizes='100%'
+                  widthSkeleton={60}
+                  heightSkeleton={60}
+                />
                 <InfoWrapper>
                   <Title>Token name</Title>
                   <Flex $gap={4} $align='center'>
-                    <div style={{ minWidth: '16px', minHeight: '16px', position: 'relative' }}>
-                      <TokenLogo
-                        src={'/temp/token.png'}
-                        alt='Token logo'
-                        fill
-                        sizes='100%'
-                        priority
-                        style={{ objectFit: 'cover' }}
-                      />
-                    </div>
+                    <ImageWithFallback
+                      fill
+                      alt='Token logo'
+                      src={'/temp/token.png'}
+                      priority
+                      style={{ objectFit: 'cover' }}
+                      sizes='100%'
+                      widthSkeleton={16}
+                      heightSkeleton={16}
+                    />
                     <TokenSymbol>Token name</TokenSymbol>
                   </Flex>
                   <Flex $gap={4} $align='baseline'>
@@ -50,6 +47,11 @@ export const AgentsList = () => {
                     <MarketCapValue>$31M</MarketCapValue>
                   </Flex>
                 </InfoWrapper>
+                {hasArrow && (
+                  <Flex $justify='flex-end' $align='center' style={{ width: 'auto' }}>
+                    <Arrow />
+                  </Flex>
+                )}
               </StyledLink>
             </ListItem>
           ))}

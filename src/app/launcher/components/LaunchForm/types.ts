@@ -1,5 +1,7 @@
+import { ControllerRenderProps } from 'react-hook-form';
+
 export type LauncherTypeData = {
-  name: string,
+  name: string;
   symbol: string;
   supply: string;
   websiteUrl: string;
@@ -7,14 +9,16 @@ export type LauncherTypeData = {
   chatUrl?: string;
   description: string;
   imageUrl: FileList;
-}
+};
 
 export type FieldsFocused = {
-  name: boolean,
+  name: boolean;
   symbol: boolean;
   supply: boolean;
   websiteUrl: boolean;
   socialUrl: boolean;
   chatUrl: boolean;
   description: boolean;
-}
+};
+
+export type ImageFieldType = ControllerRenderProps<LauncherTypeData, 'imageUrl'>;

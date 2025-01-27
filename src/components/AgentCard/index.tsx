@@ -1,7 +1,10 @@
 import { Flex } from '@/styles/global';
-import { Description, AgentLogo, TokenLogo, MarketCapValue, Title, Container } from './styles';
+import { Description, MarketCapValue, Title, Container } from './styles';
 import { SocialNetworks } from '../SocialNetworks';
 import { RuleSet } from 'styled-components';
+import { ImageWithFallback } from '../ImageWithFallback';
+import { useRouter } from 'next/navigation';
+import { AppRoutes } from '@/constants/routes';
 
 interface AgentCardProps {
   // onClick: () => void;
@@ -9,44 +12,45 @@ interface AgentCardProps {
 }
 
 export const AgentCard = ({ styles }: AgentCardProps) => {
+  const router = useRouter();
   return (
-    <Container onClick={() => console.log('click BOX')} $styles={styles}>
-      <Flex $gap={12} $align='center'>
-        <div style={{ minWidth: '100px', minHeight: '100px', position: 'relative' }}>
-          <AgentLogo
+      <Container onClick={() => router.push(AppRoutes.TOKEN)} $styles={styles} role='link'>
+        <Flex $gap={12} $align='center'>
+          <ImageWithFallback
             fill
             alt='Agent logo'
             src={'/temp/agent.png'}
             priority
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'cover', borderRadius: '4px' }}
             sizes='100%'
+            widthSkeleton={100}
+            heightSkeleton={100}
           />
-        </div>
-        <Flex $direction={'column'} $gap={6}>
-          <Title>Token name</Title>
-          <Flex $gap={4} $align='center'>
-            <div style={{ minWidth: '16px', minHeight: '16px', position: 'relative' }}>
-              <TokenLogo
-                src={'/temp/token.png'}
-                alt='Token logo'
+          <Flex $direction={'column'} $gap={6}>
+            <Title>Token name</Title>
+            <Flex $gap={4} $align='center'>
+              <ImageWithFallback
                 fill
-                sizes='100%'
+                alt='Token logo'
+                src={'/temp/token.png'}
                 priority
                 style={{ objectFit: 'cover' }}
+                sizes='100%'
+                widthSkeleton={16}
+                heightSkeleton={16}
               />
-            </div>
-            <span>Token name</span>
+              <span>Token name</span>
+            </Flex>
+            <Flex $gap={4}>
+              <span>Market cap:</span>
+              <MarketCapValue>$31M</MarketCapValue>
+            </Flex>
+            <SocialNetworks position='card' styles={{ flexDirection: 'row' }} />
           </Flex>
-          <Flex $gap={4}>
-            <span>Market cap:</span>
-            <MarketCapValue>$31M</MarketCapValue>
-          </Flex>
-          <SocialNetworks position='card' styles={{ flexDirection: 'row' }} />
         </Flex>
-      </Flex>
-      <Description>
-        Creating cryptocurrency enables decentralized financial systems, allowing users to exchange
-      </Description>
-    </Container>
+        <Description>
+          Creating cryptocurrency enables decentralized financial systems, allowing users to exchange
+        </Description>
+      </Container>
   );
 };

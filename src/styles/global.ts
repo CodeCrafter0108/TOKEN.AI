@@ -36,13 +36,9 @@ export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 12px;
+  gap: 24px;
 
   padding: 40px 0;
-
-  @media screen and (max-width: ${Breakpoints.md}) {
-    gap: 24px;
-  }
 `;
 
 export const PageSearchWrapper = styled.div`

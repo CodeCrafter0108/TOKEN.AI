@@ -12,6 +12,7 @@ export const MarqueeAnimation = ({ direction = 'right' }: MarqueeWrapperProps) =
       <Marquee
         speed={50}
         direction={direction}
+        pauseOnHover
       >
         {Array(100).fill(0).map((__, index) => (
           <DeFAI key={index} />

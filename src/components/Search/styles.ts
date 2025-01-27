@@ -7,7 +7,6 @@ export const InputWrapper = styled.div`
   background-color: var(--box-bg-clr);
   border-radius: 8px;
   overflow: hidden;
-  padding: 12px 16px 12px 40px;
   transition: all 0.2s ease-in-out;
 
   border: 1px solid transparent;

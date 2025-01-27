@@ -53,7 +53,7 @@ export const DropdownItem = styled.li<{ $isSelected: boolean }>`
   }
 
   &:hover {
-    background-color: #e4ebff;
+    background-color: var(--modal-hover-clr);
   }
 `;
 

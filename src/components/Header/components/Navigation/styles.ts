@@ -19,7 +19,6 @@ export const StyledLink = styled(Link)<{ $isActive: boolean }>`
   padding: 8px 12px;
   font-weight: ${({ $isActive }) => ($isActive ? 600 : 500)};
   font-size: 18px;
-  line-height: 1.5;
   transition: all 0.2s ease-in-out;
 
   @media screen and (min-width: ${Breakpoints.md}) {

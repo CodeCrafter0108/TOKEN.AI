@@ -2,7 +2,7 @@ import CommonLink from '@/components/CommonLink';
 import { Container, StyledImage, InfoWrapper, ImageWrapper, Title, List, ListItem, Dot, ListItemTitle } from './styles';
 import { AppRoutes } from '@/constants/routes';
 import { LinkVariants } from '@/components/CommonLink/types';
-import { LinkContent, LinkText } from '@/app/my-agents/styles';
+import { LinkContent, LinkText } from '@/app/my-agents/components/Messages/styles';
 import Stars from '@/assets/icons/stars.svg';
 
 export const Hero = () => {

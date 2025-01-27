@@ -26,7 +26,5 @@ export const ButtonContent = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 16px;
-
   font-weight: 600;
-  line-height: 1.5;
 `;

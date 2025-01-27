@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { Breakpoints } from '@/styles/breakpoints';
 
 export const BurgerWrapper = styled.div<{ $isOpen: boolean }>`
-  width: 22px;
-  height: 22px;
+  width: 50px;
+  height: 70px;
   position: relative;
 
   display: flex;
@@ -12,7 +12,7 @@ export const BurgerWrapper = styled.div<{ $isOpen: boolean }>`
   flex-direction: column;
   gap: 6px;
 
-  z-index: 200;
+  z-index: 40;
 
   span {
     width: 27px;

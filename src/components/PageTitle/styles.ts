@@ -56,5 +56,4 @@ export const BadgeDescription = styled.p`
 color: var(--white-clr);
 font-size: 14px;
 font-weight: 700;
-line-height: 1.5;
 `;

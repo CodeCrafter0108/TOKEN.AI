@@ -2,7 +2,7 @@
 import { AgentCard } from '@/components/AgentCard';
 import { ButtonVariants } from '@/components/Button/types';
 import { PageTitle } from '@/components/PageTitle';
-import PageTransition from '@/components/PageTransition';
+import AnimatedWrapper from '@/components/AnimatedWrapper';
 import Search from '@/components/Search';
 import { Container, PageContainer } from '@/styles/global';
 import ClipLoader from 'react-spinners/ClipLoader';
@@ -16,7 +16,7 @@ export default function TopAgents() {
   const { width } = useWindowSize();
   return (
     <Container>
-      <PageTransition>
+      <AnimatedWrapper>
         <PageContainer>
           <PageTitle
             title='Agents'
@@ -39,7 +39,7 @@ export default function TopAgents() {
             <ClipLoader color={'var(--accent-clr)'} size={14} speedMultiplier={0.7} />
           </LoadMore>
         </PageContainer>
-      </PageTransition>
+      </AnimatedWrapper>
     </Container>
   );
 }

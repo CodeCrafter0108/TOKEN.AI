@@ -4,4 +4,5 @@ export enum AppRoutes {
   LAUNCHER = '/launcher',
   MY_AGENTS = '/my-agents',
   AGENTS = '/agents',
+  TOKEN = '/token', //mock page
 }
