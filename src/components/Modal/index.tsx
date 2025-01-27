@@ -4,7 +4,6 @@ import { createPortal } from 'react-dom';
 import { RuleSet } from 'styled-components';
 import { Wrapper, Overlay } from './styles';
 import { useModal } from './hooks/useModal';
-import ClickAwayListener from './components/ClickAwayListener';
 
 interface ModalProps {
   isOpen: boolean;
@@ -13,16 +12,15 @@ interface ModalProps {
   styles?: RuleSet<object>;
 }
 
-const Modal= ({ isOpen, children, handleClose, styles }: ModalProps): ReactPortal | null => {
+const Modal = ({ isOpen, children, handleClose, styles }: ModalProps): ReactPortal | null => {
   const { modalRef } = useModal(isOpen, handleClose);
 
-  if (typeof document === "undefined") return null;
+  if (typeof document === 'undefined') return null;
 
   return createPortal(
     <AnimatePresence>
       {isOpen && (
         <Overlay initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-          <ClickAwayListener onClickAway={handleClose}>
             <Wrapper
               ref={modalRef}
               $styles={styles}
@@ -34,11 +32,10 @@ const Modal= ({ isOpen, children, handleClose, styles }: ModalProps): ReactPorta
             >
               {children}
             </Wrapper>
-          </ClickAwayListener>
         </Overlay>
       )}
     </AnimatePresence>,
-    document.body,
+    document.body
   );
 };
 

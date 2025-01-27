@@ -56,7 +56,7 @@ export const TopAgents = () => {
           spaceBetween={8}
           loop={true}
           slidesPerView={getSlidesPerView()}
-          autoplay={{ delay: 1000, disableOnInteraction: false }}
+          autoplay={{ delay: 1000, disableOnInteraction: false, pauseOnMouseEnter: true }}
           speed={1000}
           ref={swiperRef}
           style={{ margin: '0  30px' }}

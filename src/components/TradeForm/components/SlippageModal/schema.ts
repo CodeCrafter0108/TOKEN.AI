@@ -10,7 +10,7 @@ export const schema = yup
       .required('Field is required')
       .test(
         'coorectSlippage',
-        `Slippage must be a positive number between ${MIN_SLIPAGE}% and ${MAX_SLIPAGE}%`,
+        `Slippage must be between ${MIN_SLIPAGE}% and ${MAX_SLIPAGE}%`,
         (value) => +value >= MIN_SLIPAGE && +value <= MAX_SLIPAGE
       ),
     deadline: yup
