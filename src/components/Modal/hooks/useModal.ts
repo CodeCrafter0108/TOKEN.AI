@@ -8,6 +8,19 @@ export const useModal = (isOpen: boolean, handleClose: () => void): { modalRef: 
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        handleClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [handleClose]);
+
+  useEffect(() => {
     if (isOpen) {
       const modalElement = modalRef.current;
       const getFocusableElements = () => {

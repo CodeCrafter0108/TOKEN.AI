@@ -15,6 +15,8 @@ export const StyledInput = styled.input`
 
   &[type='radio'] {
     accent-color: var(--primary-clr);
+    height: auto;
+    width: auto;
   }
 
   &:disabled {

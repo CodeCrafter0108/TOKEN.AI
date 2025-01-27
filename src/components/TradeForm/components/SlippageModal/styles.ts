@@ -14,6 +14,7 @@ export const SubTitle = styled.div`
 export const RadioLabel = styled.label<{ $isSelected: boolean }>`
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 4px;
 
   cursor: pointer;

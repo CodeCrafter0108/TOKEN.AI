@@ -133,7 +133,7 @@ export const TradeForm = () => {
         )}
       </Form>
       <SelectTokenModal isOpen={isSelectModalOpen} onClose={() => setIsSelectModalOpen(false)} />
-      <SlippageModal isOpen={isSlipageModalOpen} onClose={() => setIsSlipageModalOpen(false)} />
+      <SlippageModal isOpen={isSlipageModalOpen} onClose={() =>setIsSlipageModalOpen(false)} />
     </Wrapper>
   );
 };

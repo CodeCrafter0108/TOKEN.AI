@@ -7,6 +7,9 @@ export const Overlay = styled(motion.div)`
   right: 0;
   bottom: 0;
   position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 50;
   backdrop-filter: blur(10px);
   background-color: rgba(0, 0, 0, 0.5);
@@ -15,7 +18,6 @@ export const Overlay = styled(motion.div)`
 export const Wrapper = styled(motion.div)<{ $styles?: RuleSet<object> }>`
   width: 95%;
   max-width: 410px;
-  margin: auto;
   padding: 16px;
   ${({ $styles }) => $styles && $styles};
   background-color: var(--box-bg-clr);
