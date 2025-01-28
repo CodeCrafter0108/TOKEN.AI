@@ -49,6 +49,7 @@ export const TopAgents = () => {
           variants={ButtonVariants.CLEAR}
           onClick={() => swiperRef?.current?.swiper.slideNext()}
           disabled={disableNavigation}
+          aria-label='Next slide'
         >
           <ArrowLeft width={40} height={40} />
         </NextSlide>
@@ -72,6 +73,7 @@ export const TopAgents = () => {
           variants={ButtonVariants.CLEAR}
           onClick={() => swiperRef?.current?.swiper.slidePrev()}
           disabled={disableNavigation}
+          aria-label='Previous slide'
         >
           <ArrowRight width={40} height={40} />
         </PrevSlide>

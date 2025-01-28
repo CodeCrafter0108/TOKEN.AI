@@ -10,7 +10,7 @@ interface AgentCardProps {
 
 export const AgentsList = ({ hasArrow = true }: AgentCardProps): React.JSX.Element => {
   return (
-    <Box style={{ padding: '12px', gap: '0px' }}>
+    <Box style={{ gap: '0px' }}>
       <List>
         {Array(6)
           .fill(0)

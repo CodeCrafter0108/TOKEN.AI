@@ -60,6 +60,8 @@ const CurrencyInput = ({
           $justify='flex-end'
           style={{ cursor: 'pointer', fontSize: '12px' }}
           onClick={handleMax}
+          role='button'
+          aria-label='Max balance'
         >
           <WalletIcon />
           <span>{formatBalance(balance, 4) || '0.00'}</span>

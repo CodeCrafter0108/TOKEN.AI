@@ -1,12 +1,17 @@
 import { Breakpoints } from '@/styles/breakpoints';
-import Image from 'next/image';
 import styled from 'styled-components';
+import { Container } from '@/styles/global';
 
-export const Container = styled.div`
+export const HeroWrapper = styled.div`
+  background-color: var(--hero-bg-clr);
+`;
+
+export const HeroContainer = styled(Container)`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  padding-bottom: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0 60px 0;
   gap: 24px;
 
   @media screen and (min-width: ${Breakpoints.md}) {
@@ -14,11 +19,22 @@ export const Container = styled.div`
   }
 `;
 
-export const ImageWrapper = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: center;
+
+export const   VideoWrapper = styled.div`
+flex: 1;
+display: flex;
+align-items: center;
+justify-content: center;
+`;
+
+export const Video = styled.video`
   width: 100%;
+  max-width: 750px;
+ 
+  /* @media screen and (min-width: ${Breakpoints.lg}) {
+    width: 508px;
+    height: 260px;
+  } */
 `;
 
 export const InfoWrapper = styled.div`
@@ -29,7 +45,7 @@ export const InfoWrapper = styled.div`
   gap: 24px;
 
   @media screen and (min-width: ${Breakpoints.md}) {
-    flex: 2;
+    flex: 1.5;
     align-items: flex-start;
   }
 
@@ -38,12 +54,6 @@ export const InfoWrapper = styled.div`
   }
 `;
 
-export const StyledImage = styled(Image)`
-  @media screen and (min-width: ${Breakpoints.lg}) {
-    width: 508px;
-    height: 260px;
-  }
-`;
 
 export const Title = styled.h1`
   max-width: 400px;

@@ -14,26 +14,26 @@ export const SocialNetworks = ({ styles, position = 'footer' }: SocialNetworksPr
   return (
     <Wrapper style={styles} onClick={(e) => e.stopPropagation()}>
       {position === 'footer' ? (
-        <StyledLink href={'#'} target={'_blank'} rel={'noreferrer'}>
+        <StyledLink href={'#'} target={'_blank'} rel={'noreferrer'} aria-label='Discord'>
           <IconWrapper>
             <Discord />
           </IconWrapper>
           <TitleNetwork>Discord</TitleNetwork>
         </StyledLink>
       ) : (
-        <StyledLink href={'#'} target={'_blank'} rel={'noreferrer'}>
+        <StyledLink href={'#'} target={'_blank'} rel={'noreferrer'} aria-label='website'>
           <IconWrapper>
             <Planet />
           </IconWrapper>
         </StyledLink>
       )}
-      <StyledLink href={'#'} target={'_blank'} rel={'noreferrer'}>
+      <StyledLink href={'#'} target={'_blank'} rel={'noreferrer'} aria-label='twitter'>
         <IconWrapper>
           <Twitter />
         </IconWrapper>
         {position === 'footer' && <TitleNetwork>Twitter</TitleNetwork>}
       </StyledLink>
-      <StyledLink href={'#'} target={'_blank'} rel={'noreferrer'}>
+      <StyledLink href={'#'} target={'_blank'} rel={'noreferrer'} aria-label='telegram'>
         <IconWrapper>
           <Telegram />
         </IconWrapper>

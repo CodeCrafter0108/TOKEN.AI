@@ -4,6 +4,8 @@ export const TokenList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-height: 350px;
+  overflow-y: scroll;
 `;
 
 export const TokenListItem = styled.li`

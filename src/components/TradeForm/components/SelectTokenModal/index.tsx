@@ -17,7 +17,7 @@ const SelectTokenModal = ({ isOpen, onClose }: SelectTokenModalProps) => {
       <ModalHeader title='Select Token' onClose={onClose} />
       <Search styles={{ backgroundColor: 'var(--field-bg-clr)', marginBottom: '12px' }} />
       <TokenList>
-        {Array(3)
+        {Array(8)
           .fill(0)
           .map((_, index) => (
             <TokenListItem key={index} role='button'>
@@ -38,7 +38,7 @@ const SelectTokenModal = ({ isOpen, onClose }: SelectTokenModalProps) => {
                   <TokenSymbol>ETH</TokenSymbol>
                 </Flex>
               </Flex>
-              <Flex $direction='column' $gap={4} style={{ width: 'auto' }}>
+              <Flex $direction='column' $align='flex-end' $gap={4} style={{ width: 'auto' }}>
                 <TokenName>0</TokenName>
                 <TokenSymbol>$0</TokenSymbol>
               </Flex>
