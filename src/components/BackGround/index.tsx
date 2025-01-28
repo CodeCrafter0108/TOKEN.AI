@@ -13,7 +13,7 @@ export const BackGround = ({ children }: BackGroundProps) => {
         alt='bg'
         src={'/images/background.png'}
         quality={100}
-        priority
+        loading='lazy'
         fill
         sizes='100vw'
         style={{

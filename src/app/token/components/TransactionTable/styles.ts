@@ -18,13 +18,17 @@ export const TableHead = styled.div`
   }
 `;
 
+export const TableBody = styled.div`
+  display: grid;
+  position: relative;
+  overflow-y: auto;
+  max-height: 550px;
+  padding-right: 10px;
+`;
+
 export const TableItem = styled(TableHead)`
   border-bottom: 1px solid var(--border-clr);
   padding: 16px 0;
-`;
-
-export const TableItemRow = styled.div`
-  display: flex;
 `;
 
 export const Title = styled.span`
@@ -34,7 +38,7 @@ export const Title = styled.span`
 export const Text = styled.span`
   font-weight: 500;
   color: var(--placeholder-clr);
-  `;
+`;
 
 export const TableTitle = styled.div`
   font-size: 24px;
