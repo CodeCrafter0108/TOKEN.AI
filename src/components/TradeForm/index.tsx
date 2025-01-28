@@ -15,7 +15,11 @@ import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
 import SlippageModal from './components/SlippageModal';
 import SelectTokenModal from './components/SelectTokenModal';
 
-export const TradeForm = () => {
+interface TradeFormProps {
+  styles?: React.CSSProperties;
+}
+
+export const TradeForm = ({styles}: TradeFormProps) => {
   const { isConnected } = useAccount();
 
   // const { switchChain } = useSwitchChain();
@@ -85,11 +89,11 @@ export const TradeForm = () => {
 };
 
   return (
-    <Wrapper>
+    <Wrapper style={styles}>
       <Form onSubmit={handleSwap} autoComplete='off' autoCorrect='off'>
         <Flex $justify='space-between'>
           <FormTitle>AI token swap</FormTitle>
-          <Button variants={ButtonVariants.CLEAR} onClick={() => setIsSlipageModalOpen(true)}>
+          <Button variants={ButtonVariants.CLEAR} onClick={() => setIsSlipageModalOpen(true)} aria-label='Settings'>
             <SettingIcon />
           </Button>
         </Flex>
@@ -106,7 +110,7 @@ export const TradeForm = () => {
             onMax={() => console.log('OnMAX')}
           />
           <Separator />
-          <ChangeButton variants={ButtonVariants.CLEAR} onClick={handleToggleAmountType}>
+          <ChangeButton variants={ButtonVariants.CLEAR} onClick={handleToggleAmountType} aria-label='Change currency'>
             <ChangeIcon />
           </ChangeButton>
           <CurrencyInput

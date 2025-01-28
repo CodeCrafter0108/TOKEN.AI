@@ -11,7 +11,7 @@ export const ModalHeader = ({ title, onClose }: ModalWrapperProps) => {
   return (
     <Wrapper>
       <Title>{title}</Title>
-      <CloseButton variants={ButtonVariants.CLEAR} onClick={() => onClose()}>
+      <CloseButton variants={ButtonVariants.CLEAR} onClick={() => onClose()} aria-label='Close modal'>
         <CrossIcon />
       </CloseButton>
     </Wrapper>

@@ -30,7 +30,7 @@ const TokenSelect = ({ token, valueType, selectable = true, onSelect }: TokenSel
 
   return (
     <TokenSelectWrapper>
-      <Flex $align='center' onClick={handleSelect} style={{ height: '100%' }} $gap={4} role='button'>
+      <Flex $align='center' onClick={handleSelect} style={{ height: '100%' }} $gap={4} role='button' aria-label='Token select'>
         <Flex $align='center' $gap={8} style={{ minWidth: '95px' }}>
           {token && (
               <ImageWithFallback
