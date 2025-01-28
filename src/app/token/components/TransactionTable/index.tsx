@@ -93,7 +93,7 @@ const TransactionTable = () => {
   const { sortedData, handleSortChange, sortConfig } = useTableSort({ data: mockData });
   const { width } = useWindowSize();
   return (
-    <Box style={{ gridArea: 'transactions' }}>
+    <Box>
       <Flex $direction={'column'} $gap={20}>
         <TableTitle>Transaction</TableTitle>
         <TableWrapper role='table'>

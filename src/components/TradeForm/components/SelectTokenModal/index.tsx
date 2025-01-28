@@ -27,7 +27,7 @@ const SelectTokenModal = ({ isOpen, onClose }: SelectTokenModalProps) => {
                   shape='circle'
                   alt='Token logo'
                   fill
-                  priority
+                  loading='lazy'
                   style={{ objectFit: 'cover' }}
                   sizes='100%'
                   widthSkeleton={24}
