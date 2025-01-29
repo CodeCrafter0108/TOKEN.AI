@@ -5,7 +5,24 @@ interface AnimatedWrapperProps {
   duration?: number;
 }
 
-const AnimatedWrapper = ({ children, duration = 0.5 }: AnimatedWrapperProps) => {
+const Spring = ({ children }: AnimatedWrapperProps) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -50 }} 
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -50 }}
+      transition={{
+        type: 'spring',
+        stiffness: 120,
+        damping: 15
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+const Opacity = ({ children, duration = 0.5 }: AnimatedWrapperProps) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -22,4 +39,4 @@ const AnimatedWrapper = ({ children, duration = 0.5 }: AnimatedWrapperProps) => 
   );
 };
 
-export default AnimatedWrapper;
+export const AnimatedWrapper = { Opacity, Spring };

@@ -14,7 +14,7 @@ import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
 import { Flex } from '@/styles/global';
 import { ButtonVariants } from '@/components/Button/types';
 import { AnimatePresence } from 'framer-motion';
-import AnimatedWrapper from '@/components/AnimatedWrapper';
+import { AnimatedWrapper } from '@/components/AnimatedWrapper';
 
 interface SlippageModalProps {
   onClose: () => void;
@@ -75,7 +75,7 @@ const SlippageModal = ({ onClose, isOpen }: SlippageModalProps) => {
         <Flex $direction='column'>
           <AnimatePresence>
             {selectedType === SlippageType.CUSTOM && (
-              <AnimatedWrapper duration={0.2}>
+              <AnimatedWrapper.Opacity duration={0.2}>
                 <InputWrapper
                   label='Amount %'
                   htmlFor='amount'
@@ -95,7 +95,7 @@ const SlippageModal = ({ onClose, isOpen }: SlippageModalProps) => {
                     }}
                   />
                 </InputWrapper>
-              </AnimatedWrapper>
+              </AnimatedWrapper.Opacity>
             )}
           </AnimatePresence>
           <SubTitle>Transaction deadline</SubTitle>

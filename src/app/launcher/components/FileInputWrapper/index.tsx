@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react';
 import { SUPPORTED_FORMATS } from '../LaunchForm/schema';
 import { AnimatePresence } from 'framer-motion';
-import AnimatedWrapper from '@/components/AnimatedWrapper';
+import { AnimatedWrapper } from '@/components/AnimatedWrapper';
 import { Container, Preview, PreviewWrapper, Label, Text } from './styles';
 import { ImageFieldType, LauncherTypeData } from '../LaunchForm/types';
 import { UseFormSetValue } from 'react-hook-form';
@@ -51,7 +51,7 @@ const FileInputWrapper = ({
       {children}
       <AnimatePresence>
         {previewUrl && SUPPORTED_FORMATS.includes(file?.type ?? '') && !textMessage ? (
-          <AnimatedWrapper key='preview' duration={0.3}>
+          <AnimatedWrapper.Opacity key='preview' duration={0.3}>
             <Flex
               $gap={8}
               style={{
@@ -74,7 +74,7 @@ const FileInputWrapper = ({
                 <Button
                   variants={ButtonVariants.CLEAR}
                   onClick={() => {
-                    { /*@ts-expect-error* type field*/}
+                    {/*@ts-expect-error* type field*/}
                     setValue(field.name, undefined, { shouldValidate: true });
                   }}
                 >
@@ -85,9 +85,9 @@ const FileInputWrapper = ({
                 </Button>
               </Flex>
             </Flex>
-          </AnimatedWrapper>
+          </AnimatedWrapper.Opacity>
         ) : (
-          <AnimatedWrapper key={'upload'} duration={0.3}>
+          <AnimatedWrapper.Opacity key={'upload'} duration={0.3}>
             <Flex
               $align='center'
               $justify='center'
@@ -101,7 +101,7 @@ const FileInputWrapper = ({
               </Flex>
               {textMessage ? <Text>{textMessage}</Text> : <Text>Images (.png, jpg, jpeg less 1MB, 200x200)</Text>}
             </Flex>
-          </AnimatedWrapper>
+          </AnimatedWrapper.Opacity>
         )}
       </AnimatePresence>
     </Container>

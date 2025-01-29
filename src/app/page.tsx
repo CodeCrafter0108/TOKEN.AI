@@ -1,6 +1,6 @@
 'use client';
 import { HomeContent } from '@/components/HomeContent';
-import AnimatedWrapper from '@/components/AnimatedWrapper';
+import { AnimatedWrapper } from '@/components/AnimatedWrapper';
 import { Container, PageContainer } from '@/styles/global';
 import { Hero } from '@/components/HomeContent/components/Hero';
 
@@ -9,11 +9,11 @@ export default function Home() {
     <>
       <Hero />
       <Container>
-        <AnimatedWrapper>
+        <AnimatedWrapper.Spring>
           <PageContainer>
             <HomeContent />
           </PageContainer>
-        </AnimatedWrapper>
+        </AnimatedWrapper.Spring>
       </Container>
     </>
   );

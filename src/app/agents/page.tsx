@@ -1,22 +1,22 @@
 'use client';
 import { AgentCard } from '@/components/AgentCard';
+import { AnimatedWrapper } from '@/components/AnimatedWrapper';
 import { ButtonVariants } from '@/components/Button/types';
 import { PageTitle } from '@/components/PageTitle';
-import AnimatedWrapper from '@/components/AnimatedWrapper';
 import Search from '@/components/Search';
+import { useWindowSize } from '@/hooks/useWindowSize';
+import { NumberBreakpoints } from '@/styles/breakpoints';
 import { Container, PageContainer } from '@/styles/global';
 import ClipLoader from 'react-spinners/ClipLoader';
 import ButtonFilters from './components/ButtonFilters';
-import { cardStyles, CardsWrapper, FiltersWrapper, LoadMore } from './styles';
 import DropDownFilter from './components/DropDownFilter';
-import { useWindowSize } from '@/hooks/useWindowSize';
-import { NumberBreakpoints } from '@/styles/breakpoints';
+import { cardStyles, CardsWrapper, FiltersWrapper, LoadMore } from './styles';
 
 export default function TopAgents() {
   const { width } = useWindowSize();
   return (
     <Container>
-      <AnimatedWrapper>
+      <AnimatedWrapper.Spring>
         <PageContainer>
           <PageTitle
             title='Agents'
@@ -39,7 +39,7 @@ export default function TopAgents() {
             <ClipLoader color={'var(--accent-clr)'} size={14} speedMultiplier={0.7} />
           </LoadMore>
         </PageContainer>
-      </AnimatedWrapper>
+      </AnimatedWrapper.Spring>
     </Container>
   );
 }

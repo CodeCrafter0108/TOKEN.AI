@@ -8,39 +8,39 @@ const messages = {
 };
 
 export const SUPPORTED_FORMATS = ['image/jpeg', 'image/png'];
-const MAX_FILE_SIZE = 200 * 1024; //TODO change
+const MAX_FILE_SIZE = 1024* 1024;
 
-// const validateImageDimensions = (file: File): Promise<boolean> => {
-//   return new Promise((resolve) => {
-//     const reader = new FileReader();
-//     const image = new Image();
+const validateImageDimensions = (file: File): Promise<boolean> => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    const image = new Image();
 
-//     reader.onload = (e) => {
-//       image.src = e.target?.result as string;
+    reader.onload = (e) => {
+      image.src = e.target?.result as string;
 
-//       image.onload = () => {
-//         const isValid = image.width === 200 && image.height === 200;
-//         resolve(isValid);
-//       };
+      image.onload = () => {
+        const isValid = image.width === 200 && image.height === 200;
+        resolve(isValid);
+      };
 
-//       image.onerror = () => resolve(false);
-//     };
+      image.onerror = () => resolve(false);
+    };
 
-//     reader.onerror = () => resolve(false);
+    reader.onerror = () => resolve(false);
 
-//     reader.readAsDataURL(file);
-//   });
-// };
+    reader.readAsDataURL(file);
+  });
+};
 
 export const schema = yup
   .object({
-    name: yup.string().required(messages.required).min(3, `${messages.min} 3`).max(24, `${messages.max} 24`),
-    symbol: yup.string().required(messages.required).min(3, `${messages.min} 3`).max(24, `${messages.max} 24`),
+    name: yup.string().required(messages.required).min(3, `${messages.min} 3`).max(15, `${messages.max} 15`),
+    symbol: yup.string().required(messages.required).min(3, `${messages.min} 3`).max(15, `${messages.max} 15`),
     supply: yup.string().required(messages.required),
-    websiteUrl: yup.string().required(messages.required).url(messages.url),
-    socialUrl: yup.string().required(messages.required).url(messages.url),
-    chatUrl: yup.string().url(messages.url),
-    description: yup.string().required(messages.required).min(3, `${messages.min} 3`).max(128, `${messages.max} 128`),
+    websiteUrl: yup.string().required(messages.required).url(messages.url).max(150, `${messages.max} 150`),
+    socialUrl: yup.string().required(messages.required).url(messages.url).max(150, `${messages.max} 150`),
+    chatUrl: yup.string().url(messages.url).max(150, `${messages.max} 150`),
+    description: yup.string().required(messages.required).min(3, `${messages.min} 3`).max(150, `${messages.max} 150`),
     imageUrl: yup
       .mixed<FileList>()
       .required('Image is required')
@@ -52,9 +52,9 @@ export const schema = yup
       .test('fileType', 'Supported types: .jpeg .jpg .png', (value) => {
         return value && SUPPORTED_FORMATS.includes(value?.[0]?.type);
       })
-      // .test('dimensions', 'Image must be 200x200 pixels', async (value) => {
-      //   if (!value || !value[0]) return false;
-      //   return await validateImageDimensions(value[0]);
-      // }),
+      .test('dimensions', 'Image must be 200x200 pixels', async (value) => {
+        if (!value || !value[0]) return false;
+        return await validateImageDimensions(value[0]);
+      }),
   })
   .required();

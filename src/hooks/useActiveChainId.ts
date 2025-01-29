@@ -1,6 +1,6 @@
 import { useAccount } from 'wagmi';
-import { SUPPORTED_CHAINS } from '@/constants/blockchin';
-import { SupportedChainId } from '@/constants/blockchin';
+import { SUPPORTED_CHAINS } from '@/constants/blockchain/networks';
+import { SupportedChainId } from '@/constants/blockchain/networks';
 import { useQuery } from '@tanstack/react-query';
 
 export const useActiveChainId = () => {

@@ -1,7 +1,7 @@
 'use client';
 import { PageTitle } from '@/components/PageTitle';
 import { Container, Flex, PageContainer } from '@/styles/global';
-import AnimatedWrapper from '@/components/AnimatedWrapper';
+import { AnimatedWrapper } from '@/components/AnimatedWrapper';
 import { Messages } from './components/Messages';
 import { AgentsList } from '@/components/AgentsList';
 import Search from '@/components/Search';
@@ -9,7 +9,7 @@ import Search from '@/components/Search';
 export default function MyAgents() {
   return (
     <Container>
-      <AnimatedWrapper>
+      <AnimatedWrapper.Spring>
         <PageContainer>
           <PageTitle
             title='My Agents'
@@ -17,13 +17,13 @@ export default function MyAgents() {
             badgeDescription='powered by'
           />
           <Flex $direction='column' $gap={24}>
-            <Search styles={{ maxWidth: '768px' }}/>
+            <Search styles={{ maxWidth: '768px' }} />
             <AgentsList />
           </Flex>
 
           <Messages />
         </PageContainer>
-      </AnimatedWrapper>
+      </AnimatedWrapper.Spring>
     </Container>
   );
 }
