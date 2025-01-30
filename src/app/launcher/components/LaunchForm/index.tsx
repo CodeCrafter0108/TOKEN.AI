@@ -26,7 +26,7 @@ export const LaunchForm = () => {
   const { isConnected, chainId } = useAccount();
   const { switchChain } = useSwitchChain();
   const {
-    writeContractAsync,
+    writeContract,
     isLoading: isLoadingCreate,
     isSuccess: isSuccessCreate,
     reset: resetWriteState,
@@ -40,7 +40,7 @@ export const LaunchForm = () => {
     control,
     reset: resetForm,
     clearErrors,
-    formState: { errors: formErrors }
+    formState: { errors: formErrors, isValid }
   } = useForm<LauncherTypeData>({
     resolver: yupResolver(schema),
     mode: 'onChange',
@@ -106,7 +106,7 @@ export const LaunchForm = () => {
       'https://raw.githubusercontent.com/YieldEnhancementLabs/token-logos/main/81457/0x4300000000000000000000000000000000000004/token-logo.png'; //Mockdata
 
     if (recivedImgUrl) {
-      await writeContractAsync({
+      writeContract({
         abi: launcherAbi,
         address: launcherContract,
         functionName: 'pro_listing',
@@ -284,7 +284,7 @@ export const LaunchForm = () => {
         </Button>
       )}
       {isConnected && DEFAULT_CHAIN_ID === chainId && (
-        <Button type='submit' variants={ButtonVariants.SOLID}>
+        <Button type='submit' variants={ButtonVariants.SOLID} disabled={isLoading || !isValid}>
           {isLoading ? (
             <Flex $gap={8} $align='center' $justify='center'>
               <ClipLoader color={'var(--accent-clr)'} size={16} speedMultiplier={0.7} />
