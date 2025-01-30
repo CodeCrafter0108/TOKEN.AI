@@ -2,7 +2,7 @@ import { Flex } from '@/styles/global';
 import SortSelector from '@/components/SortSelector';
 import { SortType } from '@/components/SortSelector/types';
 import { NumberBreakpoints } from '@/styles/breakpoints';
-import { TableHead, TableItem, TableWrapper, Text, Title, TableTitle } from './styles';
+import { TableHead, TableItem, TableWrapper, Text, Title, TableTitle, TableBody } from './styles';
 import { Box } from '@/styles/global';
 import { useTableSort } from '@/hooks/useTableSort';
 import { useWindowSize } from '@/hooks/useWindowSize';
@@ -37,6 +37,55 @@ const mockData = [
     usd: 1214.01,
     price: 0.23,
     txn: '0xd2533d7C809734d69C63DE4f4a5052a0FfC63E72'
+  },
+  {
+    date: '40s ago',
+    type: 'Buy',
+    usd: 254.01,
+    price: 0.01,
+    txn: '0xd2533d7C809734d69C63DE4f4a5052a0FfC63E72'
+  },
+  {
+    date: '40s ago',
+    type: 'Sell',
+    usd: 1004.01,
+    price: 0.03,
+    txn: '0xd2533d7C809734d69C63DE4f4a5052a0FfC63E72'
+  },
+  {
+    date: '40s ago',
+    type: 'Buy',
+    usd: 1294.01,
+    price: 1,
+    txn: '0xd2533d7C809734d69C63DE4f4a5052a0FfC63E72'
+  },
+  {
+    date: '40s ago',
+    type: 'Sell',
+    usd: 1214.01,
+    price: 0.23,
+    txn: '0xd2533d7C809734d69C63DE4f4a5052a0FfC63E72'
+  },
+  {
+    date: '40s ago',
+    type: 'Buy',
+    usd: 254.01,
+    price: 0.01,
+    txn: '0xd2533d7C809734d69C63DE4f4a5052a0FfC63E72'
+  },
+  {
+    date: '40s ago',
+    type: 'Sell',
+    usd: 1004.01,
+    price: 0.03,
+    txn: '0xd2533d7C809734d69C63DE4f4a5052a0FfC63E72'
+  },
+  {
+    date: '40s ago',
+    type: 'Sell',
+    usd: 1004.01,
+    price: 0.03,
+    txn: '0xd2533d7C809734d69C63DE4f4a5052a0FfC63E72'
   }
 ];
 
@@ -44,19 +93,14 @@ const TransactionTable = () => {
   const { sortedData, handleSortChange, sortConfig } = useTableSort({ data: mockData });
   const { width } = useWindowSize();
   return (
-    <Box style={{ gridArea: 'transactions' }}>
+    <Box>
       <Flex $direction={'column'} $gap={20}>
         <TableTitle>Transaction</TableTitle>
         <TableWrapper role='table'>
           {width > NumberBreakpoints.md && (
             <div role='rowgroup'>
               <TableHead role='row'>
-                <SortSelector
-                  text='Date'
-                  value={SortType.NONE}
-                  id='date-header'
-                  disabled
-                />
+                <SortSelector text='Date' value={SortType.NONE} id='date-header' disabled />
                 <SortSelector
                   text='Type'
                   value={sortConfig.key === 'type' ? sortConfig.direction : SortType.NONE}
@@ -85,7 +129,7 @@ const TransactionTable = () => {
             </div>
           )}
 
-          <div style={{ display: 'grid', position: 'relative' }} role='rowgroup'>
+          <TableBody role='rowgroup'>
             {sortedData.map((transaction, index) => (
               <TableItem key={index} role='row'>
                 <Flex $align='center' $justify='space-between' role='cell' aria-labelledby='date-header'>
@@ -117,7 +161,7 @@ const TransactionTable = () => {
                 </Flex>
               </TableItem>
             ))}
-          </div>
+          </TableBody>
         </TableWrapper>
       </Flex>
     </Box>

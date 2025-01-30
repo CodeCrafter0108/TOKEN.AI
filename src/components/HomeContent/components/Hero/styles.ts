@@ -11,7 +11,7 @@ export const HeroContainer = styled(Container)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 0 60px 0;
+  padding: 20px 0 20px 0;
   gap: 24px;
 
   @media screen and (min-width: ${Breakpoints.md}) {
@@ -30,11 +30,6 @@ justify-content: center;
 export const Video = styled.video`
   width: 100%;
   max-width: 750px;
- 
-  /* @media screen and (min-width: ${Breakpoints.lg}) {
-    width: 508px;
-    height: 260px;
-  } */
 `;
 
 export const InfoWrapper = styled.div`

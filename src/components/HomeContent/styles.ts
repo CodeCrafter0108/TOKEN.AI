@@ -14,7 +14,6 @@ export const Wrapper = styled.div`
 
   @media screen and (min-width: ${Breakpoints.lg}) {
     flex-direction: row;
-    gap: 40px;
   }
 `;
 

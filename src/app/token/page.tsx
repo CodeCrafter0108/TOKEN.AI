@@ -1,6 +1,6 @@
 'use client';
 import { PageContainer, Container } from '@/styles/global';
-import AnimatedWrapper from '@/components/AnimatedWrapper';
+import { AnimatedWrapper } from '@/components/AnimatedWrapper';
 import { AgentCard } from '@/components/AgentCard';
 import Arrow from '@/assets/icons/right-arrow.svg';
 import { ButtonVariants } from '@/components/Button/types';
@@ -15,25 +15,25 @@ export default function Token() {
   const router = useRouter();
   return (
     <Container>
-      <AnimatedWrapper>
+      <AnimatedWrapper.Spring>
         <PageContainer>
           <BackButton onClick={() => router.back()} variants={ButtonVariants.CLEAR}>
             <Arrow />
             <span>Back to the list</span>
           </BackButton>
           <Content>
-          <LeftContent>
-            <AgentCard hasMetrics />
-            <Chart />
-            <TransactionTable />
-          </LeftContent>
-          <RightContent>
-            <TradeForm styles={{ maxWidth: 'inherit' }} />
-            <TokenInfo />
-          </RightContent>
+            <LeftContent>
+              <AgentCard hasMetrics />
+              <Chart />
+              <TransactionTable />
+            </LeftContent>
+            <RightContent>
+              <TradeForm styles={{ maxWidth: 'inherit' }} />
+              <TokenInfo />
+            </RightContent>
           </Content>
         </PageContainer>
-      </AnimatedWrapper>
+      </AnimatedWrapper.Spring>
     </Container>
   );
 }

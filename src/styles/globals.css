@@ -15,16 +15,15 @@
 
   --white-clr: #ffffff;
   --error-clr: #c0211b;
-  --required-clr: #A10500;
-  --placeholder-clr: #898C90;
-  
+  --required-clr: #a10500;
+  --placeholder-clr: #898c90;
+
   --footer-bg-clr: #e7e6f4;
   --header-bg-clr: #e9eff7;
-  --field-bg-clr: #ECF2F9;
-  --hero-bg-clr: #E7EEF7;
+  --field-bg-clr: #ecf2f9;
+  --hero-bg-clr: #e7eef7;
 
   --modal-hover-clr: #e4ebff;
-
 
   --box-bg-clr: #f6faff;
   --badge-bg-clr: #4467ff;
@@ -87,7 +86,7 @@ svg {
 
 .swiper-button-next,
 .swiper-button-prev {
-  color: var(--accent-clr);  
+  color: var(--accent-clr);
 }
 
 .swiper-button-next {
@@ -96,4 +95,29 @@ svg {
 
 .swiper-button-prev {
   left: 0;
+}
+
+.Toastify__toast {
+  border-radius: 8px;
+  background: var(--box-bg-clr);
+  color: var(--primary-clr);
+  box-shadow: var(--box-shadow);
+  font-family: var(--font-montserrat);
+}
+
+.Toastify__close-button {
+  color: var(--accent-clr);
+  opacity: 1;
+ 
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+  padding: 4px;
+
+  :hover {
+    background-color: var(--modal-hover-clr);
+  }
+
+  :active {
+    background-color: var(--primary-clr);
+  }
 }

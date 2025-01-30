@@ -21,7 +21,7 @@ export const AgentCard = ({ styles, hasMetrics = false }: AgentCardProps) => {
           fill
           alt='Agent logo'
           src={'/temp/agent.png'}
-          priority
+          loading='lazy'
           style={{ objectFit: 'cover', borderRadius: '4px' }}
           sizes='100%'
           widthSkeleton={100}
@@ -34,7 +34,7 @@ export const AgentCard = ({ styles, hasMetrics = false }: AgentCardProps) => {
               fill
               alt='Token logo'
               src={'/temp/token.png'}
-              priority
+              loading='lazy'
               style={{ objectFit: 'cover' }}
               sizes='100%'
               widthSkeleton={16}

@@ -5,7 +5,7 @@ export const TokenList = styled.ul`
   flex-direction: column;
   gap: 12px;
   max-height: 350px;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 export const TokenListItem = styled.li`

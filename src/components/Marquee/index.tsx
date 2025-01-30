@@ -13,7 +13,7 @@ export const MarqueeAnimation = ({ direction = 'right' }: MarqueeWrapperProps) =
         speed={50}
         direction={direction}
       >
-        {Array(100).fill(0).map((__, index) => (
+        {Array(60).fill(0).map((__, index) => (
           <DeFAI key={index} />
         ))}
       </Marquee>

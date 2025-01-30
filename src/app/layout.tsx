@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import 'react-toastify/dist/ReactToastify.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import '@/styles/globals.css';
@@ -12,6 +13,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { BackGround } from '@/components/BackGround';
 import Script from 'next/script';
+import { Toast } from '@/components/Toast';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -36,6 +38,7 @@ export default async function RootLayout({
               <BackGround>{children}</BackGround>
             </main>
             <Footer />
+            <Toast/>
           </Web3ModalProvider>
         </StyledComponentsProvider>
       </body>

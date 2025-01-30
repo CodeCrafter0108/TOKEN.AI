@@ -1,8 +1,7 @@
 import { memo, ReactNode } from 'react';
 import { Container, Error, InputContainer, Label, Check } from './styles';
 import { AnimatePresence } from 'framer-motion';
-
-import AnimatedWrapper from '@/components/AnimatedWrapper';
+import { AnimatedWrapper } from '@/components/AnimatedWrapper';
 
 interface InputWrapperProps {
   children: ReactNode;
@@ -36,17 +35,17 @@ const InpupWrapper = ({
         {children}
         <AnimatePresence>
           {!textError && value && hasCheckIcon && (
-            <AnimatedWrapper>
+            <AnimatedWrapper.Opacity>
               <Check />
-            </AnimatedWrapper>
+            </AnimatedWrapper.Opacity>
           )}
         </AnimatePresence>
       </InputContainer>
       <AnimatePresence>
         {textError && (
-          <AnimatedWrapper>
+          <AnimatedWrapper.Opacity>
             <Error>{textError}</Error>
-          </AnimatedWrapper>
+          </AnimatedWrapper.Opacity>
         )}
       </AnimatePresence>
     </Container>

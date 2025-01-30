@@ -38,7 +38,7 @@ const TokenSelect = ({ token, valueType, selectable = true, onSelect }: TokenSel
                 shape='circle'
                 alt='Token logo'
                 fill
-                priority
+                loading='lazy'
                 style={{ objectFit: 'cover' }}
                 sizes='100%'
                 widthSkeleton={24}
