@@ -7,14 +7,14 @@ import { TradeForm } from '../../components/TradeForm';
 export default function Trade() {
   return (
     <Container>
-      <PageContainer>
-        <AnimatedWrapper.Spring>
+      <AnimatedWrapper.Spring>
+        <PageContainer>
           <PageTitle title='Trade' subTitle='Easily trade your tokens' />
           <Flex $align='center' $direction='column' $justify='center' style={{ flex: 1 }}>
             <TradeForm />
           </Flex>
-        </AnimatedWrapper.Spring>
-      </PageContainer>
+        </PageContainer>
+      </AnimatedWrapper.Spring>
     </Container>
   );
 }
