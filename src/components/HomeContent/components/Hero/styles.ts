@@ -38,10 +38,12 @@ export const InfoWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 24px;
+  padding: 0 12px;
 
   @media screen and (min-width: ${Breakpoints.md}) {
     flex: 1.5;
     align-items: flex-start;
+    padding: 0;
   }
 
   @media screen and (min-width: 920px) {
