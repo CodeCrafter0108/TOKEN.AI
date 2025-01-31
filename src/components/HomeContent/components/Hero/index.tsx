@@ -21,10 +21,10 @@ export const Hero = () => {
     <HeroWrapper>
       <HeroContainer>
         <VideoWrapper>
-        <Video autoPlay muted loop aria-hidden='true'>
-          <source src={'/videos/hero.webm'} type='video/webm' />
-          <source src={'/videos/hero.mp4'} type='video/mp4' />
-        </Video>
+          <Video autoPlay muted loop playsInline disablePictureInPicture aria-hidden='true'>
+            <source src={'/videos/hero.webm'} type='video/webm' />
+            <source src={'/videos/hero.mp4'} type='video/mp4' />
+          </Video>
         </VideoWrapper>
         <InfoWrapper>
           <Title>
