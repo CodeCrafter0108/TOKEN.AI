@@ -8,7 +8,7 @@ const messages = {
 };
 
 export const SUPPORTED_FORMATS = ['image/jpeg', 'image/png'];
-const MAX_FILE_SIZE = 1024* 1024;
+const MAX_FILE_SIZE = 250 * 1024;
 
 const validateImageDimensions = (file: File): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -45,7 +45,7 @@ export const schema = yup
       .mixed<FileList>()
       .required('Image is required')
       .test('required', 'Image is required', (value) => !!value?.[0])
-      .test('fileSize', 'File size must be less 1MB', (value) => {
+      .test('fileSize', 'File size must be less 250KB', (value) => {
         return value && value?.[0]?.size <= MAX_FILE_SIZE;
       })
 

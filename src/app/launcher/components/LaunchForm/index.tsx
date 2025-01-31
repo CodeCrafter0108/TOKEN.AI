@@ -10,7 +10,7 @@ import { useWrite } from '@/hooks/useWrite';
 import { Flex } from '@/styles/global';
 import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useAccount, useSwitchChain } from 'wagmi';
@@ -21,16 +21,23 @@ import { FieldPairContainer, Form, GeneralInfo, SectionTitle } from './styles';
 import { FieldsFocused, ImageFieldType, LauncherTypeData } from './types';
 import { toast } from 'react-toastify';
 import { handleError } from '@/utils/handleError';
+import { useMutation } from '@tanstack/react-query';
+import { preSaveImage, saveImage } from '@/api/servises';
+import { generateRandomBytes } from '@/utils/generateRandomBytes';
+import {  Hex } from 'viem';
+
+// const MIN_NATIVE_BALANCE = 1;
 
 export const LaunchForm = () => {
-  const { isConnected, chainId } = useAccount();
+  const { isConnected, chainId, address } = useAccount();
   const { switchChain } = useSwitchChain();
+  // const { data: userBalance, refetch: refetchBalance } = useBalance({ address, chainId, query: { enabled: false } });
   const {
     writeContract,
-    isLoading: isLoadingCreate,
-    isSuccess: isSuccessCreate,
+    isLoading: isLoadingWrite,
+    isSuccess: isSuccessWrite,
     reset: resetWriteState,
-    error: errorCreate
+    error: errorWrite
   } = useWrite();
   const {
     register,
@@ -40,7 +47,7 @@ export const LaunchForm = () => {
     control,
     reset: resetForm,
     clearErrors,
-    formState: { errors: formErrors, isValid }
+    formState: { errors: formErrors, isValid, isSubmitting }
   } = useForm<LauncherTypeData>({
     resolver: yupResolver(schema),
     mode: 'onChange',
@@ -55,6 +62,8 @@ export const LaunchForm = () => {
       imageUrl: undefined
     }
   });
+
+  const randomBytes = useRef<Hex | null>(null);
 
   const nameValue: string = watch('name');
   const symbolValue: string = watch('symbol');
@@ -98,12 +107,53 @@ export const LaunchForm = () => {
     [setValue, clearErrors]
   );
 
+  const { mutateAsync: preSaveImageAsync, isPending: isPendingPreSave } = useMutation({
+    mutationFn: preSaveImage
+  });
+
+  const { mutate: saveImg, isPending: isPendingSave } = useMutation({
+    mutationFn: saveImage,
+    onSuccess: () => {
+      resetForm();
+      toast.success('Agent created successfully');
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error('Error creating agent');
+    }
+  });
+
   const onSubmit = async (data: LauncherTypeData): Promise<void> => {
     console.log(data);
+    if (!address || !chainId) return;
+    
+    // const balance = await refetchBalance();
+    // if (Number(balance?.data?.formatted ?? 0) < MIN_NATIVE_BALANCE) {
+    //   toast.error(`Balance too low, min balance is ${MIN_NATIVE_BALANCE}${balance?.data?.symbol}`);
+    //   return;
+    // }
+
+    randomBytes.current = generateRandomBytes(address);
+
     const { name, symbol, supply, websiteUrl, socialUrl, chatUrl, description } = data;
 
-    const recivedImgUrl: string =
-      'https://raw.githubusercontent.com/YieldEnhancementLabs/token-logos/main/81457/0x4300000000000000000000000000000000000004/token-logo.png'; //Mockdata
+    const formData = new FormData();
+    formData.append('file', data.imageUrl[0] as Blob);
+
+    let recivedImgUrl = '';
+    try {
+      const { data } = await preSaveImageAsync({
+        chainId,
+        userAddress: address,
+        randomBytes: randomBytes.current,
+        formData
+      });
+
+      if (data?.url) recivedImgUrl = data?.url;
+    } catch (error) {
+      console.error(error);
+      toast.error('Error creating agent');
+    }
 
     if (recivedImgUrl) {
       writeContract({
@@ -117,17 +167,17 @@ export const LaunchForm = () => {
   };
 
   useEffect(() => {
-    if (isSuccessCreate) {
-      resetForm();
+    if (isSuccessWrite && randomBytes.current) {
+      saveImg(randomBytes.current);
       resetWriteState();
-      toast.success('Agent created successfully');
     }
-    if (errorCreate) {
-      toast.error(handleError(errorCreate.message));
+    if (errorWrite) {
+      randomBytes.current = null;
+      toast.error(handleError(errorWrite.message));
     }
-  }, [isSuccessCreate, resetForm, resetWriteState, errorCreate]);
+  }, [isSuccessWrite, resetWriteState, errorWrite, saveImg]);
 
-  const isLoading = isLoadingCreate;
+  const isLoading = isLoadingWrite || isPendingPreSave || isPendingSave || isSubmitting;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} autoComplete='off' autoCorrect='off'>
