@@ -1,1 +1,1 @@
-export const launcherContract = '0x4A463c4a8d337946cCc8f8B015Ac69e86C54e91C';
+export const launcherContract = '0x44DB18FF9472B86d990D7BFcb71518cB55c52826';
