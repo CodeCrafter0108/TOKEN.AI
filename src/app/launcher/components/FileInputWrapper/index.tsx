@@ -99,7 +99,7 @@ const FileInputWrapper = ({
               <Flex $gap={8} $justify='center'>
                 <span>Drag file here or</span> <Label htmlFor={htmlFor}>browser</Label>
               </Flex>
-              {textMessage ? <Text>{textMessage}</Text> : <Text>Images (.png, jpg, jpeg less 1MB, 200x200)</Text>}
+              {textMessage ? <Text>{textMessage}</Text> : <Text>Images (.png, jpg, jpeg less 1MB)</Text>}
             </Flex>
           </AnimatedWrapper.Opacity>
         )}
