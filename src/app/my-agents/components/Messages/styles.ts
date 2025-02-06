@@ -1,9 +1,9 @@
-import NoDataIcon from '@/assets/icons/no-data.svg';
 import ConnectWalletIcon from '@/assets/icons/connect-wallet.svg';
+import EmptyStateIcon from '@/assets/icons/no-data.svg';
 import { Breakpoints } from '@/styles/breakpoints';
 import styled from 'styled-components';
 
-export const StyledNoDataIcon = styled(NoDataIcon)`
+export const StyledEmptyStateIcon = styled(EmptyStateIcon)`
   max-width: 304px;
   max-height: 200px;
   width: 100%;

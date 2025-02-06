@@ -1,19 +1,90 @@
 'use client';
-import { AgentCard } from '@/components/AgentCard';
-import { AnimatedWrapper } from '@/components/AnimatedWrapper';
-import { ButtonVariants } from '@/components/Button/types';
-import { PageTitle } from '@/components/PageTitle';
-import Search from '@/components/Search';
+import { AgentCard } from '@/components/features/AgentCard';
+import { PageTitle } from '@/components/features/PageTitle';
+import Search from '@/components/features/Search';
+import { AnimatedWrapper } from '@/components/shared/AnimatedWrapper';
+import { getGraphClient } from '@/config/graph/config';
+import { ChainId } from '@/constants/blockchain/networks';
+import { GetAgents } from '@/graphql/queries/GetAgents';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { NumberBreakpoints } from '@/styles/breakpoints';
 import { Container, PageContainer } from '@/styles/global';
-import ClipLoader from 'react-spinners/ClipLoader';
+import { IToken, ITokenData } from '@/types/common';
+import { RefetchInterval } from '@/types/enum';
+import { useLazyQuery } from '@apollo/client';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import ButtonFilters from './components/ButtonFilters';
+import { FilterOption } from './components/ButtonFilters/types';
 import DropDownFilter from './components/DropDownFilter';
-import { cardStyles, CardsWrapper, FiltersWrapper, LoadMore } from './styles';
+import { cardStyles, CardsWrapper, FiltersWrapper } from './styles';
+import { NoResults } from '@/components/features/NoResults';
 
 export default function TopAgents() {
   const { width } = useWindowSize();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const setSearchParam = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set(key, value);
+    router.push(`?${params.toString()}`);
+  };
+
+  const handleClear = () => {
+    setSearchValue('');
+    setSearchParam('filter', 'all');
+  };
+
+  const filterFromUrl = useMemo(() => searchParams.get('filter') as FilterOption, [searchParams]);
+  console.log('🚀 ~ TopAgents ~ filterFromUrl:', filterFromUrl);
+
+  const [searchValue, setSearchValue] = useState<string>('');
+  const debouncedSearchValue = useDebounce(searchValue, 300);
+
+  const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
+
+  const [fetchAgents, { data: agents, error: agentsError, loading: agentsLoading }] = useLazyQuery<ITokenData>(
+    GetAgents,
+    {
+      client,
+      pollInterval: RefetchInterval.FAST
+    }
+  );
+
+  if (agentsError) {
+    console.error('Error fetching top agents:', agentsError);
+  }
+
+  useEffect(() => {
+    if (filterFromUrl) {
+      if (filterFromUrl === 'all') {
+        fetchAgents();
+      }
+      if (filterFromUrl === 'marketcap') {
+        fetchAgents({ variables: { orderBy: 'marketCap', orderDirection: 'desc', first: 100 } });
+      }
+      if (filterFromUrl === 'latest') {
+        fetchAgents({ variables: { orderBy: 'blockTimestamp', orderDirection: 'desc', first: 100 } });
+      }
+      if (filterFromUrl === 'top') {
+        fetchAgents({ variables: { orderBy: 'marketCap', orderDirection: 'desc', first: 100 } });
+      }
+    }
+  }, [filterFromUrl, fetchAgents]);
+
+  const filteredAgents: IToken[] = useMemo(() => {
+    if (!agents?.tokens) return [];
+
+    return agents?.tokens?.filter(
+      (agent) =>
+        agent?.name.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
+        agent?.symbol.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
+        agent?.address.toLowerCase().includes(debouncedSearchValue.toLowerCase())
+    );
+  }, [agents?.tokens, debouncedSearchValue]);
+
   return (
     <Container>
       <AnimatedWrapper.Spring>
@@ -24,20 +95,24 @@ export default function TopAgents() {
             badgeDescription='powered by'
           />
           <FiltersWrapper>
-            <Search />
+            <Search searchValue={searchValue} setSearchValue={setSearchValue} />
             {width >= NumberBreakpoints.md ? <ButtonFilters /> : <DropDownFilter />}
           </FiltersWrapper>
-          <CardsWrapper>
-            {Array(12)
-              .fill(0)
-              .map((_, index) => (
-                <AgentCard key={index} styles={cardStyles} />
+          <AnimatedWrapper.Opacity duration={0.2} condition={!!filteredAgents.length}>
+            <CardsWrapper>
+              {filteredAgents.map((agent: IToken) => (
+                <AgentCard key={agent.id} agent={agent} styles={cardStyles} />
               ))}
-          </CardsWrapper>
-          <LoadMore variants={ButtonVariants.CLEAR}>
+            </CardsWrapper>
+          </AnimatedWrapper.Opacity>
+
+          <AnimatedWrapper.Opacity duration={0.2} condition={!filteredAgents.length && !agentsLoading}>
+            <NoResults handleClear={handleClear} />
+          </AnimatedWrapper.Opacity>
+          {/* <LoadMore variants={ButtonVariants.CLEAR}>
             <span>Load more agents</span>
             <ClipLoader color={'var(--accent-clr)'} size={14} speedMultiplier={0.7} />
-          </LoadMore>
+          </LoadMore> */}
         </PageContainer>
       </AnimatedWrapper.Spring>
     </Container>

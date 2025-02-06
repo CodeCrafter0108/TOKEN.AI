@@ -1,15 +1,16 @@
-import { memo, useMemo } from 'react';
-import { SUPPORTED_FORMATS } from '../LaunchForm/schema';
-import { AnimatePresence } from 'framer-motion';
-import { AnimatedWrapper } from '@/components/AnimatedWrapper';
-import { Container, Preview, PreviewWrapper, Label, Text } from './styles';
-import { ImageFieldType, LauncherTypeData } from '../LaunchForm/types';
-import { UseFormSetValue } from 'react-hook-form';
-import UploadIcon from '@/assets/icons/upload.svg';
 import DeleteIcon from '@/assets/icons/delete.svg';
+import UploadIcon from '@/assets/icons/upload.svg';
+import { AnimatedWrapper } from '@/components/shared/AnimatedWrapper';
+import Button from '@/components/shared/Button';
+import { ButtonVariants } from '@/components/shared/Button/types';
 import { Flex } from '@/styles/global';
-import Button from '@/components/Button';
-import { ButtonVariants } from '@/components/Button/types';
+import { formatFileSize } from '@/utils/formatters';
+import { AnimatePresence } from 'framer-motion';
+import { memo, useMemo } from 'react';
+import { UseFormSetValue } from 'react-hook-form';
+import { SUPPORTED_FORMATS } from '../LaunchForm/schema';
+import { ImageFieldType, LauncherTypeData } from '../LaunchForm/types';
+import { Container, Label, Preview, PreviewWrapper, Text } from './styles';
 
 interface FileInputWrapperProps {
   children: React.ReactNode;
@@ -68,7 +69,7 @@ const FileInputWrapper = ({
               <Flex $align='center' $justify='space-between'>
                 <Flex $gap={4} $direction='column'>
                   <Text>{file?.name}</Text>
-                  <Text>{file?.size ? `${(file?.size / 1024).toFixed(2)} KB` : '0'}</Text>
+                  <Text>{file?.size ? `${formatFileSize(file?.size)}` : '0'}</Text>
                 </Flex>
 
                 <Button
@@ -99,7 +100,7 @@ const FileInputWrapper = ({
               <Flex $gap={8} $justify='center'>
                 <span>Drag file here or</span> <Label htmlFor={htmlFor}>browser</Label>
               </Flex>
-              {textMessage ? <Text>{textMessage}</Text> : <Text>Images (.png, jpg, jpeg less 1MB)</Text>}
+              {textMessage ? <Text>{textMessage}</Text> : <Text>Images (.png, jpg, jpeg less 250KB)</Text>}
             </Flex>
           </AnimatedWrapper.Opacity>
         )}

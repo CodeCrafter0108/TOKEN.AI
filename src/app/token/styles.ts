@@ -1,4 +1,4 @@
-import Button from '@/components/Button';
+import Button from '@/components/shared/Button';
 import { Breakpoints } from '@/styles/breakpoints';
 import styled from 'styled-components';
 

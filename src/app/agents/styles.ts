@@ -1,6 +1,6 @@
+import Button from '@/components/shared/Button';
 import { Breakpoints } from '@/styles/breakpoints';
 import styled, { css } from 'styled-components';
-import Button from '@/components/Button';
 
 export const cardStyles = css`
   margin: 0 !important;

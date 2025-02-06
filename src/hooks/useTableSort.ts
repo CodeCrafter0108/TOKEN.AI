@@ -1,4 +1,4 @@
-import { SortType } from "@/components/SortSelector/types";
+import { SortType } from "@/components/shared/SortSelector/types";
 import { useCallback, useMemo, useState } from 'react';
 
 interface UseTableArgs<T> {
