@@ -1,8 +1,8 @@
 'use client';
-import { PageTitle } from '@/components/PageTitle';
-import { AnimatedWrapper } from '@/components/AnimatedWrapper';
+import { PageTitle } from '@/components/features/PageTitle';
+import { AnimatedWrapper } from '@/components/shared/AnimatedWrapper';
 import { Container, Flex, PageContainer } from '@/styles/global';
-import { TradeForm } from '../../components/TradeForm';
+import { TradeForm } from '../../components/features/TradeForm';
 
 export default function Trade() {
   return (

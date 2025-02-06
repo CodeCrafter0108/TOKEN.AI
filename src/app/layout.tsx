@@ -1,19 +1,19 @@
+import { BackGround } from '@/components/shared/BackGround';
+import { Footer } from '@/components/features/Footer';
+import { Header } from '@/components/features/Header';
+import { Toast } from '@/components/shared/Toast';
+import StyledComponentsProvider from '@/config/providers/StyledComponentsProvider/provider';
+import { config } from '@/config/providers/WagmiProvider/config';
+import Web3ModalProvider from '@/config/providers/WagmiProvider/provider';
+import { montserrat } from '@/styles/fonts';
+import '@/styles/globals.css';
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
+import Script from 'next/script';
 import 'react-toastify/dist/ReactToastify.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import '@/styles/globals.css';
-import { headers } from 'next/headers';
 import { cookieToInitialState } from 'wagmi';
-import { montserrat } from '@/styles/fonts';
-import { config } from '@/providers/WagmiProvider/config';
-import Web3ModalProvider from '@/providers/WagmiProvider/provider';
-import StyledComponentsProvider from '@/providers/StyledComponentsProvider/provider';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { BackGround } from '@/components/BackGround';
-import Script from 'next/script';
-import { Toast } from '@/components/Toast';
 
 export const metadata: Metadata = {
   title: 'Create Next App',

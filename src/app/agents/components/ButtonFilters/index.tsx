@@ -1,10 +1,10 @@
-import Button from '@/components/Button';
-import { ButtonVariants } from '@/components/Button/types';
-import { memo, JSX, useState, useEffect } from 'react';
-import { FilterOption } from './types';
-import { useRouter, useSearchParams } from 'next/navigation';
+import Button from '@/components/shared/Button';
+import { ButtonVariants } from '@/components/shared/Button/types';
 import { Flex } from '@/styles/global';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { JSX, memo, useEffect, useState } from 'react';
 import { options } from '../DropDownFilter/constants';
+import { FilterOption } from './types';
 
 const ButtonFilters = (): JSX.Element => {
   const router = useRouter();

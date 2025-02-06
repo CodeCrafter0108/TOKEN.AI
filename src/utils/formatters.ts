@@ -48,3 +48,12 @@ export const  formatFileSize = (size: number) => {
 
   return `${formattedSize.toFixed(2)} ${units[unitIndex]}`;
 };
+
+export const shortNumber = (number: number): string => {
+  return new Intl.NumberFormat('en', {
+    notation: 'compact',
+    compactDisplay: 'short',
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+  }).format(number);
+};

@@ -1,10 +1,10 @@
 'use client';
-import { PageContainer, Container } from '@/styles/global';
-import { LaunchForm } from './components/LaunchForm';
-import { PageTitle } from '@/components/PageTitle';
-import { AnimatedWrapper } from '@/components/AnimatedWrapper';
-import { Description, SubTitle } from './styles';
+import { PageTitle } from '@/components/features/PageTitle';
+import { AnimatedWrapper } from '@/components/shared/AnimatedWrapper';
+import { Container, PageContainer } from '@/styles/global';
 import { InfoBlock } from './components/InfoBlock';
+import { LaunchForm } from './components/LaunchForm';
+import { Description, SubTitle } from './styles';
 
 export default function Launcher() {
   return (

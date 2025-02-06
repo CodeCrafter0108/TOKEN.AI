@@ -1,6 +1,6 @@
-import Button from '@/components/Button';
-import styled from 'styled-components';
 import ChevronIcon from '@/assets/icons/chevron.svg';
+import Button from '@/components/shared/Button';
+import styled from 'styled-components';
 
 export const DropdownContainer = styled.div`
   position: relative;

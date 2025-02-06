@@ -1,9 +1,9 @@
-import { memo, useEffect, useState } from 'react';
-import { DropdownButton, DropdownContainer, DropdownItem, DropdownList, Icon } from './styles';
-import { options } from './constants';
+import { ButtonVariants } from '@/components/shared/Button/types';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { memo, useEffect, useState } from 'react';
 import { FilterOption } from '../ButtonFilters/types';
-import { ButtonVariants } from '@/components/Button/types';
+import { options } from './constants';
+import { DropdownButton, DropdownContainer, DropdownItem, DropdownList, Icon } from './styles';
 
 const DropdownFilter = () => {
   const router = useRouter();

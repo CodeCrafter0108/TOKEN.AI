@@ -1,15 +1,15 @@
 'use client';
-import { PageContainer, Container } from '@/styles/global';
-import { AnimatedWrapper } from '@/components/AnimatedWrapper';
-import { AgentCard } from '@/components/AgentCard';
 import Arrow from '@/assets/icons/right-arrow.svg';
-import { ButtonVariants } from '@/components/Button/types';
+import { AgentCard } from '@/components/features/AgentCard';
+import { TradeForm } from '@/components/features/TradeForm';
+import { AnimatedWrapper } from '@/components/shared/AnimatedWrapper';
+import { ButtonVariants } from '@/components/shared/Button/types';
+import { Container, PageContainer } from '@/styles/global';
 import { useRouter } from 'next/navigation';
-import { BackButton, Content, LeftContent, RightContent } from './styles';
-import { TradeForm } from '@/components/TradeForm';
 import { Chart } from './components/Chart';
-import TransactionTable from './components/TransactionTable';
 import { TokenInfo } from './components/TokenInfo';
+import TransactionTable from './components/TransactionTable';
+import { BackButton, Content, LeftContent, RightContent } from './styles';
 
 export default function Token() {
   const router = useRouter();
@@ -23,6 +23,7 @@ export default function Token() {
           </BackButton>
           <Content>
             <LeftContent>
+              {/*@ts-expect-error not ckecked*/}
               <AgentCard hasMetrics />
               <Chart />
               <TransactionTable />

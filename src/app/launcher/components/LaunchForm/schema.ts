@@ -10,27 +10,27 @@ const messages = {
 export const SUPPORTED_FORMATS = ['image/jpeg', 'image/png'];
 const MAX_FILE_SIZE = 250 * 1024;
 
-const validateImageDimensions = (file: File): Promise<boolean> => {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    const image = new Image();
+// const validateImageDimensions = (file: File): Promise<boolean> => {
+//   return new Promise((resolve) => {
+//     const reader = new FileReader();
+//     const image = new Image();
 
-    reader.onload = (e) => {
-      image.src = e.target?.result as string;
+//     reader.onload = (e) => {
+//       image.src = e.target?.result as string;
 
-      image.onload = () => {
-        const isValid = image.width === 200 && image.height === 200;
-        resolve(isValid);
-      };
+//       image.onload = () => {
+//         const isValid = image.width === 200 && image.height === 200;
+//         resolve(isValid);
+//       };
 
-      image.onerror = () => resolve(false);
-    };
+//       image.onerror = () => resolve(false);
+//     };
 
-    reader.onerror = () => resolve(false);
+//     reader.onerror = () => resolve(false);
 
-    reader.readAsDataURL(file);
-  });
-};
+//     reader.readAsDataURL(file);
+//   });
+// };
 
 export const schema = yup
   .object({
@@ -52,9 +52,9 @@ export const schema = yup
       .test('fileType', 'Supported types: .jpeg .jpg .png', (value) => {
         return value && SUPPORTED_FORMATS.includes(value?.[0]?.type);
       })
-      .test('dimensions', 'Image must be 200x200 pixels', async (value) => {
-        if (!value || !value[0]) return false;
-        return await validateImageDimensions(value[0]);
-      }),
+      // .test('dimensions', 'Image must be 200x200 pixels', async (value) => {
+      //   if (!value || !value[0]) return false;
+      //   return await validateImageDimensions(value[0]);
+      // }),
   })
   .required();

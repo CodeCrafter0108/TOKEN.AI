@@ -1,6 +1,6 @@
 import { Flex } from '@/styles/global';
-import SortSelector from '@/components/SortSelector';
-import { SortType } from '@/components/SortSelector/types';
+import SortSelector from '@/components/shared/SortSelector';
+import { SortType } from '@/components/shared/SortSelector/types';
 import { NumberBreakpoints } from '@/styles/breakpoints';
 import { TableHead, TableItem, TableWrapper, Text, Title, TableTitle, TableBody } from './styles';
 import { Box } from '@/styles/global';
