@@ -1,4 +1,5 @@
 import { Address } from "viem";
+import { intervalToDuration } from "date-fns";
 
 export const formatAddress = (address: Address | string | undefined) => {
   if (!address) return '';
@@ -56,4 +57,24 @@ export const shortNumber = (number: number): string => {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
   }).format(number);
+};
+
+
+
+export const formatTimeAgo = (timestamp: string, dateNow: number): string => {
+  const duration: Duration = intervalToDuration({ start: Number(timestamp) * 1000, end: dateNow * 1000 });
+
+  if (duration.years && duration.years > 0) {
+    return `${duration.years}y ${duration.months}mo ago`; // "2y 3mo ago"
+  } else if (duration.months && duration.months > 0) {
+    return `${duration.months}mo ${duration.days}d ago`; // "3mo 12d ago"
+  } else if (duration.days && duration.days > 0) {
+    return `${duration.days}d ${duration.hours}h ago`; // "2d 5h ago"
+  } else if (duration.hours && duration.hours > 0) {
+    return `${duration.hours}h ${duration.minutes}m ago`; // "7h 3m ago"
+  } else if (duration.minutes && duration.minutes > 0) {
+    return `${duration.minutes}m ago`; // "25m ago"
+  } else {
+    return `${Math.max(0, Math.floor((dateNow - Number(timestamp))))}s ago`; // "10s ago"
+  }
 };

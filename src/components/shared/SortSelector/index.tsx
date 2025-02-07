@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import { Title } from '@/app/token/[id]/components/TransactionTable/styles';
 import { Flex } from '@/styles/global';
+import { memo } from 'react';
 import { SortSelectorProps, SortType } from './types';
-import { Title } from '@/app/token/components/TransactionTable/styles';
 
 const SortSelector = ({ text, value = SortType.NONE, disabled = false, onChange, id }: SortSelectorProps) => {
   const handleClick = () => {

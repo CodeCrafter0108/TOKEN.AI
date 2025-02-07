@@ -8,7 +8,7 @@ import { ChainId } from '@/constants/blockchain/networks';
 import { GetMyAgents } from '@/graphql/queries/GetMyAgents';
 import { useDebounce } from '@/hooks/useDebounce';
 import { Container, Flex, PageContainer } from '@/styles/global';
-import { IToken, ITokenData } from '@/types/common';
+import { IToken, ITokensData } from '@/types/common';
 import { RefetchInterval } from '@/types/enum';
 import { useQuery } from '@apollo/client';
 import { useMemo, useState } from 'react';
@@ -26,7 +26,7 @@ export default function MyAgents() {
     data: myAgents,
     loading: myAgentsLoading,
     error: myAgentsError
-  } = useQuery<ITokenData>(GetMyAgents, {
+  } = useQuery<ITokensData>(GetMyAgents, {
     client,
     variables: { orderBy: 'blockTimestamp', orderDirection: 'desc', tokenOwner: address },
     pollInterval: RefetchInterval.FAST,

@@ -2,7 +2,7 @@ import { getGraphClient } from '@/config/graph/config';
 import { ChainId } from '@/constants/blockchain/networks';
 import { GetAgents } from '@/graphql/queries/GetAgents';
 import { H2, H3 } from '@/styles/global';
-import { ITokenData } from '@/types/common';
+import { ITokensData } from '@/types/common';
 import { RefetchInterval } from '@/types/enum';
 import { useQuery } from '@apollo/client';
 import { useMemo } from 'react';
@@ -18,7 +18,7 @@ export const HomeContent = () => {
     data: latestAgents,
     loading: latestAgentsLoading,
     error: latestAgentsError
-  } = useQuery<ITokenData>(GetAgents, {
+  } = useQuery<ITokensData>(GetAgents, {
     client,
     variables: { orderBy: 'blockTimestamp', orderDirection: 'desc', first: 5 },
     pollInterval: RefetchInterval.FAST
@@ -32,7 +32,7 @@ export const HomeContent = () => {
     data: marketCapAgents,
     loading: marketCapAgentsLoading,
     error: marketCapAgentsError
-  } = useQuery<ITokenData>(GetAgents, {
+  } = useQuery<ITokensData>(GetAgents, {
     client,
     variables: { orderBy: 'marketCap', orderDirection: 'desc', first: 5 },
     pollInterval: RefetchInterval.FAST
@@ -46,7 +46,7 @@ export const HomeContent = () => {
     data: topAgents,
     loading: topAgentsLoading,
     error: topAgentsError
-  } = useQuery<ITokenData>(GetAgents, {
+  } = useQuery<ITokensData>(GetAgents, {
     client,
     variables: { orderBy: 'marketCap', orderDirection: 'desc', first: 30 }, //TODO change query
     pollInterval: RefetchInterval.FAST

@@ -1,5 +1,6 @@
 'use client';
 import { AgentCard } from '@/components/features/AgentCard';
+import { NoResults } from '@/components/features/NoResults';
 import { PageTitle } from '@/components/features/PageTitle';
 import Search from '@/components/features/Search';
 import { AnimatedWrapper } from '@/components/shared/AnimatedWrapper';
@@ -10,7 +11,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { NumberBreakpoints } from '@/styles/breakpoints';
 import { Container, PageContainer } from '@/styles/global';
-import { IToken, ITokenData } from '@/types/common';
+import { IToken, ITokensData } from '@/types/common';
 import { RefetchInterval } from '@/types/enum';
 import { useLazyQuery } from '@apollo/client';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -19,7 +20,6 @@ import ButtonFilters from './components/ButtonFilters';
 import { FilterOption } from './components/ButtonFilters/types';
 import DropDownFilter from './components/DropDownFilter';
 import { cardStyles, CardsWrapper, FiltersWrapper } from './styles';
-import { NoResults } from '@/components/features/NoResults';
 
 export default function TopAgents() {
   const { width } = useWindowSize();
@@ -38,14 +38,13 @@ export default function TopAgents() {
   };
 
   const filterFromUrl = useMemo(() => searchParams.get('filter') as FilterOption, [searchParams]);
-  console.log('🚀 ~ TopAgents ~ filterFromUrl:', filterFromUrl);
 
   const [searchValue, setSearchValue] = useState<string>('');
   const debouncedSearchValue = useDebounce(searchValue, 300);
 
   const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
 
-  const [fetchAgents, { data: agents, error: agentsError, loading: agentsLoading }] = useLazyQuery<ITokenData>(
+  const [fetchAgents, { data: agents, error: agentsError, loading: agentsLoading }] = useLazyQuery<ITokensData>(
     GetAgents,
     {
       client,

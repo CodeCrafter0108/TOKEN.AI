@@ -1,13 +1,13 @@
-import { Flex } from '@/styles/global';
-import { Description, Value, Title, Container, Metrics } from './styles';
-import { SocialNetworks } from '../SocialNetworks';
-import { RuleSet } from 'styled-components';
-import { ImageWithFallback } from '../ImageWithFallback';
-import { useRouter } from 'next/navigation';
+import { ChainId, CHAINS_ICON_PATH } from '@/constants/blockchain/networks';
 import { AppRoutes } from '@/constants/routes';
+import { Flex } from '@/styles/global';
 import { IToken } from '@/types/common';
 import { shortNumber } from '@/utils/formatters';
-import { ChainId, ChainsIconPath } from '@/constants/blockchain/networks';
+import { useRouter } from 'next/navigation';
+import { RuleSet } from 'styled-components';
+import { ImageWithFallback } from '../ImageWithFallback';
+import { SocialNetworks } from '../SocialNetworks';
+import { Container, Description, Metrics, Title, Value } from './styles';
 
 interface AgentCardProps {
   // onClick: () => void;
@@ -18,9 +18,9 @@ interface AgentCardProps {
 
 export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps) => {
   const router = useRouter();
-  const { imageUrl, name, symbol, marketCap, description, siteUrl, socialUrl, chatUrl } = agent || {};
+  const { imageUrl, name, symbol, marketCap, description, siteUrl, socialUrl, chatUrl, address } = agent || {};
   return (
-    <Container onClick={() => router.push(AppRoutes.TOKEN)} $styles={styles} role='link'>
+    <Container onClick={() => router.push(`${AppRoutes.TOKEN}/${address}`)} $styles={styles} role='link'>
       <Flex $gap={12} $align='center'>
         <ImageWithFallback
           fill
@@ -38,7 +38,7 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
             <ImageWithFallback
               fill
               alt='Token logo'
-              src={ChainsIconPath[ChainId.SONIC]}
+              src={CHAINS_ICON_PATH[ChainId.SONIC]}
               loading='lazy'
               style={{ objectFit: 'cover' }}
               sizes='100%'
