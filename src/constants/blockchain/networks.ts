@@ -4,11 +4,11 @@ export enum ChainId {
   SONIC = sonic.id
 }
 
-export const ChainsName: Record<ChainId, string> = {
+export const CHAINS_NAME: Record<ChainId, string> = {
   [ChainId.SONIC]: sonic.name
 };
 
-export const ChainsIconPath: Record<ChainId, string> = {
+export const CHAINS_ICON_PATH: Record<ChainId, string> = {
   [ChainId.SONIC]: '/images/networks/sonic.png'
 };
 

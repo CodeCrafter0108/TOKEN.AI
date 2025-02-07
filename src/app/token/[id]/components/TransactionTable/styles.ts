@@ -11,6 +11,7 @@ export const TableHead = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 20px;
+  padding-right: 20px;
 
   @media screen and (max-width: ${Breakpoints.md}) {
     grid-template-columns: 1fr;

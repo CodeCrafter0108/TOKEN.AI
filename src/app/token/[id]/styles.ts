@@ -1,6 +1,6 @@
 import Button from '@/components/shared/Button';
 import { Breakpoints } from '@/styles/breakpoints';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const BackButton = styled(Button)`
   svg {
@@ -42,7 +42,7 @@ export const LeftContent = styled.div`
   gap: 16px;
 
   @media screen and (min-width: ${Breakpoints.lg}) {
-    width: 70%
+    width: 70%;
   }
 `;
 
@@ -52,6 +52,10 @@ export const RightContent = styled.div`
   gap: 16px;
 
   @media screen and (min-width: ${Breakpoints.lg}) {
-    width: 30%
+    width: 30%;
   }
+`;
+
+export const cardsStyles = css`
+  margin: 0 !important;
 `;

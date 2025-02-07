@@ -29,7 +29,7 @@ export default async function RootLayout({
   return (
     <html lang='en'>
       <body className={montserrat.className}>
-        <Script src='./scripts/jquery-3.6.4.min.js' strategy='beforeInteractive' />
+        <Script src='/scripts/jquery-3.6.4.min.js' strategy='beforeInteractive' />
         <Script src='/scripts/animationCursor.js' strategy='afterInteractive' />
         <StyledComponentsProvider>
           <Web3ModalProvider initialState={initialState}>

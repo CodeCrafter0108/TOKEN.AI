@@ -1,5 +1,5 @@
 import Arrow from '@/assets/icons/right-arrow.svg';
-import { ChainId, ChainsIconPath } from '@/constants/blockchain/networks';
+import { ChainId, CHAINS_ICON_PATH } from '@/constants/blockchain/networks';
 import { AppRoutes } from '@/constants/routes';
 import { Box, Flex } from '@/styles/global';
 import { IToken } from '@/types/common';
@@ -20,10 +20,10 @@ export const AgentsList = ({ hasArrow = true, agents = [], styles }: AgentCardPr
     <Box style={{ gap: '0px', ...styles }}>
       <List>
         {agents.map((agent: IToken) => {
-          const { id, imageUrl, name, symbol, marketCap } = agent || {};
+          const { id, imageUrl, name, symbol, marketCap, address } = agent || {};
           return (
             <ListItem key={id}>
-              <StyledLink href={AppRoutes.TOKEN}>
+              <StyledLink href={`${AppRoutes.TOKEN}/${address}`}>
                 <ImageWithFallback
                   fill
                   alt='Agent logo'
@@ -40,7 +40,7 @@ export const AgentsList = ({ hasArrow = true, agents = [], styles }: AgentCardPr
                     <ImageWithFallback
                       fill
                       alt='Token logo'
-                      src={ChainsIconPath[ChainId.SONIC]}
+                      src={CHAINS_ICON_PATH[ChainId.SONIC]}
                       loading='lazy'
                       style={{ objectFit: 'cover' }}
                       sizes='100%'
