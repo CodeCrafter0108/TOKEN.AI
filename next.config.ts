@@ -23,7 +23,10 @@ const nextConfig: NextConfig = {
       test: /\.svg$/i,
       use: ["@svgr/webpack"],
     });
-
+  
+    config.externals ||= [];
+    config.externals.push("pino-pretty", "lokijs", "encoding");
+  
     return config;
   },
   env: {

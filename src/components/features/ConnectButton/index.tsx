@@ -1,8 +1,9 @@
-import { useWeb3Modal } from '@web3modal/wagmi/react';
+'use client';
+import { useAppKitState } from '@reown/appkit/react';
 import { useAccount, useDisconnect } from 'wagmi';
 import { formatAddress } from '@/utils/formatters';
 import { useCallback } from 'react';
-import { useWeb3ModalState } from '@web3modal/wagmi/react';
+import { useAppKit } from '@reown/appkit/react';
 import { StyledConnectButton } from './styles';
 import PulseLoader from 'react-spinners/PulseLoader';
 
@@ -11,8 +12,8 @@ interface ConnectButtonProps {
 }
 
 export default function ConnectButton({ styles }: ConnectButtonProps) {
-  const { open } = useWeb3Modal();
-  const { open: isOpen } = useWeb3ModalState();
+  const { open } = useAppKit();
+  const { open: isOpen } = useAppKitState();
   const { isConnected, address } = useAccount();
   const { disconnect } = useDisconnect();
 
@@ -36,7 +37,12 @@ export default function ConnectButton({ styles }: ConnectButtonProps) {
           {isOpen ? (
             <span>
               <span>Connecting</span>
-              <PulseLoader color={'var(--primary-clr)'} size={4} cssOverride={{ marginLeft: '4px' }} speedMultiplier={0.7} />
+              <PulseLoader
+                color={'var(--primary-clr)'}
+                size={4}
+                cssOverride={{ marginLeft: '4px' }}
+                speedMultiplier={0.7}
+              />
             </span>
           ) : (
             'Connect Wallet'
