@@ -1,6 +1,7 @@
 import { StyledChart } from './styles';
 import { useEffect, useRef } from 'react';
 import EChartsReact from 'echarts-for-react';
+import { EChartsOption } from 'echarts';
 
 export const Chart = () => {
   const chartRef = useRef<EChartsReact | null>(null);
@@ -19,7 +20,7 @@ export const Chart = () => {
     };
   }, []);
 
-  const option = {
+  const option: EChartsOption = {
     title: {
       text: 'Chart name',
       left: '16px',
