@@ -1,32 +1,48 @@
 'use client';
 
-import React, { ReactNode } from 'react';
-import { config, projectId } from './config';
+import { ReactNode } from 'react';
+import { projectId, wagmiAdapter } from './config';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { State, WagmiProvider } from 'wagmi';
-import { createWeb3Modal } from '@web3modal/wagmi/react';
+import { createAppKit } from '@reown/appkit/react';
+import { sonic } from '@reown/appkit/networks';
+import { Config, cookieToInitialState, WagmiProvider } from 'wagmi';
 
 const queryClient = new QueryClient();
 
-if (!projectId) throw new Error('Project ID is not defined');
+if (!projectId) {
+  throw new Error('Project ID is not defined');
+}
 
-createWeb3Modal({
-  wagmiConfig: config,
+export const metadata = {
+  name: 'Token.Ai',
+  description: 'Token.Ai',
+  url: 'https://web3modal.com', //TODO change
+  icons: ['https://avatars.githubusercontent.com/u/37784886'] //TODO change
+};
+
+createAppKit({
+  adapters: [wagmiAdapter],
   projectId,
-  enableAnalytics: true,
-  enableOnramp: true,
-  defaultChain: config.chains[0],
+  networks: [sonic],
+  defaultNetwork: sonic,
+  metadata: metadata,
+  features: {
+    analytics: true,
+    email: false,
+    socials: [],
+  },
   themeMode: 'light',
   themeVariables: {
-    '--w3m-font-family': 'Montserrat, sans-serif',
+    '--w3m-font-family': 'Montserrat, sans-serif'
   }
 });
 
-export default function Web3ModalProvider({ children, initialState }: { children: ReactNode; initialState?: State }) {
+export default function Web3ModalProvider({ children, cookies }: { children: ReactNode; cookies: string | null }) {
+  const initialState = cookieToInitialState(wagmiAdapter.wagmiConfig as Config, cookies);
   return (
-    <WagmiProvider config={config} initialState={initialState}>
+    <WagmiProvider config={wagmiAdapter.wagmiConfig as Config} initialState={initialState}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WagmiProvider>
   );

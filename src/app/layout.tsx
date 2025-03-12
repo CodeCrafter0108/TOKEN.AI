@@ -3,7 +3,6 @@ import { Footer } from '@/components/features/Footer';
 import { Header } from '@/components/features/Header';
 import { Toast } from '@/components/shared/Toast';
 import StyledComponentsProvider from '@/config/providers/StyledComponentsProvider/provider';
-import { config } from '@/config/providers/WagmiProvider/config';
 import Web3ModalProvider from '@/config/providers/WagmiProvider/provider';
 import { montserrat } from '@/styles/fonts';
 import '@/styles/globals.css';
@@ -13,7 +12,6 @@ import Script from 'next/script';
 import 'react-toastify/dist/ReactToastify.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { cookieToInitialState } from 'wagmi';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -25,14 +23,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const initialState = cookieToInitialState(config, (await headers()).get('cookie'));
+  const headersObj = await headers();
+  const cookies = headersObj.get('cookie')
   return (
     <html lang='en'>
       <body className={montserrat.className}>
         <Script src='/scripts/jquery-3.6.4.min.js' strategy='beforeInteractive' />
         <Script src='/scripts/animationCursor.js' strategy='afterInteractive' />
         <StyledComponentsProvider>
-          <Web3ModalProvider initialState={initialState}>
+          <Web3ModalProvider cookies={cookies}>
             <Header />
             <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
               <BackGround>{children}</BackGround>

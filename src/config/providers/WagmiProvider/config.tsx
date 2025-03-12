@@ -1,33 +1,21 @@
-import { Config, createConfig, fallback, http, injected } from '@wagmi/core';
+'use client';
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
+import { sonic } from '@reown/appkit/networks';
+import { fallback, http, injected } from '@wagmi/core';
 import { cookieStorage, createStorage } from 'wagmi';
-import { sonic } from 'wagmi/chains';
 import { coinbaseWallet, walletConnect } from 'wagmi/connectors';
 
 export const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_API_KEY;
 
 if (!projectId) throw new Error('Project ID is not defined');
 
-export const metadata = {
-  name: 'Token.Ai',
-  description: 'Token.Ai',
-  url: 'https://web3modal.com', //TODO change
-  icons: ['https://avatars.githubusercontent.com/u/37784886'] //TODO change
-};
-
-export const config: Config = createConfig({
-  chains: [sonic],
-  connectors: [
-    walletConnect({ projectId, metadata, showQrModal: false }),
-    injected({ shimDisconnect: true }),
-    coinbaseWallet({
-      appName: metadata.name,
-      appLogoUrl: metadata.icons[0]
-    })
-  ],
-  ssr: true,
+export const wagmiAdapter = new WagmiAdapter({
   storage: createStorage({
     storage: cookieStorage
   }),
+  ssr: true,
+  projectId,
+  networks: [sonic],
   transports: {
     [sonic.id]: fallback([
       http('https://rpc.soniclabs.com'),
@@ -42,5 +30,8 @@ export const config: Config = createConfig({
       wait: 16
     }
   },
-  pollingInterval: 6_000
+  pollingInterval: 6_000,
+  connectors: [walletConnect({ projectId, showQrModal: false }), injected({ shimDisconnect: true }), coinbaseWallet()]
 });
+
+export const config = wagmiAdapter.wagmiConfig;
