@@ -3,7 +3,7 @@ import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { sonic } from '@reown/appkit/networks';
 import { fallback, http, injected } from '@wagmi/core';
 import { cookieStorage, createStorage } from 'wagmi';
-// import { coinbaseWallet, walletConnect } from 'wagmi/connectors';
+import { coinbaseWallet, walletConnect } from 'wagmi/connectors';
 
 export const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_API_KEY;
 
@@ -31,7 +31,7 @@ export const wagmiAdapter = new WagmiAdapter({
     }
   },
   pollingInterval: 6_000,
-  // connectors: [walletConnect({ projectId, showQrModal: false }), injected({ shimDisconnect: true }), coinbaseWallet()]
+  connectors: [walletConnect({ projectId, showQrModal: false }), injected({ shimDisconnect: true }), coinbaseWallet()]
 });
 
 export const config = wagmiAdapter.wagmiConfig;
