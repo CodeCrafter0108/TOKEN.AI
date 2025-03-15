@@ -17,6 +17,11 @@ export const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
   gap: 4px;
+  box-shadow: 2px 2px 7.2px 0px rgba(0, 0, 0, 0.50);
+  background-color: var(--secondary-box-bg-clr);
+
+  padding: 4px;
+  border-radius: 4px;
 
   transition: all 0.2s ease-in-out;
 

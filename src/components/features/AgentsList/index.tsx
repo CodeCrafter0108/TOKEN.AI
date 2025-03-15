@@ -17,7 +17,7 @@ interface AgentCardProps {
 
 export const AgentsList = ({ hasArrow = true, agents = [], styles }: AgentCardProps): React.JSX.Element => {
   return (
-    <Box style={{ gap: '0px', ...styles }}>
+    <Box style={{ gap: '0px', padding: '16px 0', ...styles }}>
       <List>
         {agents.map((agent: IToken) => {
           const { id, imageUrl, name, symbol, marketCap, address } = agent || {};
@@ -29,10 +29,11 @@ export const AgentsList = ({ hasArrow = true, agents = [], styles }: AgentCardPr
                   alt='Agent logo'
                   src={imageUrl}
                   loading='lazy'
-                  style={{ objectFit: 'cover', borderRadius: '4px' }}
+                  style={{ objectFit: 'cover', borderRadius: '50%' }}
                   sizes='100%'
                   widthSkeleton={60}
                   heightSkeleton={60}
+                  shape={'circle'}
                 />
                 <InfoWrapper>
                   <Title>{name}</Title>
@@ -46,6 +47,7 @@ export const AgentsList = ({ hasArrow = true, agents = [], styles }: AgentCardPr
                       sizes='100%'
                       widthSkeleton={16}
                       heightSkeleton={16}
+                      shape='circle'
                     />
                     <TokenSymbol>{symbol}</TokenSymbol>
                   </Flex>

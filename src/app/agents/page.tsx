@@ -10,7 +10,6 @@ import { GetAgents } from '@/graphql/queries/GetAgents';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { NumberBreakpoints } from '@/styles/breakpoints';
-import { Container, PageContainer } from '@/styles/global';
 import { IToken, ITokensData } from '@/types/common';
 import { RefetchInterval } from '@/types/enum';
 import { useLazyQuery } from '@apollo/client';
@@ -20,6 +19,7 @@ import ButtonFilters from './components/ButtonFilters';
 import { FilterOption } from './components/ButtonFilters/types';
 import DropDownFilter from './components/DropDownFilter';
 import { cardStyles, CardsWrapper, FiltersWrapper } from './styles';
+import { PageWrapper } from '@/components/features/PageWrapper';
 
 export default function TopAgents() {
   const { width } = useWindowSize();
@@ -85,35 +85,30 @@ export default function TopAgents() {
   }, [agents?.tokens, debouncedSearchValue]);
 
   return (
-    <Container>
-      <AnimatedWrapper.Spring>
-        <PageContainer>
-          <PageTitle
-            title='Agents'
-            subTitle='Explore an endless variety of tokens to suit every taste'
-            badgeDescription='powered by'
-          />
-          <FiltersWrapper>
-            <Search searchValue={searchValue} setSearchValue={setSearchValue} />
-            {width >= NumberBreakpoints.md ? <ButtonFilters /> : <DropDownFilter />}
-          </FiltersWrapper>
-          <AnimatedWrapper.Opacity duration={0.2} condition={!!filteredAgents.length}>
-            <CardsWrapper>
-              {filteredAgents.map((agent: IToken) => (
-                <AgentCard key={agent.id} agent={agent} styles={cardStyles} />
-              ))}
-            </CardsWrapper>
-          </AnimatedWrapper.Opacity>
+    <PageWrapper>
+      <PageTitle
+        title='Agents'
+        subTitle='Explore an endless variety of tokens to suit every taste'
+      />
+      <FiltersWrapper>
+        <Search searchValue={searchValue} setSearchValue={setSearchValue} />
+        {width >= NumberBreakpoints.md ? <ButtonFilters /> : <DropDownFilter />}
+      </FiltersWrapper>
+      <AnimatedWrapper.Opacity duration={0.2} condition={!!filteredAgents.length}>
+        <CardsWrapper>
+          {filteredAgents.map((agent: IToken) => (
+            <AgentCard key={agent.id} agent={agent} styles={cardStyles} />
+          ))}
+        </CardsWrapper>
+      </AnimatedWrapper.Opacity>
 
-          <AnimatedWrapper.Opacity duration={0.2} condition={!filteredAgents.length && !agentsLoading}>
-            <NoResults handleClear={handleClear} />
-          </AnimatedWrapper.Opacity>
-          {/* <LoadMore variants={ButtonVariants.CLEAR}>
+      <AnimatedWrapper.Opacity duration={0.2} condition={!filteredAgents.length && !agentsLoading}>
+        <NoResults handleClear={handleClear} />
+      </AnimatedWrapper.Opacity>
+      {/* <LoadMore variants={ButtonVariants.CLEAR}>
             <span>Load more agents</span>
             <ClipLoader color={'var(--accent-clr)'} size={14} speedMultiplier={0.7} />
           </LoadMore> */}
-        </PageContainer>
-      </AnimatedWrapper.Spring>
-    </Container>
+    </PageWrapper>
   );
 }

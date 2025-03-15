@@ -11,5 +11,5 @@ export const Wrapper = styled.div`
   max-height: 500px;
   border-radius: 16px;
   overflow: hidden;
-  background-color: var(--box-bg-clr);
+  background-color: var(--primary-box-bg-clr);
 `;

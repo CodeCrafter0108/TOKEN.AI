@@ -49,3 +49,7 @@ export const StyledInput = styled(Input)`
     font-weight: 600;
   }
 `;
+
+export const FiatValue = styled.span`
+  color: var(--placeholder-clr);
+`;

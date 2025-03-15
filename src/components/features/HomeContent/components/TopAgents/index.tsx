@@ -10,7 +10,7 @@ import { useRef } from 'react';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import { LinkToTopAgent } from '../LinkToTopAgent';
-import { NextSlide, PrevSlide } from './styles';
+import { NextSlide, PrevSlide, agentCardStyles } from './styles';
 
 interface TopAgentsProps {
   agents?: IToken[];
@@ -46,7 +46,7 @@ export const TopAgents = ({ agents = [] }: TopAgentsProps) => {
     <div>
       <Flex $justify='space-between' $align='center'>
         <H3>Top Agents</H3>
-        <LinkToTopAgent title='View all top agents' params='filter=top' />
+        <LinkToTopAgent title='View all top agents' params='top' />
       </Flex>
 
       <div style={{ position: 'relative', minHeight: '171px' }}>
@@ -72,7 +72,7 @@ export const TopAgents = ({ agents = [] }: TopAgentsProps) => {
             const { id } = agent || {};
             return (
               <SwiperSlide key={id}>
-                <AgentCard agent={agent} />
+                <AgentCard agent={agent} styles={agentCardStyles} />
               </SwiperSlide>
             );
           })}

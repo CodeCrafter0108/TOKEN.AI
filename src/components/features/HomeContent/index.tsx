@@ -7,9 +7,11 @@ import { RefetchInterval } from '@/types/enum';
 import { useQuery } from '@apollo/client';
 import { useMemo } from 'react';
 import { AgentsList } from '../AgentsList';
+import { ExploreList } from './components/ExploreList';
+import { Hero } from './components/Hero';
 import { LinkToTopAgent } from './components/LinkToTopAgent';
 import { TopAgents } from './components/TopAgents';
-import { Content, ListWrapper, Wrapper } from './styles';
+import { ListWrapper, TitleWrapper, Wrapper } from './styles';
 
 export const HomeContent = () => {
   const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
@@ -23,7 +25,7 @@ export const HomeContent = () => {
     variables: { orderBy: 'blockTimestamp', orderDirection: 'desc', first: 5 },
     pollInterval: RefetchInterval.FAST
   });
-  
+
   if (latestAgentsError) {
     console.error('Error fetching latest agents:', latestAgentsError);
   }
@@ -37,7 +39,7 @@ export const HomeContent = () => {
     variables: { orderBy: 'marketCap', orderDirection: 'desc', first: 5 },
     pollInterval: RefetchInterval.FAST
   });
-  
+
   if (marketCapAgentsError) {
     console.error('Error fetching market cap agents:', marketCapAgentsError);
   }
@@ -58,22 +60,40 @@ export const HomeContent = () => {
 
   return (
     <>
-      <Content>
-        <H2>Available tokens</H2>
-        <TopAgents agents={topAgents?.tokens} isLoading={topAgentsLoading} />
-        <Wrapper>
-          <ListWrapper>
+      <Hero />
+      <H2 style={{ marginBottom: '12px' }}>Available tokens</H2>
+      <TopAgents agents={topAgents?.tokens} isLoading={topAgentsLoading} />
+      <Wrapper>
+        <ListWrapper>
+          <TitleWrapper>
             <H3>Latest</H3>
-            <AgentsList agents={latestAgents?.tokens} isLoading={latestAgentsLoading} />
-            <LinkToTopAgent title='View all Latest' params='filter=latest' />
-          </ListWrapper>
-          <ListWrapper>
+            <LinkToTopAgent title='View all Latest' params='latest' />
+          </TitleWrapper>
+          <AgentsList
+            agents={latestAgents?.tokens}
+            isLoading={latestAgentsLoading}
+            hasArrow={false}
+            styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }}
+          />
+        </ListWrapper>
+        <ListWrapper>
+          <TitleWrapper>
             <H3>Top Market cap</H3>
-            <AgentsList agents={marketCapAgents?.tokens} isLoading={marketCapAgentsLoading}/>
-            <LinkToTopAgent title='View all Top cap' params='filter=marketcap' />
-          </ListWrapper>
-        </Wrapper>
-      </Content>
+            <LinkToTopAgent title='View all Top cap' params='marketcap' />
+          </TitleWrapper>
+          <AgentsList
+            agents={marketCapAgents?.tokens}
+            isLoading={marketCapAgentsLoading}
+            hasArrow={false}
+            styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }}
+          />
+        </ListWrapper>
+      </Wrapper>
+      <ListWrapper>
+        <H3 style={{ marginTop: '80px' }}>Explore agents</H3>
+        <ExploreList />
+      </ListWrapper>
+      <H2 style={{ marginTop: '170px' }}>Available tokens</H2>
     </>
   );
 };

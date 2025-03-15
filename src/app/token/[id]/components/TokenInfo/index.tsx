@@ -1,45 +1,37 @@
 import { Box, Flex } from '@/styles/global';
-import { VerifiedBadge } from './components/VerifiedBadge';
-import { Text, Title } from './styles';
+import { Title } from './styles';
 import { TimeframeAnalytics } from './components/TimeframeAnalytics';
 import { TradingAnalytics } from './components/TradingAnalytics';
 
 export const TokenInfo = () => {
   return (
-    <Box style={{ gap: '16px' }}>
+    <Box style={{ gap: '16px', width: '100%' }}>
       <Flex
         $direction={'column'}
         $gap={12}
-        style={{ paddingBottom: '16px', borderBottom: '1px solid var(--border-clr)'}}
+        style={{ paddingBottom: '16px', borderBottom: '1px solid var(--separator-clr)'}}
       >
-        <Flex $gap={4}>
+        <Flex $gap={4} $justify='space-between'>
           <Title>Price USD:</Title>
-          <Text>$1.0</Text>
+          <Title>$1.0</Title>
         </Flex>
-        <Flex $gap={4}>
+        <Flex $gap={4} $justify='space-between'>
           <Title>Price:</Title>
-          <Text>0,00026 ETH</Text>
+          <Title>0,00026 ETH</Title>
         </Flex>
       </Flex>
       <Flex
         $direction={'column'}
         $gap={12}
-        style={{ paddingBottom: '16px', borderBottom: '1px solid var(--border-clr)' }}
+        style={{ paddingBottom: '16px', borderBottom: '1px solid var(--separator-clr)' }}
       >
-        <Flex $justify='space-between' $align='center'>
-          <Flex $gap={4}>
-            <Title>Liquidity:</Title>
-            <Text>$377k</Text>
-          </Flex>
-          <VerifiedBadge />
-        </Flex>
-        <Flex $gap={4}>
+        <Flex $gap={4} $justify='space-between'>
           <Title>FDV:</Title>
-          <Text>$2.0M</Text>
+          <Title>$2.0M</Title>
         </Flex>
-        <Flex $gap={4}>
+        <Flex $gap={4} $justify='space-between'>
           <Title>Market cap:</Title>
-          <Text>$2.0M</Text>
+          <Title>$2.0M</Title>
         </Flex>
       </Flex>
       <TimeframeAnalytics />

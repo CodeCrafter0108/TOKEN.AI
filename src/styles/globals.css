@@ -2,35 +2,36 @@
   --primary-clr: #262626;
   --accent-clr: #7ec425;
 
-  --primary-text-clr: #262626;
-  --secondary-text-clr: #96a5c8;
+  --primary-text-clr: #ffffff;
+  --secondary-text-clr: rgba(255, 255, 255, 0.6);
+  --navigation-text-clr: #D6D6D6;
+  --black-text-clr: #1A1A1A;
 
-  --background-clr: linear-gradient(
-    180deg,
-    #eaf0f7 0%,
-    rgba(217, 230, 246, 0.87) 36%,
-    rgba(220, 224, 232, 0.9) 68%,
-    rgba(222, 221, 240, 0.72) 100%
-  );
+  --background-clr: #1A1A1A;
 
   --white-clr: #ffffff;
+  --black-clr: #000000;
   --error-clr: #c0211b;
   --required-clr: #a10500;
   --placeholder-clr: #898c90;
 
   --footer-bg-clr: #e7e6f4;
-  --header-bg-clr: #e9eff7;
+  --header-bg-clr: #181818;
   --field-bg-clr: #ecf2f9;
-  --hero-bg-clr: #e7eef7;
 
   --modal-hover-clr: #e4ebff;
+  --separator-clr: rgba(255, 255, 255, 0.12);
 
-  --box-bg-clr: #f6faff;
+  --primary-box-bg-clr: rgba(14, 14, 14, 0.60);
+  --secondary-box-bg-clr: #262626;
+
   --badge-bg-clr: #4467ff;
 
-  --border-clr: rgba(137, 140, 144, 0.35);
+  --border-clr: rgba(255, 255, 255, 0.04);
 
-  --box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1);
+  --box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.10);
+
+  --gradient: linear-gradient(90deg, #94E927 0%, #EA88EF 100%), linear-gradient(90deg, #94E927 0%, #F79D00 100%), linear-gradient(94deg, #94E927 0%, #228B22 44.5%, #0000CD 100%), linear-gradient(94deg, #94E927 0%, #228B22 36.4%, #0000CD 68.4%, #8A2BE2 100%);
 }
 
 html {
@@ -99,7 +100,7 @@ svg {
 
 .Toastify__toast {
   border-radius: 8px;
-  background: var(--box-bg-clr);
+  background: var(--primary-box-bg-clr);
   color: var(--primary-clr);
   box-shadow: var(--box-shadow);
   font-family: var(--font-montserrat);

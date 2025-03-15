@@ -4,10 +4,10 @@ import { Wrapper, TitleContainer, Title, SubTitle, Badge, BadgeDescription } fro
 interface PageTitleProps {
   title: string;
   subTitle: string;
-  badgeDescription?: string;
+  badgeDescription?: boolean;
 }
 
-export const PageTitle = ({ title, badgeDescription, subTitle }: PageTitleProps) => {
+export const PageTitle = ({ title, badgeDescription = true, subTitle }: PageTitleProps) => {
   return (
     <Wrapper>
       <TitleContainer>

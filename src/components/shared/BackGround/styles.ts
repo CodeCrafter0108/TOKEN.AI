@@ -1,3 +1,4 @@
+
 import styled from 'styled-components';
 
 export const BackgroundWrapper = styled.div`
@@ -5,4 +6,5 @@ export const BackgroundWrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: 'hidden';
 `;

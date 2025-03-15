@@ -7,6 +7,12 @@ export const Content = styled.div`
   gap: 24px;
 `;
 
+export const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

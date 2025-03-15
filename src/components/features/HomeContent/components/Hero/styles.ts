@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Container } from '@/styles/global';
 
 export const HeroWrapper = styled.div`
-  background-color: var(--hero-bg-clr);
+  padding-top: 180px;
 `;
 
 export const HeroContainer = styled(Container)`
@@ -19,12 +19,11 @@ export const HeroContainer = styled(Container)`
   }
 `;
 
-
-export const   VideoWrapper = styled.div`
-flex: 1;
-display: flex;
-align-items: center;
-justify-content: center;
+export const VideoWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Video = styled.video`
@@ -51,9 +50,8 @@ export const InfoWrapper = styled.div`
   }
 `;
 
-
 export const Title = styled.h1`
-  max-width: 400px;
+  max-width: 200px;
   font-size: 24px;
   line-height: 1.11;
   letter-spacing: 0.72px;
@@ -75,7 +73,7 @@ export const Title = styled.h1`
 export const List = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 24px;
 `;
 
 export const ListItem = styled.li`

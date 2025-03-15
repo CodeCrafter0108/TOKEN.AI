@@ -84,7 +84,7 @@ const TransactionTable = ({ data = [] }: TransactionTableProps) => {
 
                 <Flex $align='center' $justify='space-between' role='cell' aria-labelledby='type-header'>
                   {width < NumberBreakpoints.md && <Title aria-hidden='true'>Type</Title>}
-                  <Text style={{ color: `${transaction.fromAIToken ? 'var(--accent-clr)' : 'var(--error-clr)'}` }}>
+                  <Text style={{ color: `${transaction.fromAIToken ? '#34C759' : 'var(--error-clr)'}` }}>
                     {transaction.fromAIToken ? 'Buy' : 'Sell'}
                   </Text>
                 </Flex>

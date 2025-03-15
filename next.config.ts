@@ -21,16 +21,16 @@ const nextConfig: NextConfig = {
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
-      use: ["@svgr/webpack"],
+      use: ['@svgr/webpack']
     });
-  
+
     config.externals ||= [];
-    config.externals.push("pino-pretty", "lokijs", "encoding");
-  
+    config.externals.push('pino-pretty', 'lokijs', 'encoding');
+
     return config;
   },
   env: {
-    NEXT_PUBLIC_WALLET_CONNECT_API_KEY: process.env.NEXT_PUBLIC_NEXT_PUBLIC_WALLET_CONNECT_API_KEY,
+    NEXT_PUBLIC_WALLET_CONNECT_API_KEY: process.env.NEXT_PUBLIC_NEXT_PUBLIC_WALLET_CONNECT_API_KEY
   },
   experimental: {
     turbo: {
@@ -39,10 +39,27 @@ const nextConfig: NextConfig = {
           loaders: ['@svgr/webpack'],
           as: '*.js'
         }
-      },
-    },
-
+      }
+    }
   },
+
+  // async headers() {
+  //   return [
+  //     {
+  //       source: '/(.*)',
+  //       headers: [
+  //         {
+  //           key: 'Cross-Origin-Opener-Policy',
+  //           value: 'same-origin'
+  //         },
+  //         {
+  //           key: 'Cross-Origin-Embedder-Policy',
+  //           value: 'require-corp'
+  //         }
+  //       ]
+  //     }
+  //   ];
+  // },
 
   reactStrictMode: true,
   images: {

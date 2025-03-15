@@ -11,7 +11,7 @@ export const MobileWallet = () => {
   return (
     <Wrapper>
       <WalletInfo>
-        <span style={{color: 'var(--border-clr)', fontWeight: 600}}>Wallet</span>
+        <span style={{color: 'var(--placeholder-clr)', fontWeight: 600}}>Wallet</span>
         <span>{formatAddress(address)}</span>
       </WalletInfo>
       <Button variants={ButtonVariants.CLEAR} style={{ width: '100%' }} onClick={() => disconnect()}>

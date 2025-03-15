@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Arrow from '@/assets/icons/right-arrow.svg';
 
 export const LinkText = styled.span`
   font-size: 14px;
@@ -12,3 +13,6 @@ export const LinkContent = styled.div`
   gap: 12px;
 `;
 
+export const StyledArrow = styled(Arrow)`
+  transform: rotate(-45deg);
+`;

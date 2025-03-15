@@ -23,13 +23,13 @@ export const ImageWithFallback = (
 
   const skeletonSVG = `
     <svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200" preserveAspectRatio="none">
-      <rect x="0" y="0" width="400" height="200" fill="#d0d0d0" />
+      <rect x="0" y="0" width="400" height="200" fill="#413f3f" />
       <rect x="0" y="0" width="400" height="200" fill="url(#gradient)" />
       <defs>
         <linearGradient id="gradient">
-          <stop offset="0%" stop-color="#e5e5e5" />
-          <stop offset="50%" stop-color="#d0d0d0" />
-          <stop offset="100%" stop-color="#e5e5e5" />
+          <stop offset="0%" stop-color="#818181" />
+          <stop offset="50%" stop-color="#413f3f" />
+          <stop offset="100%" stop-color="#818181" />
         </linearGradient>
       </defs>
       <animateTransform

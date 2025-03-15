@@ -1,13 +1,14 @@
 'use client';
 import { AgentsList } from '@/components/features/AgentsList';
 import { PageTitle } from '@/components/features/PageTitle';
+import { PageWrapper } from '@/components/features/PageWrapper';
 import Search from '@/components/features/Search';
 import { AnimatedWrapper } from '@/components/shared/AnimatedWrapper';
 import { getGraphClient } from '@/config/graph/config';
 import { ChainId } from '@/constants/blockchain/networks';
 import { GetMyAgents } from '@/graphql/queries/GetMyAgents';
 import { useDebounce } from '@/hooks/useDebounce';
-import { Container, Flex, PageContainer } from '@/styles/global';
+import { Flex } from '@/styles/global';
 import { IToken, ITokensData } from '@/types/common';
 import { RefetchInterval } from '@/types/enum';
 import { useQuery } from '@apollo/client';
@@ -48,30 +49,27 @@ export default function MyAgents() {
   }, [myAgents?.tokens, debouncedSearchValue]);
 
   return (
-    <Container>
-      <AnimatedWrapper.Spring>
-        <PageContainer>
-          <PageTitle
-            title='My Agents'
-            subTitle='Your personalized list of generated tokens'
-            badgeDescription='powered by'
-          />
-          <AnimatedWrapper.Opacity condition={isConnected} duration={0.2}>
-            <Flex $direction='column' $gap={24}>
-              <Search styles={{ maxWidth: '768px' }} searchValue={searchValue} setSearchValue={setSearchValue} />
-              <AnimatedWrapper.Opacity condition={!myAgentsLoading && filteredAgents.length > 0} duration={0.2}>
-                <AgentsList agents={filteredAgents} isLoading={myAgentsLoading} />
-              </AnimatedWrapper.Opacity>
-            </Flex>
-          </AnimatedWrapper.Opacity>
-          <Messages
-            agents={filteredAgents}
-            isLoading={myAgentsLoading}
-            searchValue={debouncedSearchValue}
-            setSearchValue={setSearchValue}
-          />
-        </PageContainer>
-      </AnimatedWrapper.Spring>
-    </Container>
+    <PageWrapper>
+      <PageTitle
+        title='My Agents'
+        subTitle='Your personalized list of generated tokens'
+        badgeDescription='powered by'
+      />
+      <Flex $direction='column' $gap={24}>
+        <Search styles={{ width: '100%' }} searchValue={searchValue} setSearchValue={setSearchValue} />
+        <AnimatedWrapper.Opacity
+          condition={isConnected && !myAgentsLoading && filteredAgents.length > 0}
+          duration={0.2}
+        >
+          <AgentsList agents={filteredAgents} isLoading={myAgentsLoading} />
+        </AnimatedWrapper.Opacity>
+      </Flex>
+      <Messages
+        agents={filteredAgents}
+        isLoading={myAgentsLoading}
+        searchValue={debouncedSearchValue}
+        setSearchValue={setSearchValue}
+      />
+    </PageWrapper>
   );
 }

@@ -6,6 +6,7 @@ import { useCallback } from 'react';
 import { useAppKit } from '@reown/appkit/react';
 import { StyledConnectButton } from './styles';
 import PulseLoader from 'react-spinners/PulseLoader';
+import { ButtonVariants } from '@/components/shared/Button/types';
 
 interface ConnectButtonProps {
   styles?: React.CSSProperties;
@@ -26,7 +27,7 @@ export default function ConnectButton({ styles }: ConnectButtonProps) {
   }, [isConnected, disconnect, open]);
 
   return (
-    <StyledConnectButton onClick={() => handleClick()} style={styles}>
+    <StyledConnectButton variants={ButtonVariants.SOLID} onClick={() => handleClick()} style={styles}>
       {isConnected ? (
         <>
           <span className='text-primary'>{formatAddress(address)}</span>
@@ -38,7 +39,7 @@ export default function ConnectButton({ styles }: ConnectButtonProps) {
             <span>
               <span>Connecting</span>
               <PulseLoader
-                color={'var(--primary-clr)'}
+                color={'var(--black-text-cl)'}
                 size={4}
                 cssOverride={{ marginLeft: '4px' }}
                 speedMultiplier={0.7}

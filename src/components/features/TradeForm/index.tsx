@@ -1,6 +1,4 @@
 import ChangeIcon from '@/assets/icons/change.svg';
-import SettingIcon from '@/assets/icons/settings.svg';
-import SwapIcon from '@/assets/icons/swap.svg';
 import ConnectButton from '@/components/features/ConnectButton';
 import Button from '@/components/shared/Button';
 import { ButtonVariants } from '@/components/shared/Button/types';
@@ -12,14 +10,14 @@ import CurrencyInput from './components/CurrencyInput';
 import { QuoteDetails } from './components/QuoteDetails';
 import SelectTokenModal from './components/SelectTokenModal';
 import SlippageModal from './components/SlippageModal';
-import { ChangeButton, Form, FormTitle, Separator, SwapInputsWrapper, Wrapper } from './styles';
+import { ChangeButton, Form, FormTitle, Separator, SwapInputsWrapper, Wrapper, StyledSettingIcon } from './styles';
 import { AmountType } from './types';
 
 interface TradeFormProps {
   styles?: React.CSSProperties;
 }
 
-export const TradeForm = ({styles}: TradeFormProps) => {
+export const TradeForm = ({ styles }: TradeFormProps) => {
   const { isConnected } = useAccount();
 
   // const { switchChain } = useSwitchChain();
@@ -86,7 +84,7 @@ export const TradeForm = ({styles}: TradeFormProps) => {
     setAmountType(type);
     setIsSelectModalOpen(true);
     handleReset();
-};
+  };
 
   return (
     <Wrapper style={styles}>
@@ -94,7 +92,7 @@ export const TradeForm = ({styles}: TradeFormProps) => {
         <Flex $justify='space-between'>
           <FormTitle>AI token swap</FormTitle>
           <Button variants={ButtonVariants.CLEAR} onClick={() => setIsSlipageModalOpen(true)} aria-label='Settings'>
-            <SettingIcon />
+            <StyledSettingIcon />
           </Button>
         </Flex>
 
@@ -127,17 +125,14 @@ export const TradeForm = ({styles}: TradeFormProps) => {
         <QuoteDetails />
         {isConnected ? (
           <Button variants={ButtonVariants.SOLID} type='submit'>
-            <Flex $justify='center' $gap={8}>
-              <SwapIcon />
-              <span>Swap</span>
-            </Flex>
+              Swap
           </Button>
         ) : (
           <ConnectButton />
         )}
       </Form>
       <SelectTokenModal isOpen={isSelectModalOpen} onClose={() => setIsSelectModalOpen(false)} />
-      <SlippageModal isOpen={isSlipageModalOpen} onClose={() =>setIsSlipageModalOpen(false)} />
+      <SlippageModal isOpen={isSlipageModalOpen} onClose={() => setIsSlipageModalOpen(false)} />
     </Wrapper>
   );
 };

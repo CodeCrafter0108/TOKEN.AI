@@ -9,10 +9,11 @@ export const DropdownContainer = styled.div`
 
 export const DropdownButton = styled(Button)`
   width: 100%;
-  background-color: var(--box-bg-clr);
+  color: var(--accent-clr);
+  background-color: var(--primary-box-bg-clr);
   padding: 12px 30px 12px 16px;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 16px;
   font-size: 14px;
   font-weight: 500;
   text-align: left;
@@ -28,12 +29,12 @@ export const DropdownButton = styled(Button)`
 
 export const DropdownList = styled.ul<{ $isOpen: boolean }>`
   position: absolute;
-  top: 105%;
+  top: 106%;
   left: 0;
   width: 100%;
   padding: 16px;
-  background-color: var(--box-bg-clr);
-  border-radius: 8px;
+  background-color: rgb(19, 19, 19);
+  border-radius: 16px;
   display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
   flex-direction: column;
   gap: 12px;
@@ -44,21 +45,22 @@ export const DropdownItem = styled.li<{ $isSelected: boolean }>`
   display: flex;
   gap: 8px;
   padding: 8px 20px;
-  border-radius: 8px;
-  color: ${({ $isSelected }) => ($isSelected ? 'var(--accent-clr)' : 'var(--primary-clr)')};
+  border-radius: 16px;
+  color: ${({ $isSelected }) => ($isSelected ? 'var(--accent-clr)' : 'var(--primary-text-clr)')};
   cursor: pointer;
+  background-color: rgba(126, 196, 37, 0.08);
 
   svg path {
-    color: ${({ $isSelected }) => ($isSelected ? 'var(--accent-clr)' : 'var(--primary-clr)')};
+    color: ${({ $isSelected }) => ($isSelected ? 'var(--accent-clr)' : 'var(--primary-text-clr)')};
   }
 
   &:hover {
-    background-color: var(--modal-hover-clr);
+    background-color: rgba(126, 196, 37, 0.04);
   }
 `;
 
 export const Icon = styled(ChevronIcon)<{ $isOpen: boolean }>`
   transition: all 0.2s ease;
   transform: ${({ $isOpen }) => ($isOpen ? 'rotate(0deg)' : 'rotate(180deg)')};
-  color: ${({ $isOpen }) => ($isOpen ? 'var(--accent-clr)' : 'var(--primary-clr)')};
+  color: ${({ $isOpen }) => ($isOpen ? 'var(--accent-clr)' : 'var(--placeholder-clr)')};
 `;

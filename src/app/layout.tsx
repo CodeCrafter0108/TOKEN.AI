@@ -1,5 +1,5 @@
 import { BackGround } from '@/components/shared/BackGround';
-import { Footer } from '@/components/features/Footer';
+// import { Footer } from '@/components/features/Footer';
 import { Header } from '@/components/features/Header';
 import { Toast } from '@/components/shared/Toast';
 import StyledComponentsProvider from '@/config/providers/StyledComponentsProvider/provider';
@@ -12,6 +12,7 @@ import Script from 'next/script';
 import 'react-toastify/dist/ReactToastify.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { LatestTransactions } from '@/components/features/LatestTransactions';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -24,7 +25,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const headersObj = await headers();
-  const cookies = headersObj.get('cookie')
+  const cookies = headersObj.get('cookie');
   return (
     <html lang='en'>
       <body className={montserrat.className}>
@@ -33,11 +34,12 @@ export default async function RootLayout({
         <StyledComponentsProvider>
           <Web3ModalProvider cookies={cookies}>
             <Header />
-            <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <LatestTransactions />
+            <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
               <BackGround>{children}</BackGround>
             </main>
-            <Footer />
-            <Toast/>
+            {/* <Footer /> */}
+            <Toast />
           </Web3ModalProvider>
         </StyledComponentsProvider>
       </body>

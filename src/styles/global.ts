@@ -1,5 +1,5 @@
-import styled, { RuleSet } from 'styled-components';
 import { Breakpoints } from '@/styles/breakpoints';
+import styled, { RuleSet } from 'styled-components';
 import { FlexProps } from './types';
 
 export const Container = styled.div`
@@ -54,6 +54,10 @@ export const H2 = styled.h2`
   font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.72px;
+
+  @media screen and (max-width: ${Breakpoints.lg}) {
+    font-size: 36px;
+  }
 `;
 
 export const H3 = styled.h2`
@@ -70,7 +74,7 @@ export const Box = styled.div<{ $styles?: RuleSet<object> }>`
   gap: 8px;
   padding: 16px;
 
-  background-color: var(--box-bg-clr);
+  background-color: var(--primary-box-bg-clr);
   border-radius: 16px;
   box-shadow: var(--box-shadow);
 
@@ -85,4 +89,50 @@ export const Flex = styled.div<FlexProps>`
   align-items: ${(props) => props.$align || 'stretch'};
   gap: ${(props) => (props.$gap ? `${props.$gap}px` : '0px')};
   flex-wrap: ${(props) => props.$wrap || 'nowrap'};
+`;
+
+export const FirstBlur = styled.div`
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  filter: blur(100.6500015258789px);
+  background: rgba(53, 83, 49, 0.58);
+  transform: rotate(50deg);
+
+  width: 80px;
+  height: 280px;
+  left: 0;
+
+  @media screen and (min-width: ${Breakpoints.md}) {
+    width: 120px;
+    left: 20%;
+  }
+
+  @media screen and (min-width: ${Breakpoints.lg}) {
+    height: 500px;
+    left: 20%;
+  }
+`;
+
+export const SecondBlur = styled.div`
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  filter: blur(100.6500015258789px);
+  background: rgba(53, 83, 49, 0.58);
+  transform: rotate(50deg);
+
+  width: 108px;
+  height: 430px;
+  right: 0;
+
+  @media screen and (min-width: ${Breakpoints.md}) {
+    width: 208px;
+    right:  0%;
+  }
+
+  @media screen and (min-width: ${Breakpoints.lg}) {
+    height: 680px;
+    right: 10%;
+  }
 `;

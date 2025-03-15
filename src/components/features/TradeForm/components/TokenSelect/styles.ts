@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 export const TokenSelectWrapper = styled.div`
     position: relative;
-    border-radius: 8px;
+    border-radius: 64px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 
     cursor: pointer;
     transition: all 0.2s ease-in-out;
@@ -10,6 +11,5 @@ export const TokenSelectWrapper = styled.div`
     user-select: none;
     font-weight: 500;
 
-    background-color: var(--field-bg-clr);
     padding: 10px 8px 10px 12px;
 `;

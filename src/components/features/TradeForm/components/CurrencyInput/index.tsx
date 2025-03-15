@@ -4,7 +4,7 @@ import { Flex } from '@/styles/global';
 import { formatBalance } from '@/utils/formatters';
 import TokenSelect from '../TokenSelect';
 import WalletIcon from '@/assets/icons/wallet.svg';
-import { Wrapper, CurrencyWrapperBalance, CurrencyWrapperSelect, Label, StyledInput } from './styles';
+import { Wrapper, CurrencyWrapperBalance, CurrencyWrapperSelect, Label, StyledInput, FiatValue } from './styles';
 
 interface CurrencyInputProps {
   value: string;
@@ -48,7 +48,7 @@ const CurrencyInput = ({
       <StyledInput value={value} id={label} onChange={onChange} placeholder='0' />
       <CurrencyWrapperBalance>
         <Flex $align='center'>
-          <span>${valueUsd}</span>
+          <FiatValue>~ ${valueUsd}</FiatValue>
         </Flex>
       </CurrencyWrapperBalance>
 
@@ -64,7 +64,7 @@ const CurrencyInput = ({
           aria-label='Max balance'
         >
           <WalletIcon />
-          <span>{formatBalance(balance, 4) || '0.00'}</span>
+          <FiatValue >{formatBalance(balance, 4) || '0.00'}</FiatValue>
         </Flex>
       </CurrencyWrapperSelect>
     </Wrapper>

@@ -1,5 +1,5 @@
 import Button from '@/components/shared/Button';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const NextSlide = styled(Button)`
   position: absolute;
@@ -37,4 +37,8 @@ export const PrevSlide = styled(Button)`
   :hover {
     color: var(--accent-clr);
   }
+`;
+
+export const agentCardStyles = css`
+  background-color: var(--secondary-box-bg-clr);
 `;
