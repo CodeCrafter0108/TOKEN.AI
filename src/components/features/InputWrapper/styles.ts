@@ -14,8 +14,8 @@ export const InputContainer = styled.div<{ $isError: boolean, $isDisabled: boole
   justify-content: flex-end;
   border-radius: 8px;
   overflow: hidden;
-  background: var(--field-bg-clr);
-  border: 1px solid ${({ $isError }) => ($isError ? 'var(--error-clr)' : 'transparent')};
+  background: rgba(19, 19, 19, 0.60);
+  border: 1px solid ${({ $isError }) => ($isError ? 'var(--error-clr)' : 'rgba(255, 255, 255, 0.04)')};
   outline: 1px solid ${({ $isError }) => ($isError ? 'var(--error-clr)' : 'transparent')};
   transition: all 0.2s ease-in-out;
 
@@ -23,7 +23,7 @@ export const InputContainer = styled.div<{ $isError: boolean, $isDisabled: boole
   height: 44px;
 
   &:hover {
-    border: 1px solid var(--accent-clr);
+    border: 1px solid rgba(255, 255, 255, 0.12)
   }
 
   ${({ $isDisabled }) => $isDisabled && `pointer-events: none;`}

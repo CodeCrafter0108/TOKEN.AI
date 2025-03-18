@@ -19,18 +19,6 @@ export const HeroContainer = styled(Container)`
   }
 `;
 
-export const VideoWrapper = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const Video = styled.video`
-  width: 100%;
-  max-width: 750px;
-`;
-
 export const InfoWrapper = styled.div`
   flex: 1;
   display: flex;

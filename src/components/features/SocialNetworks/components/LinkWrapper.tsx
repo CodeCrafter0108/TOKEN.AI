@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyledLink, IconWrapper, TitleNetwork } from '../styles';
+import { RuleSet } from 'styled-components';
 
 interface LinkWrapperProps {
   href: string;
@@ -9,10 +10,11 @@ interface LinkWrapperProps {
   icon: React.ReactNode;
   title?: string;
   position?: 'card' | 'footer';
+  styles?: RuleSet<object>;
 }
 
-const LinkWrapper = ({ href, target, rel, ariaLabel, icon, title, position }: LinkWrapperProps) => (
-  <StyledLink href={href} target={target} rel={rel} aria-label={ariaLabel}>
+const LinkWrapper = ({ href, target, rel, ariaLabel, icon, title, position, styles }: LinkWrapperProps) => (
+  <StyledLink href={href} target={target} rel={rel} aria-label={ariaLabel} styles={styles}>
     <IconWrapper>
       {icon}
     </IconWrapper>

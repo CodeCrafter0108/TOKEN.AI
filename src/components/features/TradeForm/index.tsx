@@ -124,7 +124,7 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
         </SwapInputsWrapper>
         <QuoteDetails />
         {isConnected ? (
-          <Button variants={ButtonVariants.SOLID} type='submit'>
+          <Button type='submit'>
               Swap
           </Button>
         ) : (

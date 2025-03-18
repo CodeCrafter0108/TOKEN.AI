@@ -1,6 +1,7 @@
 import { ImageWithFallback } from '@/components/features/ImageWithFallback';
 import { Flex } from '@/styles/global';
 import { Info, Card, Title } from './styles';
+import { cardVariants } from './constant';
 
 interface LatestTransactionCardProps {
   isNewCard: boolean;
@@ -11,12 +12,18 @@ export const LatestTransactionCard = ({ isNewCard, id }: LatestTransactionCardPr
   return (
     <Card
       aria-label='button'
-      $isNew={isNewCard}
       $isSell={true}
+      $isNew={isNewCard}
       layout
-      initial={{ opacity: 0, x: 50, scale: 0.3 }}
-      animate={{ opacity: 1, x: 0, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.3 } }}
+      custom={isNewCard}
+      variants={cardVariants}
+      initial='initial'
+      animate='animate'
+      exit='exit'
+      transition={{
+        duration: 0.5,
+        layout: { duration: 0.2 }
+      }}
     >
       <Flex $gap={8} $align='center'>
         <ImageWithFallback

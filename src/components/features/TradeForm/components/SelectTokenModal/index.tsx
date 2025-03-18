@@ -16,7 +16,7 @@ const SelectTokenModal = ({ isOpen, onClose }: SelectTokenModalProps) => {
     <Modal isOpen={isOpen} handleClose={onClose}>
       <ModalHeader title='Select Token' onClose={onClose} />
        {/*@ts-expect-error not ckecked*/}
-      <Search styles={{ backgroundColor: 'var(--field-bg-clr)', marginBottom: '12px' }} />
+      <Search styles={{ marginBottom: '12px' }} />
       <TokenList>
         {Array(8)
           .fill(0)

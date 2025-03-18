@@ -1,3 +1,4 @@
+import { Breakpoints } from "@/styles/breakpoints";
 import styled from "styled-components";
 
 export const CardList = styled.ul`
@@ -6,6 +7,11 @@ export const CardList = styled.ul`
   overflow: hidden;
   width: 100%;
   padding: 8px 0 8px 24px;
+  margin-top: 4px;
+
+  @media screen and (min-width: ${Breakpoints.md}) {
+    margin-top: 16px;
+  }
   
   position: relative;
 

@@ -17,7 +17,6 @@ import CoinGeckoChart from './components/CoinGeckoChart';
 import { TokenInfo } from './components/TokenInfo';
 import TransactionTable from './components/TransactionTable';
 import { BackButton, cardsStyles, Content, LeftContent, RightContent } from './styles';
-import { Flex } from '@/styles/global';
 
 export default function Token() {
   const router = useRouter();

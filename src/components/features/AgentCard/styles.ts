@@ -1,3 +1,4 @@
+import Button from '@/components/shared/Button';
 import { Breakpoints } from '@/styles/breakpoints';
 import { Box } from '@/styles/global';
 import styled from 'styled-components';
@@ -28,7 +29,7 @@ const pulseScale = keyframes`
 `;
 
 export const Container = styled(Box)`
-  min-width: 280px;
+  /* min-width: 280px; */
   /* max-width: 286px; */
   margin: 3px 2px;
   cursor: pointer;
@@ -36,7 +37,7 @@ export const Container = styled(Box)`
   scale: 1;
 
   &:hover {
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 2px 0px 0px rgba(126, 196, 37, 0.10);
   }
 `;
 

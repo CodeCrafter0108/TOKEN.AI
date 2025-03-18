@@ -33,39 +33,3 @@ export const Description = styled.p`
   font-size: 12px;
   font-weight: 500;
 `;
-
-export const VideoWrapper = styled.div`
-  max-width: 666px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 9px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const Video = styled.video`
-  height: 100%;
-  width: 100%;
-  z-index: -1;
-`;
-
-export const TextTop = styled.div`
-  position: relative;
-  top: 0;
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  align-items: center;
-  ${textStyles}
-
-  span {
-    color: var(--accent-clr);
-  }
-`;
-
-export const TextBottom = styled.div`
-  bottom: 0;
-  ${textStyles}
-`;

@@ -1,7 +1,6 @@
 'use client';
 import ConnectButton from '@/components/features/ConnectButton';
 import Button from '@/components/shared/Button';
-import { ButtonVariants } from '@/components/shared/Button/types';
 import Input from '@/components/shared/Input';
 import launcherAbi from '@/config/abi/launcher.json';
 import { preSaveImage, saveImage } from '@/config/api/servises';
@@ -329,12 +328,12 @@ export const LaunchForm = () => {
       />
       {!isConnected && <ConnectButton />}
       {isConnected && DEFAULT_CHAIN_ID !== chainId && (
-        <Button variants={ButtonVariants.SOLID} onClick={() => switchChain({ chainId: DEFAULT_CHAIN_ID })}>
+        <Button onClick={() => switchChain({ chainId: DEFAULT_CHAIN_ID })}>
           Switch network
         </Button>
       )}
       {isConnected && DEFAULT_CHAIN_ID === chainId && (
-        <Button type='submit' variants={ButtonVariants.SOLID} disabled={isLoading || !isValid}>
+        <Button type='submit' disabled={isLoading || !isValid}>
           {isLoading ? (
             <Flex $gap={8} $align='center' $justify='center'>
               <ClipLoader color={'var(--accent-clr)'} size={16} speedMultiplier={0.7} />

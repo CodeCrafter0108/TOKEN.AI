@@ -1,3 +1,4 @@
+import Button from '@/components/shared/Button';
 import { Breakpoints } from '@/styles/breakpoints';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -21,10 +22,11 @@ export const List = styled.ul`
 export const StyledLink = styled(Link)`
   width: 100%;
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  gap: 24px;
 
   @media screen and (min-width: ${Breakpoints.md}) {
-    gap: 24px;
+    flex-direction: row;
   }
 `;
 
@@ -87,12 +89,39 @@ export const ListItem = styled.li`
 `;
 
 export const TokenSymbol = styled.span`
-${commonTitleStyles}
+  ${commonTitleStyles}
   font-size: 14px;
   font-weight: 400;
+`;
+
+export const MarketCupWrapper = styled.div`
+  display: flex;
+  gap: 4px;
+
+  @media screen and (min-width: ${Breakpoints.sm}) {
+    align-items: flex-end;
+  }
 `;
 
 export const MarketCapValue = styled.span`
   ${commonTitleStyles}
   font-size: 14px;
+  width: auto;
+`;
+
+export const ArrowWrapper = styled.div`
+  display: none;
+
+  @media screen and (min-width: ${Breakpoints.sm}) {
+    display: flex;
+    align-items: center;
+  }
+`;
+
+export const ViewMoreButton = styled(Button)`
+  width: 100%;
+
+  @media screen and (min-width: ${Breakpoints.sm}) {
+    display: none;
+  }
 `;

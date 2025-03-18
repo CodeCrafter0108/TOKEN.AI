@@ -9,7 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variants?: ButtonVariants;
 }
 
-const Button = ({ children, variants = ButtonVariants.OUTLINE, isSelected, type ='button', style, ...rest }: ButtonProps): JSX.Element => {
+const Button = ({ children, variants = ButtonVariants.SOLID, isSelected, type ='button', style, ...rest }: ButtonProps): JSX.Element => {
   return (
     <StyledButton {...rest} $variants={variants} $isSelected={isSelected} style={style} type={type}>
       {children}

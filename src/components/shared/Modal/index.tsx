@@ -18,20 +18,25 @@ const Modal = ({ isOpen, children, handleClose, styles }: ModalProps): ReactPort
   if (typeof document === 'undefined') return null;
 
   return createPortal(
-    <AnimatePresence>
+    <AnimatePresence >
       {isOpen && (
         <Overlay initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-            <Wrapper
-              ref={modalRef}
-              $styles={styles}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3 }}
-              tabIndex={-1}
-            >
-              {children}
-            </Wrapper>
+          <Wrapper
+            ref={modalRef}
+            $styles={styles}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{
+              duration: 0.3,
+              height: { type: 'spring', stiffness: 300, damping: 30 },
+              width: { type: 'spring', stiffness: 300, damping: 30 }
+            }}
+            tabIndex={-1}
+            layout
+          >
+            {children}
+          </Wrapper>
         </Overlay>
       )}
     </AnimatePresence>,

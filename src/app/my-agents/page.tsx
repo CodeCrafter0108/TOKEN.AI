@@ -50,18 +50,14 @@ export default function MyAgents() {
 
   return (
     <PageWrapper>
-      <PageTitle
-        title='My Agents'
-        subTitle='Your personalized list of generated tokens'
-        badgeDescription='powered by'
-      />
+      <PageTitle title='My Agents' subTitle='Your personalized list of generated tokens' badgeDescription={true} />
       <Flex $direction='column' $gap={24}>
         <Search styles={{ width: '100%' }} searchValue={searchValue} setSearchValue={setSearchValue} />
         <AnimatedWrapper.Opacity
           condition={isConnected && !myAgentsLoading && filteredAgents.length > 0}
           duration={0.2}
         >
-          <AgentsList agents={filteredAgents} isLoading={myAgentsLoading} />
+          <AgentsList agents={filteredAgents} isLoading={myAgentsLoading} hasButton/>
         </AnimatedWrapper.Opacity>
       </Flex>
       <Messages

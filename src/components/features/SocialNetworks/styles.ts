@@ -1,10 +1,12 @@
 import Link from 'next/link';
-import styled from 'styled-components';
+import styled, { RuleSet } from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{$styles?: RuleSet<object>}>`
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+  ${props => props?.$styles && props.$styles}
 `;
 
 export const IconWrapper = styled.div`
@@ -28,6 +30,7 @@ export const StyledLink = styled(Link)`
   &:hover {
     color: var(--accent-clr);
   }
+
 `;
 
 export const TitleNetwork = styled.span`

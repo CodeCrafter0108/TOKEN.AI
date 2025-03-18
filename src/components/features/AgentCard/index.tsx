@@ -5,7 +5,7 @@ import { Flex } from '@/styles/global';
 import { IToken } from '@/types/common';
 import { shortNumber } from '@/utils/formatters';
 import { useRouter } from 'next/navigation';
-import { RuleSet } from 'styled-components';
+import { css, RuleSet } from 'styled-components';
 import { ImageWithFallback } from '../ImageWithFallback';
 import { SocialNetworks } from '../SocialNetworks';
 import {
@@ -42,8 +42,8 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
           loading='lazy'
           style={{ objectFit: 'cover', borderRadius: '50%' }}
           sizes='100%'
-          widthSkeleton={100}
-          heightSkeleton={100}
+          widthSkeleton={70}
+          heightSkeleton={70}
           shape='circle'
         />
         <Grid $hasMetrics={hasMetrics}>
@@ -75,23 +75,29 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
                 siteUrl={siteUrl}
                 socialUrl={socialUrl}
                 chatUrl={chatUrl}
-                styles={{ flexDirection: 'row' }}
+                styles={css`
+                  flex-direction: 'row';
+                `}
               />
             </SocialNetworkWrapper>
           )}
         </Grid>
       </Flex>
       {!hasMetrics ? (
-        <Flex $gap={12}>
-          <SocialNetworks
-            position='card'
-            siteUrl={siteUrl}
-            socialUrl={socialUrl}
-            chatUrl={chatUrl}
-            styles={{ flexDirection: 'column' }}
-          />
-          <Description $hasMetrics={hasMetrics}>{description}</Description>
-        </Flex>
+        <>
+          <Flex $gap={12}>
+            <SocialNetworks
+              position='card'
+              siteUrl={siteUrl}
+              socialUrl={socialUrl}
+              chatUrl={chatUrl}
+              styles={css`
+                flex-direction: 'column';
+              `}
+            />
+            <Description $hasMetrics={hasMetrics}>{description}</Description>
+          </Flex>
+        </>
       ) : (
         <Description $hasMetrics={hasMetrics}>{description}</Description>
       )}

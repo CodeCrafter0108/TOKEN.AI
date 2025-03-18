@@ -6,6 +6,7 @@ export const TokenList = styled.ul`
   gap: 12px;
   max-height: 350px;
   overflow-y: auto;
+  padding-right: 4px;
 `;
 
 export const TokenListItem = styled.li`
@@ -20,7 +21,7 @@ export const TokenListItem = styled.li`
   cursor: pointer;
 
   &:hover {
-    background-color: var(--modal-hover-clr);
+    background-color: rgba(255, 255, 255, 0.08);
   }
 `;
 

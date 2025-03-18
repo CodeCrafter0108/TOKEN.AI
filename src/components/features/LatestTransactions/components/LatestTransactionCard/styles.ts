@@ -17,6 +17,7 @@ export const Card = styled(motion.li)<{ $isNew: boolean; $isSell: boolean }>`
       box-shadow: ${$isSell
         ? '0px 0px 11.4px 0px #ff9500, 0px 2px 0px 0px rgba(0, 0, 0, 0.1)'
         : '0px 0px 11.4px 0px #7ec425, 0px 2px 0px 0px rgba(0, 0, 0, 0.1)'};
+      transition: box-shadow 0.5s ease-in-out;
     `}
 
   &:hover {
@@ -24,6 +25,7 @@ export const Card = styled(motion.li)<{ $isNew: boolean; $isSell: boolean }>`
       box-shadow: ${$isSell
         ? '0px 0px 11.4px 0px #ff9500, 0px 2px 0px 0px rgba(0, 0, 0, 0.1)'
         : '0px 0px 11.4px 0px #7ec425, 0px 2px 0px 0px rgba(0, 0, 0, 0.1)'};
+      transition: box-shadow 0.5s ease-in-out;
     `}
   }
 `;

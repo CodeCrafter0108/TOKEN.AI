@@ -12,7 +12,7 @@ export const DropdownButton = styled(Button)`
   color: var(--accent-clr);
   background-color: var(--primary-box-bg-clr);
   padding: 12px 30px 12px 16px;
-  border: 1px solid transparent;
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 16px;
   font-size: 14px;
   font-weight: 500;
@@ -23,7 +23,7 @@ export const DropdownButton = styled(Button)`
   outline: none;
 
   &:hover {
-    border: 1px solid var(--accent-clr);
+    border: 1px solid rgba(255, 255, 255, 0.12);
   }
 `;
 
@@ -45,17 +45,16 @@ export const DropdownItem = styled.li<{ $isSelected: boolean }>`
   display: flex;
   gap: 8px;
   padding: 8px 20px;
-  border-radius: 16px;
+  border-radius: 8px;
   color: ${({ $isSelected }) => ($isSelected ? 'var(--accent-clr)' : 'var(--primary-text-clr)')};
   cursor: pointer;
-  background-color: rgba(126, 196, 37, 0.08);
 
   svg path {
     color: ${({ $isSelected }) => ($isSelected ? 'var(--accent-clr)' : 'var(--primary-text-clr)')};
   }
 
   &:hover {
-    background-color: rgba(126, 196, 37, 0.04);
+    background-color: rgba(255, 255, 255, 0.08);
   }
 `;
 

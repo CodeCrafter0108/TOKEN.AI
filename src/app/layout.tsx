@@ -1,5 +1,5 @@
 import { BackGround } from '@/components/shared/BackGround';
-// import { Footer } from '@/components/features/Footer';
+import { Footer } from '@/components/features/Footer';
 import { Header } from '@/components/features/Header';
 import { Toast } from '@/components/shared/Toast';
 import StyledComponentsProvider from '@/config/providers/StyledComponentsProvider/provider';
@@ -34,11 +34,11 @@ export default async function RootLayout({
         <StyledComponentsProvider>
           <Web3ModalProvider cookies={cookies}>
             <Header />
-            <LatestTransactions />
             <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+              <LatestTransactions />
               <BackGround>{children}</BackGround>
             </main>
-            {/* <Footer /> */}
+            <Footer />
             <Toast />
           </Web3ModalProvider>
         </StyledComponentsProvider>
