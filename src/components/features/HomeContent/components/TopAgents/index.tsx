@@ -191,8 +191,8 @@ const mock = [
     __typename: 'Token'
   }
 ];
-
 export const TopAgents = ({ agents = [] }: TopAgentsProps) => {
+  console.log("🚀 ~ TopAgents ~ agents:", agents)
   const [currentIndex, setCurrentIndex] = useState<number>(3);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const visibleItemCount: number = 5;
@@ -266,6 +266,7 @@ export const TopAgents = ({ agents = [] }: TopAgentsProps) => {
         index: i
       });
     }
+    //@ts-expect-error not ckecked
     return result;
   };
 

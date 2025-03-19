@@ -1,4 +1,3 @@
-import Button from '@/components/shared/Button';
 import { Breakpoints } from '@/styles/breakpoints';
 import { Box } from '@/styles/global';
 import styled from 'styled-components';
