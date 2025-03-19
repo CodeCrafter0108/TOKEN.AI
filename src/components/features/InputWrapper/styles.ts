@@ -1,20 +1,22 @@
-import styled from 'styled-components';
+import styled, { RuleSet } from 'styled-components';
 import CheckIcon from '@/assets/icons/check.svg';
 
-export const Container = styled.div`
+export const Container = styled.div<{$styles?: RuleSet<object> }>`
   max-width: 666px;
   width: 100%;
   height: 67px;
+
+  ${({ $styles }) => $styles}
 `;
 
-export const InputContainer = styled.div<{ $isError: boolean, $isDisabled: boolean }>`
+export const InputContainer = styled.div<{ $isError: boolean; $isDisabled: boolean; $styles?: RuleSet<object> }>`
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  border-radius: 8px;
+  border-radius: 16px;
   overflow: hidden;
-  background: rgba(19, 19, 19, 0.60);
+  background: rgba(19, 19, 19, 0.6);
   border: 1px solid ${({ $isError }) => ($isError ? 'var(--error-clr)' : 'rgba(255, 255, 255, 0.04)')};
   outline: 1px solid ${({ $isError }) => ($isError ? 'var(--error-clr)' : 'transparent')};
   transition: all 0.2s ease-in-out;
@@ -23,10 +25,12 @@ export const InputContainer = styled.div<{ $isError: boolean, $isDisabled: boole
   height: 44px;
 
   &:hover {
-    border: 1px solid rgba(255, 255, 255, 0.12)
+    border: 1px solid ${({ $isError }) => ($isError ? 'var(--error-clr)' : ' rgba(255, 255, 255, 0.12)')};
   }
 
   ${({ $isDisabled }) => $isDisabled && `pointer-events: none;`}
+
+  ${({ $styles }) => $styles}
 `;
 
 export const Check = styled(CheckIcon)`
@@ -49,11 +53,26 @@ export const Label = styled.label<{ $isActive: boolean; $isRequired: boolean }>`
     $isRequired &&
     `&::after {
       content: '*';
-      color: var(--required-clr);
+      color: var(--white-clr);
       margin-left: 4px;
     }`}
 
   color: var(--placeholder-clr);
 `;
 
-export const Error = styled.p``;
+export const Error = styled.p`
+  font-size: 12px;
+  color: var(--error-clr);
+`;
+
+export const Badge = styled.div`
+position: absolute;
+top: 0;
+left: 0;
+padding: 12px;
+height: 100%;
+border-right: 1px solid rgba(255, 255, 255, 0.04);
+width: 105px;
+
+background: linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), #151515;
+`;
