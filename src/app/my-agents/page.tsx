@@ -15,6 +15,8 @@ import { useQuery } from '@apollo/client';
 import { useMemo, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { Messages } from './components/Messages';
+import Filter from './components/Filter';
+import { FilterWrapper } from './styles';
 
 export default function MyAgents() {
   const { isConnected, address } = useAccount();
@@ -52,12 +54,15 @@ export default function MyAgents() {
     <PageWrapper>
       <PageTitle title='My Agents' subTitle='Your personalized list of generated tokens' badgeDescription={true} />
       <Flex $direction='column' $gap={24}>
-        <Search styles={{ width: '100%' }} searchValue={searchValue} setSearchValue={setSearchValue} />
+        <FilterWrapper>
+          <Search styles={{ width: '100%' }} searchValue={searchValue} setSearchValue={setSearchValue} />
+          <Filter />
+        </FilterWrapper>
         <AnimatedWrapper.Opacity
           condition={isConnected && !myAgentsLoading && filteredAgents.length > 0}
           duration={0.2}
         >
-          <AgentsList agents={filteredAgents} isLoading={myAgentsLoading} hasButton/>
+          <AgentsList agents={filteredAgents} isLoading={myAgentsLoading} hasButton />
         </AnimatedWrapper.Opacity>
       </Flex>
       <Messages

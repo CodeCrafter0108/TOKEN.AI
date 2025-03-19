@@ -1,10 +1,12 @@
 import ChevronIcon from '@/assets/icons/chevron.svg';
 import Button from '@/components/shared/Button';
-import styled from 'styled-components';
+import styled, { RuleSet } from 'styled-components';
 
-export const DropdownContainer = styled.div`
+export const DropdownContainer = styled.div<{ $styles?: RuleSet<object> }>`
   position: relative;
   width: 100%;
+
+  ${({ $styles }) => $styles && $styles}
 `;
 
 export const DropdownButton = styled(Button)`
