@@ -306,6 +306,9 @@ export const TopAgents = ({ agents = [] }: TopAgentsProps) => {
                 initial={{ opacity: 0, x: 50, scale: 0.3 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+                transition={{
+                  layout: { type: 'spring', stiffness: 300, damping: 30 }
+                }}
               >
                 <SlideContent
                   style={

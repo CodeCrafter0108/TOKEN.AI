@@ -3,7 +3,7 @@ import Button from '@/components/shared/Button';
 import { useState } from 'react';
 import { CardList } from './styles';
 import { LatestTransactionCard } from './components/LatestTransactionCard';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { supportedPages } from './constants';
 
@@ -32,14 +32,23 @@ export const LatestTransactions = () => {
       <CardList>
         <AnimatePresence initial={false} mode='popLayout'>
           {transactions.map((item) => (
-            <LatestTransactionCard key={item} isNewCard={item === newCard} id={item} />
+            <motion.div
+              key={item}
+              layout
+              initial={{ opacity: 0, x: -100, scale: 0.8 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+              transition={{
+                layout: { type: 'spring', stiffness: 300, damping: 30 }
+              }}
+            >
+              <LatestTransactionCard id={item} isNewCard={item === newCard} />
+            </motion.div>
           ))}
         </AnimatePresence>
       </CardList>
 
-      <Button onClick={() => addNewCard()}>
-        Add transaction
-      </Button>
+      <Button onClick={() => addNewCard()}>Add transaction</Button>
     </>
   );
 };

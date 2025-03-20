@@ -1,7 +1,6 @@
-import { motion } from 'framer-motion';
 import styled, { css } from 'styled-components';
 
-export const Card = styled(motion.li)<{ $isNew: boolean; $isSell: boolean }>`
+export const Card = styled.li<{ $isNew: boolean; $isSell: boolean }>`
   border-radius: 76px;
   background-color: var(--header-bg-clr);
   padding: 8px 12px;
