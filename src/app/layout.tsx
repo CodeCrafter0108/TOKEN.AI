@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { LatestTransactions } from '@/components/features/LatestTransactions';
+import { ConditionalScript } from '@/components/features/ConditionalScript';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -30,7 +31,8 @@ export default async function RootLayout({
     <html lang='en'>
       <body className={montserrat.className}>
         <Script src='/scripts/jquery-3.6.4.min.js' strategy='beforeInteractive' />
-        <Script src='/scripts/animationCursor.js' strategy='afterInteractive' />
+        {/* <Script src='/scripts/animationCursor.js' strategy='afterInteractive' /> */}
+        <ConditionalScript />
         <StyledComponentsProvider>
           <Web3ModalProvider cookies={cookies}>
             <Header />
