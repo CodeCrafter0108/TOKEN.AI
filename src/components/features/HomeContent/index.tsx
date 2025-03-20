@@ -1,7 +1,7 @@
 import { getGraphClient } from '@/config/graph/config';
 import { ChainId } from '@/constants/blockchain/networks';
 import { GetAgents } from '@/graphql/queries/GetAgents';
-import { H2, H3 } from '@/styles/global';
+import { Flex, H2, H3 } from '@/styles/global';
 import { ITokensData } from '@/types/common';
 import { RefetchInterval } from '@/types/enum';
 import { useQuery } from '@apollo/client';
@@ -12,8 +12,14 @@ import { Hero } from './components/Hero';
 import { LinkToTopAgent } from './components/LinkToTopAgent';
 import { TopAgents } from './components/TopAgents';
 import { ListWrapper, TitleWrapper, Wrapper } from './styles';
+import SpinningCoin from './components/SpinningCoin';
+import PlusIcon from '@/assets/icons/plus.svg';
+import Button from '@/components/shared/Button';
+import { useWindowSize } from '@/hooks/useWindowSize';
+import { NumberBreakpoints } from '@/styles/breakpoints';
 
 export const HomeContent = () => {
+  const { width } = useWindowSize();
   const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
 
   const {
@@ -90,10 +96,19 @@ export const HomeContent = () => {
         </ListWrapper>
       </Wrapper>
       <ListWrapper>
-        <H3 style={{ marginTop: '80px' }}>Explore agents</H3>
+        <H3 style={{ marginTop: width > NumberBreakpoints.md ? '80px' : '40px' }}>Explore agents</H3>
         <ExploreList />
       </ListWrapper>
-      <H2 style={{ marginTop: '170px' }}>Available tokens</H2>
+      <Flex $direction='column' $align='center' style={{ marginTop: '40px' }}>
+        <H2>Start your Agenteconomy</H2>
+        <SpinningCoin />
+        <Button>
+          <Flex $align='center' $gap={8} $justify='center'>
+            <PlusIcon />
+            <span>Launch agent</span>
+          </Flex>
+        </Button>
+      </Flex>
     </>
   );
 };

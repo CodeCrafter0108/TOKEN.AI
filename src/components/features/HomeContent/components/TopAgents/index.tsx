@@ -324,7 +324,7 @@ export const TopAgents = ({ agents = [] }: TopAgentsProps) => {
 
       <CarouselFooter>
         <Blur />
-        <LinkToTopAgent title='View all top agents' params='top' />
+        <LinkToTopAgent title='View all top agents' params='top' styles={{padding: '12px 0'}}/>
       </CarouselFooter>
     </CarouselContainer>
   );

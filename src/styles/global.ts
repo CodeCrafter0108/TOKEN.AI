@@ -55,7 +55,7 @@ export const H2 = styled.h2`
   font-weight: 700;
   letter-spacing: -0.72px;
 
-  @media screen and (max-width: ${Breakpoints.lg}) {
+  @media screen and (min-width: ${Breakpoints.lg}) {
     font-size: 36px;
   }
 `;
