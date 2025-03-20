@@ -47,8 +47,8 @@ export const LatestTransactions = () => {
           ))}
         </AnimatePresence>
       </CardList>
-
-      <Button onClick={() => addNewCard()}>Add transaction</Button>
+      {/*TODO remove button */}
+      <Button onClick={() => addNewCard()} style={{width: '20px', padding: '0', position: 'absolute', top: '70px', zIndex: '5'}}>+</Button>
     </>
   );
 };

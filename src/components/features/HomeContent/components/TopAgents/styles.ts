@@ -88,6 +88,10 @@ export const SlideItem = styled(motion.div)`
   @media (min-width: 1300px) {
     flex: 0 0 20%;
   }
+
+  @media (min-width: 1780px) {
+    flex: 0 0 16.5%;
+  }
 `;
 
 export const SlideContent = styled.div`

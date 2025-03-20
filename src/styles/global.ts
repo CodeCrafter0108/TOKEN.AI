@@ -1,8 +1,8 @@
 import { Breakpoints } from '@/styles/breakpoints';
-import styled, { RuleSet } from 'styled-components';
+import styled, { css, RuleSet } from 'styled-components';
 import { FlexProps } from './types';
 
-export const Container = styled.div`
+export const Container = styled.div<{ $hasPaddingTop?: boolean }>`
   width: 100%;
   height: 100%;
   padding: 0 12px;
@@ -29,6 +29,16 @@ export const Container = styled.div`
   @media screen and (min-width: ${Breakpoints.xxl}) {
     padding: 0 60px;
   }
+
+  ${({ $hasPaddingTop }) =>
+    $hasPaddingTop &&
+    css`
+      padding-top: 30px;
+
+      @media screen and (min-width: ${Breakpoints.md}) {
+        padding-top: 50px;
+      }
+    `}
 `;
 
 export const PageContainer = styled.div`
@@ -128,7 +138,7 @@ export const SecondBlur = styled.div`
 
   @media screen and (min-width: ${Breakpoints.md}) {
     width: 208px;
-    right:  0%;
+    right: 0;
   }
 
   @media screen and (min-width: ${Breakpoints.lg}) {

@@ -51,8 +51,12 @@ export default function MyAgents() {
   }, [myAgents?.tokens, debouncedSearchValue]);
 
   return (
-    <PageWrapper>
-      <PageTitle title='My Agents' subTitle='Your personalized list of generated tokens' badgeDescription={true} />
+    <PageWrapper hasPaddingTop>
+      <PageTitle
+        title='My Agents'
+        subTitle='Your personalized list of generated tokens'
+        badgeDescription={true}
+      />
       <Flex $direction='column' $gap={24}>
         <FilterWrapper>
           <Search styles={{ width: '100%' }} searchValue={searchValue} setSearchValue={setSearchValue} />

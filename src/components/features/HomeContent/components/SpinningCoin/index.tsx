@@ -1,21 +1,22 @@
 'use client';
-import { CoinImage, CoinWrapper } from "./styles";
+import { Coin, CoinFace, CoinWrapper } from './styles';
 
 export default function SpinningCoin() {
   return (
     <CoinWrapper>
-      <CoinImage
-        src="/images/homepage/coin.png"
-        alt="Spinning coin"
+      <Coin
         animate={{
-          rotateY: [0, 360],
+          rotateY: [0, 360]
         }}
         transition={{
           repeat: Infinity,
-          duration: 3,
-          ease: 'linear',
+          duration: 4,
+          ease: 'linear'
         }}
-      />
+      >
+        <CoinFace src='/images/homepage/coin_back.png' alt='Coin front side' />
+        <CoinFace src='/images/homepage/coin_back.png' alt='Coin back side' className='back' />
+      </Coin>
     </CoinWrapper>
   );
 }

@@ -1,6 +1,12 @@
+import PlusIcon from '@/assets/icons/plus.svg';
+import CommonLink from '@/components/shared/CommonLink';
+import { LinkVariants } from '@/components/shared/CommonLink/types';
 import { getGraphClient } from '@/config/graph/config';
 import { ChainId } from '@/constants/blockchain/networks';
+import { AppRoutes } from '@/constants/routes';
 import { GetAgents } from '@/graphql/queries/GetAgents';
+import { useWindowSize } from '@/hooks/useWindowSize';
+import { NumberBreakpoints } from '@/styles/breakpoints';
 import { Flex, H2, H3 } from '@/styles/global';
 import { ITokensData } from '@/types/common';
 import { RefetchInterval } from '@/types/enum';
@@ -10,13 +16,9 @@ import { AgentsList } from '../AgentsList';
 import { ExploreList } from './components/ExploreList';
 import { Hero } from './components/Hero';
 import { LinkToTopAgent } from './components/LinkToTopAgent';
-import { TopAgents } from './components/TopAgents';
-import { ListWrapper, TitleWrapper, Wrapper } from './styles';
 import SpinningCoin from './components/SpinningCoin';
-import PlusIcon from '@/assets/icons/plus.svg';
-import Button from '@/components/shared/Button';
-import { useWindowSize } from '@/hooks/useWindowSize';
-import { NumberBreakpoints } from '@/styles/breakpoints';
+import { TopAgents } from './components/TopAgents';
+import { CoinAnimationWrapper, ListWrapper, TitleWrapper, Wrapper } from './styles';
 
 export const HomeContent = () => {
   const { width } = useWindowSize();
@@ -99,16 +101,16 @@ export const HomeContent = () => {
         <H3 style={{ marginTop: width > NumberBreakpoints.md ? '80px' : '40px' }}>Explore agents</H3>
         <ExploreList />
       </ListWrapper>
-      <Flex $direction='column' $align='center' style={{ marginTop: '40px' }}>
+      <CoinAnimationWrapper>
         <H2>Start your Agenteconomy</H2>
         <SpinningCoin />
-        <Button>
+        <CommonLink href={AppRoutes.LAUNCHER} variants={LinkVariants.SOLID_BUTTON}>
           <Flex $align='center' $gap={8} $justify='center'>
             <PlusIcon />
             <span>Launch agent</span>
           </Flex>
-        </Button>
-      </Flex>
+        </CommonLink>
+      </CoinAnimationWrapper>
     </>
   );
 };

@@ -7,7 +7,7 @@ import { NumberBreakpoints } from '@/styles/breakpoints';
 import { H3 } from '@/styles/global';
 import { IToken } from '@/types/common';
 import { AnimatePresence } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { LinkToTopAgent } from '../LinkToTopAgent';
 import {
   agentCardStyles,
@@ -192,14 +192,13 @@ const mock = [
   }
 ];
 export const TopAgents = ({ agents = [] }: TopAgentsProps) => {
-  console.log("🚀 ~ TopAgents ~ agents:", agents)
+  console.log('🚀 ~ TopAgents ~ agents:', agents);
   const [currentIndex, setCurrentIndex] = useState<number>(3);
   const [isPaused, setIsPaused] = useState<boolean>(false);
-  const visibleItemCount: number = 5;
+  const { width } = useWindowSize();
+  const visibleItemCount: number = useMemo(() => (width > 1780 ? 6 : 5), [width]);
   const autoplayIntervalRef = useRef<null | NodeJS.Timeout>(null);
   const autoplayDelay: number = 2000;
-
-  const { width } = useWindowSize();
 
   useEffect(() => {
     startAutoplay();
@@ -271,7 +270,7 @@ export const TopAgents = ({ agents = [] }: TopAgentsProps) => {
   };
 
   const getItemStyle = (index: number): { rotation: number; verticalOffset: number } => {
-    const rotation: number = (index - visibleItemCount / 2 + 0.5) * 2;
+    const rotation: number = (index - visibleItemCount / 2 + 0.5) * 1.5;
     const verticalOffset: number = Math.pow(Math.abs(index - visibleItemCount / 2 + 0.5), 2) * 4;
 
     return {
@@ -327,7 +326,7 @@ export const TopAgents = ({ agents = [] }: TopAgentsProps) => {
 
       <CarouselFooter>
         <Blur />
-        <LinkToTopAgent title='View all top agents' params='top' styles={{padding: '12px 0'}}/>
+        <LinkToTopAgent title='View all top agents' params='top' styles={{ padding: '12px 0' }} />
       </CarouselFooter>
     </CarouselContainer>
   );

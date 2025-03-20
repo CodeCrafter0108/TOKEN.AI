@@ -6,7 +6,7 @@ import { TradeForm } from '../../components/features/TradeForm';
 
 export default function Trade() {
   return (
-    <PageWrapper>
+    <PageWrapper hasPaddingTop>
       <PageTitle title='Trade' subTitle='Easily trade your tokens' />
       <Flex $align='center' $direction='column' $justify='center' style={{ flex: 1 }}>
         <TradeForm />

@@ -1,19 +1,17 @@
-import { Breakpoints } from "@/styles/breakpoints";
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const CardList = styled.ul`
+  position: absolute;
+  top: 60px;
+  left: 0;
   display: flex;
   gap: 12px;
   overflow: hidden;
   width: 100%;
   padding: 8px 0 8px 24px;
-  margin-top: 4px;
+  z-index: 5;
 
-  @media screen and (min-width: ${Breakpoints.md}) {
-    margin-top: 16px;
-  }
-  
-  position: relative;
+  margin-top: 16px;
 
   &::after {
     content: '';

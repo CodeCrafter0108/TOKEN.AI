@@ -3,11 +3,11 @@ import Stars from '@/assets/icons/stars.svg';
 import CommonLink from '@/components/shared/CommonLink';
 import { LinkVariants } from '@/components/shared/CommonLink/types';
 import { AppRoutes } from '@/constants/routes';
-import { Dot, HeroContainer, HeroWrapper, InfoWrapper, List, ListItem, ListItemTitle, Title } from './styles';
+import { Dot, HeroContainer, InfoWrapper, List, ListItem, ListItemTitle, Title } from './styles';
+import { Meteorite } from './components/Meteorite';
 
 export const Hero = () => {
   return (
-    <HeroWrapper>
       <HeroContainer>
         <InfoWrapper>
           <Title>
@@ -42,7 +42,7 @@ export const Hero = () => {
             </LinkContent>
           </CommonLink>
         </InfoWrapper>
+        <Meteorite />
       </HeroContainer>
-    </HeroWrapper>
   );
 };

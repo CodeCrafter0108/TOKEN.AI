@@ -34,8 +34,8 @@ export default async function RootLayout({
         <StyledComponentsProvider>
           <Web3ModalProvider cookies={cookies}>
             <Header />
+            <LatestTransactions />
             <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-              <LatestTransactions />
               <BackGround>{children}</BackGround>
             </main>
             <Footer />

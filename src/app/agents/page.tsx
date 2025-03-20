@@ -85,7 +85,7 @@ export default function TopAgents() {
   }, [agents?.tokens, debouncedSearchValue]);
 
   return (
-    <PageWrapper>
+    <PageWrapper hasPaddingTop>
       <PageTitle
         title='Agents'
         subTitle='Explore an endless variety of tokens to suit every taste'

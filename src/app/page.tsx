@@ -4,7 +4,7 @@ import { PageWrapper } from '@/components/features/PageWrapper';
 
 export default function Home() {
   return (
-    <PageWrapper>
+    <PageWrapper hasPaddingTop>
       <HomeContent />
     </PageWrapper>
   );

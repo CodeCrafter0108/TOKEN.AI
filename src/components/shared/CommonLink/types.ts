@@ -1,4 +1,5 @@
 export enum LinkVariants {
   SOLID,
-  CLEAR
+  CLEAR,
+  SOLID_BUTTON
 };

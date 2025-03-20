@@ -40,7 +40,7 @@ export default function Token() {
   }
 
   return (
-    <PageWrapper>
+    <PageWrapper hasPaddingTop>
       <BackButton onClick={() => router.back()} variants={ButtonVariants.CLEAR}>
         <Arrow />
         <span>Back to the list</span>
