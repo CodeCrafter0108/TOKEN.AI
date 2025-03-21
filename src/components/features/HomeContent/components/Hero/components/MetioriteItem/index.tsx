@@ -4,7 +4,7 @@ import { RuleSet } from 'styled-components';
 
 interface MeteoriteItemProps {
   label: string;
-  interval: number;
+  interval?: number;
   styles: RuleSet<object>;
   initialIndex?: number;
   duration?: number;
@@ -12,7 +12,13 @@ interface MeteoriteItemProps {
 
 const colorsFilterData: string[] = ['#f064c6', '#7265e7', '#3b3b3b', '#33d349', '#e9c319', '#ec3e3e'];
 
-export const MeteoriteItem = ({ label, interval, styles, duration = 1, initialIndex = 0 }: MeteoriteItemProps) => {
+export const MeteoriteItem = ({
+  label,
+  interval = 2000,
+  styles,
+  duration = 0.3,
+  initialIndex = 0
+}: MeteoriteItemProps) => {
   const [currentColor, setCurrentColor] = useState<string>(colorsFilterData[initialIndex]);
 
   useEffect(() => {
