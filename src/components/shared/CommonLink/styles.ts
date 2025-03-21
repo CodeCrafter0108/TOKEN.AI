@@ -8,6 +8,7 @@ export const StyledLink = styled(Link)<{ $variants: LinkVariants }>`
   text-align: center;
   font-size: 16px;
   font-weight: 600;
+  outline: none;
 
   padding: 12px 24px;
   border-radius: 8px;

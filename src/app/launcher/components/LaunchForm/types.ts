@@ -10,7 +10,6 @@ export type LauncherTypeData = {
   description: string;
   imageUrl: FileList;
   buy?: string;
-  buyCustom?: string;
 };
 
 export type FieldsFocused = {
@@ -21,9 +20,9 @@ export type FieldsFocused = {
   socialUrl: boolean;
   chatUrl: boolean;
   description: boolean;
-  buyCustom: boolean;
+  buy: boolean;
 };
 
 export type ImageFieldType = ControllerRenderProps<LauncherTypeData, 'imageUrl'>;
 
-export type BuyFieldType = ControllerRenderProps<LauncherTypeData, 'buy'>;
+// export type BuyFieldType = ControllerRenderProps<LauncherTypeData, 'buy'>;

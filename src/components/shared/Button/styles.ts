@@ -10,6 +10,7 @@ export const StyledButton = styled.button<{ $variants: ButtonVariants; $isSelect
   background-color: transparent;
   /* border: 2px solid transparent; */
   transition: all 0.3s ease-in-out;
+  outline: none;
 
   &:disabled {
     opacity: 0.5;

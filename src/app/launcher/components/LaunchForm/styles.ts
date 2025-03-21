@@ -85,3 +85,11 @@ export const SupplyStub = styled.span`
   bottom: 0;
   left: 12px;
 `;
+
+export const Percent = styled.span`
+  position: absolute;
+  font-size: 16px;
+  bottom: 50%;
+  transform: translateY(50%);
+  right: 34px;
+`;

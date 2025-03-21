@@ -1,1 +1,5 @@
-export const launcherContract = '0x44DB18FF9472B86d990D7BFcb71518cB55c52826';
+export const launcherContract = '0x961daFdFAA01b98CdD61D93531af044C44C27A4B';
+export const sonicOracle = '0xc76dFb89fF298145b417d221B2c747d84952e01d';
+
+
+export const SONIC_DECIMALS = 8;

@@ -33,7 +33,7 @@ const MAX_FILE_SIZE = 250 * 1024;
 // };
 
 export const TOTAL_SUPPLY: number = 1000000000;
-const MAX_BUY_COUNT: number = TOTAL_SUPPLY * 0.5;
+const MAX_BUY_PERCENT: number = 50;
 
 export const schema = yup
   .object({
@@ -43,10 +43,10 @@ export const schema = yup
     websiteUrl: yup.string().url(messages.url).max(150, `${messages.max} 150`),
     socialUrl: yup.string().url(messages.url).max(150, `${messages.max} 150`),
     chatUrl: yup.string().url(messages.url).max(150, `${messages.max} 150`),
-    description: yup.string().required(messages.required).min(3, `${messages.min} 3`).max(150, `${messages.max} 150`),
-    buyCustom: yup
+    description: yup.string().required(messages.required).min(15, `${messages.min} 15`).max(150, `${messages.max} 150`),
+    buy: yup
       .string()
-      .test('required', `Max count ${MAX_BUY_COUNT}`, (value) => value !== undefined && value !== null && +value < MAX_BUY_COUNT),
+      .test('required', `Max ${MAX_BUY_PERCENT}%`, (value) => value !== undefined && value !== null && +value <= MAX_BUY_PERCENT),
     imageUrl: yup
       .mixed<FileList>()
       .required('Image is required')

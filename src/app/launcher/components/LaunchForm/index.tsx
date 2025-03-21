@@ -14,11 +14,11 @@ import { handleError } from '@/utils/handleError';
 import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { toast } from 'react-toastify';
-import { Hex } from 'viem';
+import { formatEther, Hex } from 'viem';
 import { useAccount, useSwitchChain } from 'wagmi';
 import InputWrapper from '../../../../components/features/InputWrapper';
 import FileInputWrapper from '../FileInputWrapper';
@@ -34,10 +34,13 @@ import {
   BuyControls,
   TextArea,
   MetaTitle,
-  SupplyStub
+  SupplyStub,
+  Percent
 } from './styles';
-import { BuyFieldType, FieldsFocused, ImageFieldType, LauncherTypeData } from './types';
+import { FieldsFocused, ImageFieldType, LauncherTypeData } from './types';
 import { css } from 'styled-components';
+import { useGetNativeTokens } from './hooks/useGetNativeTokens';
+import { formatNumber } from '@/utils/formatters';
 
 // const MIN_NATIVE_BALANCE = 1;
 
@@ -73,8 +76,7 @@ export const LaunchForm = () => {
       chatUrl: '',
       description: '',
       imageUrl: undefined,
-      buy: '',
-      buyCustom: ''
+      buy: ''
     }
   });
 
@@ -87,7 +89,7 @@ export const LaunchForm = () => {
   const socialUrlValue: string | undefined = watch('socialUrl');
   const chatUrlValue: string | undefined = watch('chatUrl');
   const descriptionValue: string = watch('description');
-  const buyCustomValue: string | undefined = watch('buyCustom');
+  const buyValue: string | undefined = watch('buy');
 
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [inputKey, setInputKey] = useState(0);
@@ -100,8 +102,15 @@ export const LaunchForm = () => {
     socialUrl: false,
     chatUrl: false,
     description: false,
-    buyCustom: false
+    buy: false
   });
+
+  const { userNativeBalance, nativeTokensAmount, buyTokensAmount, nativeTokePriceUsd } = useGetNativeTokens({
+    percent: buyValue,
+    chainId,
+    isError: !!formErrors.buy?.message
+  });
+  console.log('SONIC_AMOUNT:', nativeTokensAmount);
 
   const handleFocus = useCallback((fieldName: keyof LauncherTypeData): void => {
     setFieldsFocused((prev) => ({ ...prev, [fieldName]: true }));
@@ -141,18 +150,11 @@ export const LaunchForm = () => {
   });
 
   const onSubmit = async (data: LauncherTypeData): Promise<void> => {
-    console.log(data);
     if (!address || !chainId) return;
-
-    // const balance = await refetchBalance();
-    // if (Number(balance?.data?.formatted ?? 0) < MIN_NATIVE_BALANCE) {
-    //   toast.error(`Balance too low, min balance is ${MIN_NATIVE_BALANCE}${balance?.data?.symbol}`);
-    //   return;
-    // }
 
     randomBytes.current = generateRandomBytes(address);
 
-    const { name, symbol, supply, websiteUrl, socialUrl, chatUrl, description } = data;
+    const { name, symbol, websiteUrl, socialUrl, chatUrl, description } = data;
 
     const formData = new FormData();
     formData.append('file', data.imageUrl[0] as Blob);
@@ -171,6 +173,10 @@ export const LaunchForm = () => {
       console.error(error);
       toast.error('Error creating agent');
     }
+    console.log('ARGS and VALUE', {
+      value: nativeTokensAmount,
+      args: [name, symbol, websiteUrl, recivedImgUrl, description, chatUrl, socialUrl, buyTokensAmount ?? '0']
+    });
 
     if (recivedImgUrl) {
       writeContract({
@@ -178,7 +184,8 @@ export const LaunchForm = () => {
         address: launcherContract,
         functionName: 'pro_listing',
         chainId,
-        args: [name, symbol, websiteUrl, recivedImgUrl, description, chatUrl, socialUrl, supply]
+        args: [name, symbol, websiteUrl, recivedImgUrl, description, chatUrl, socialUrl, buyTokensAmount ?? '0'],
+        value: nativeTokensAmount
       });
     }
   };
@@ -194,7 +201,10 @@ export const LaunchForm = () => {
     }
   }, [isSuccessWrite, resetWriteState, errorWrite, saveImg]);
 
-  const isLoading = isLoadingWrite || isPendingPreSave || isPendingSave || isSubmitting;
+  const isLoading: boolean = isLoadingWrite || isPendingPreSave || isPendingSave || isSubmitting;
+  const isEnoughBalance: boolean =
+    isConnected && buyValue ? (nativeTokensAmount ?? 0) <= (userNativeBalance ?? 0) : true;
+  const humanNativeTokensAmount: number = useMemo(() => +formatEther(nativeTokensAmount ?? 0n), [nativeTokensAmount]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} autoComplete='off' autoCorrect='off'>
@@ -241,7 +251,7 @@ export const LaunchForm = () => {
         <Input
           id='supply'
           disabled={true}
-          style={{color: 'transparent'}}
+          style={{ color: 'transparent' }}
           {...register('supply', { required: true })}
           onFocus={() => handleFocus('supply')}
           onBlur={() => handleBlur('supply')}
@@ -302,7 +312,7 @@ export const LaunchForm = () => {
         >
           <Input
             id='websiteUrl'
-            style={{padding: '12px 28px 12px 117px'}}
+            style={{ padding: '12px 28px 12px 117px' }}
             {...register('websiteUrl')}
             onFocus={() => handleFocus('websiteUrl')}
             onBlur={() => handleBlur('websiteUrl')}
@@ -321,7 +331,7 @@ export const LaunchForm = () => {
           <Input
             id='socialUrl'
             {...register('socialUrl')}
-            style={{padding: '12px 28px 12px 117px'}}
+            style={{ padding: '12px 28px 12px 117px' }}
             onFocus={() => handleFocus('socialUrl')}
             onBlur={() => handleBlur('socialUrl')}
           />
@@ -338,7 +348,7 @@ export const LaunchForm = () => {
         >
           <Input
             id='chatUrl'
-            style={{padding: '12px 28px 12px 117px'}}
+            style={{ padding: '12px 28px 12px 117px' }}
             {...register('chatUrl')}
             onFocus={() => handleFocus('chatUrl')}
             onBlur={() => handleBlur('chatUrl')}
@@ -379,29 +389,24 @@ export const LaunchForm = () => {
           <Title>Buy</Title>
           <SubTitle>{'Pre-bought tokens can be sold at cost (minus fees)'}</SubTitle>
           <BuyControls>
-            <Controller
-              name='buy'
-              control={control}
-              defaultValue={undefined}
-              render={({ field }: { field: BuyFieldType }) => (
-                <BuyButtons field={field} setValue={setValue} fieldsFocused={fieldsFocused} />
-              )}
-            />
+            <BuyButtons value={buyValue} setValue={setValue} fieldsFocused={fieldsFocused} />
+
             <InputWrapper
-              isActive={fieldsFocused.buyCustom || !!buyCustomValue}
-              textError={formErrors.buyCustom?.message}
-              value={buyCustomValue}
+              isActive={fieldsFocused.buy || !!buyValue}
+              textError={formErrors.buy?.message}
+              value={buyValue}
             >
+              {buyValue && <Percent>%</Percent>}
               <Input
-                {...register('buyCustom')}
-                style={{ padding: '12px' }}
+                {...register('buy')}
+                style={{ padding: '12px 54px 12px 12px' }}
                 placeholder='Custom (max 50%)'
-                onFocus={() => handleFocus('buyCustom')}
-                onBlur={() => handleBlur('buyCustom')}
+                onFocus={() => handleFocus('buy')}
+                onBlur={() => handleBlur('buy')}
                 onChange={(e) => {
                   const value = validateNumberInputValue(e.target.value);
-                  clearErrors('buyCustom');
-                  setValue('buyCustom', value, { shouldValidate: true });
+                  clearErrors('buy');
+                  setValue('buy', value, { shouldValidate: true });
                 }}
               />
             </InputWrapper>
@@ -410,8 +415,10 @@ export const LaunchForm = () => {
         <Flex $justify='space-between'>
           <SubTitle>{'Buy cost'}</SubTitle>
           <Flex $direction='column' style={{ width: 'auto', textAlign: 'end' }}>
-            <Title>0.00543ETH</Title>
-            <SubTitle style={{ fontSize: '12px' }}>{'$11.05'}</SubTitle>
+            <Title>{`${formatNumber(humanNativeTokensAmount, 4)} S`}</Title>
+            <SubTitle
+              style={{ fontSize: '12px' }}
+            >{`$${formatNumber(humanNativeTokensAmount * nativeTokePriceUsd)}`}</SubTitle>
           </Flex>
         </Flex>
       </Accordion>
@@ -420,14 +427,20 @@ export const LaunchForm = () => {
         <Button onClick={() => switchChain({ chainId: DEFAULT_CHAIN_ID })}>Switch network</Button>
       )}
       {isConnected && DEFAULT_CHAIN_ID === chainId && (
-        <Button type='submit' disabled={isLoading || !isValid}>
+        <Button
+          type='submit'
+          disabled={isLoading || !isValid}
+          style={isEnoughBalance ? {} : { backgroundColor: 'var(--error-clr)' }}
+        >
           {isLoading ? (
             <Flex $gap={8} $align='center' $justify='center'>
               <ClipLoader color={'var(--accent-clr)'} size={16} speedMultiplier={0.7} />
               <span>Creating</span>
             </Flex>
-          ) : (
+          ) : isEnoughBalance ? (
             'Create'
+          ) : (
+            'Insufficient balance'
           )}
         </Button>
       )}
