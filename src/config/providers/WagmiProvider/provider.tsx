@@ -33,7 +33,7 @@ createAppKit({
     email: false,
     socials: [],
   },
-  themeMode: 'light',
+  themeMode: 'dark',
   themeVariables: {
     '--w3m-font-family': 'Montserrat, sans-serif'
   }
