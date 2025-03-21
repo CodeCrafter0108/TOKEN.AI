@@ -55,7 +55,6 @@ export const BuyControls = styled.div`
   @media screen and (min-width: ${Breakpoints.sm}) {
     flex-direction: row;
   }
-
 `;
 
 export const TextArea = styled.textarea`
@@ -74,6 +73,15 @@ export const TextArea = styled.textarea`
   border: none;
 
   font-family: var(--font-montserrat);
+`;
 
+export const SupplyStub = styled.span`
+  color: var(--placeholder-clr);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
 
+  position: absolute;
+  bottom: 0;
+  left: 12px;
 `;

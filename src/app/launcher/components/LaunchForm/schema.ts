@@ -33,7 +33,7 @@ const MAX_FILE_SIZE = 250 * 1024;
 // };
 
 export const TOTAL_SUPPLY: number = 1000000000;
-const MAX_BUY_COUNT: number = TOTAL_SUPPLY * 0.6;
+const MAX_BUY_COUNT: number = TOTAL_SUPPLY * 0.5;
 
 export const schema = yup
   .object({

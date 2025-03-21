@@ -62,8 +62,9 @@ export const StyledLink = styled(Link)<{ $variants: LinkVariants }>`
 
       case LinkVariants.SOLID_BUTTON:
         return `
-         position: relative;
+          position: relative;
           z-index: 1;
+          
 
           &::before {
             content: '';
@@ -79,15 +80,30 @@ export const StyledLink = styled(Link)<{ $variants: LinkVariants }>`
             mask-composite: exclude;
             padding: 2px;
             box-sizing: border-box;
-  }
+        }
+          
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 8px;
+            background-image: var(--gradient);
+            transition: opacity 0.3s ease-in-out;
+            background-position: 100% 0%;
+            z-index: -1;
+            opacity: 0;
+        }
 
+      &:hover::after {
+        opacity: 1;
+      }
           color: var(--black-text-clr);
           border: 2px solid var(--black-clr);
           background-color: var(--accent-clr);
           box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.10);
-            &:hover {
-              background: var(--gradient); 
-            }
         `;
     }
   }}

@@ -33,7 +33,8 @@ import {
   accordionStyles,
   BuyControls,
   TextArea,
-  MetaTitle
+  MetaTitle,
+  SupplyStub
 } from './styles';
 import { BuyFieldType, FieldsFocused, ImageFieldType, LauncherTypeData } from './types';
 import { css } from 'styled-components';
@@ -236,9 +237,11 @@ export const LaunchForm = () => {
         value={supplyValue}
         isDisabled
       >
+        <SupplyStub>{'1.000.000.000 (1B)'}</SupplyStub>
         <Input
           id='supply'
           disabled={true}
+          style={{color: 'transparent'}}
           {...register('supply', { required: true })}
           onFocus={() => handleFocus('supply')}
           onBlur={() => handleBlur('supply')}
@@ -392,7 +395,7 @@ export const LaunchForm = () => {
               <Input
                 {...register('buyCustom')}
                 style={{ padding: '12px' }}
-                placeholder='Custom (max 60%)'
+                placeholder='Custom (max 50%)'
                 onFocus={() => handleFocus('buyCustom')}
                 onBlur={() => handleBlur('buyCustom')}
                 onChange={(e) => {
