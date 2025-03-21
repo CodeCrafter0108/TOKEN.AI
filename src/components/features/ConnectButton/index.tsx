@@ -33,12 +33,12 @@ export default function ConnectButton({ styles }: ConnectButtonProps) {
           <span className='text-secondary'>Disconnect</span>
         </>
       ) : (
-        <span>
+        <span style={{ whiteSpace: 'nowrap' }}>
           {isOpen ? (
             <span>
               <span>Connecting</span>
               <PulseLoader
-                color={'var(--black-text-cl)'}
+                color={'var(--black-text-clr)'}
                 size={4}
                 cssOverride={{ marginLeft: '4px' }}
                 speedMultiplier={0.7}
