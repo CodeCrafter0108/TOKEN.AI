@@ -12,7 +12,7 @@ export const Wrapper = styled.div<{$styles?: RuleSet<object>}>`
 export const IconWrapper = styled.div`
   padding: 4px;
   border-radius: 4px;
-  background: var(--primary-clr);
+  background: var(--secondary-box-bg-clr);
 `;
 
 export const StyledLink = styled(Link)`

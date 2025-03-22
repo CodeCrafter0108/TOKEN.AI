@@ -15,7 +15,7 @@ export const StyledInput = styled.input`
   }
 
   &[type='radio'] {
-    accent-color: var(--primary-clr);
+    accent-color: var(--secondary-box-bg-clr);
     height: auto;
     width: auto;
   }

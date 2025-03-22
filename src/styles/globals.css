@@ -1,14 +1,13 @@
 /* TODO check theme" */
 :root {
-  --primary-clr: #262626;
   --accent-clr: #7ec425;
 
   --primary-text-clr: #ffffff;
   --secondary-text-clr: rgba(255, 255, 255, 0.6);
-  --navigation-text-clr: #D6D6D6;
-  --black-text-clr: #1A1A1A;
+  --navigation-text-clr: #d6d6d6;
+  --black-text-clr: #1a1a1a;
 
-  --background-clr: #1A1A1A;
+  --background-clr: #1a1a1a;
 
   --white-clr: #ffffff;
   --black-clr: #000000;
@@ -16,23 +15,25 @@
   --required-clr: #a10500;
   --placeholder-clr: #898c90;
 
-  --footer-bg-clr: #e7e6f4;
+  --footer-bg-clr: #181818;
   --header-bg-clr: #181818;
-  --field-bg-clr: #ecf2f9;
+  --modal-bg-clr: #181818;
 
-  --modal-hover-clr: #e4ebff;
   --separator-clr: rgba(255, 255, 255, 0.12);
 
-  --primary-box-bg-clr: rgba(14, 14, 14, 0.60);
+  --primary-box-bg-clr: rgba(14, 14, 14, 0.6);
   --secondary-box-bg-clr: #262626;
 
   --badge-bg-clr: #4467ff;
 
   --border-clr: rgba(255, 255, 255, 0.04);
 
-  --box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.10);
+  --box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1);
 
-  --gradient: linear-gradient(90deg, #94E927 0%, #EA88EF 100%), linear-gradient(90deg, #94E927 0%, #F79D00 100%), linear-gradient(94deg, #94E927 0%, #228B22 44.5%, #0000CD 100%), linear-gradient(94deg, #94E927 0%, #228B22 36.4%, #0000CD 68.4%, #8A2BE2 100%);
+  --gradient:
+    linear-gradient(90deg, #94e927 0%, #ea88ef 100%), linear-gradient(90deg, #94e927 0%, #f79d00 100%),
+    linear-gradient(94deg, #94e927 0%, #228b22 44.5%, #0000cd 100%),
+    linear-gradient(94deg, #94e927 0%, #228b22 36.4%, #0000cd 68.4%, #8a2be2 100%);
 }
 
 html {
@@ -58,7 +59,7 @@ body {
   padding: 0;
   margin: 0;
   scrollbar-width: thin;
-  scrollbar-color: var(--primary-clr) transparent; 
+  scrollbar-color: var(--secondary-box-bg-clr) transparent;
 }
 
 a {
@@ -88,26 +89,14 @@ svg {
 }
 
 .Toastify__toast {
-  border-radius: 8px;
-  background: var(--primary-box-bg-clr);
-  color: var(--primary-clr);
-  box-shadow: var(--box-shadow);
-  font-family: var(--font-montserrat);
+  border-radius: 8px !important;
+  background: var(--modal-bg-clr) !important;
+  color: var(--primary-text-clr) !important;
+  box-shadow: var(--box-shadow) !important;
+  font-family: var(--font-montserrat) !important;
 }
 
 .Toastify__close-button {
-  color: var(--accent-clr);
-  opacity: 1;
- 
-  border-radius: 4px;
-  transition: all 0.2s ease-in-out;
-  padding: 4px;
-
-  :hover {
-    background-color: var(--modal-hover-clr);
-  }
-
-  :active {
-    background-color: var(--primary-clr);
-  }
+  color: var(--accent-clr) !important;
+  opacity: 1 !important;
 }

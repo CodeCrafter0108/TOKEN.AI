@@ -27,7 +27,7 @@ export const StyledLink = styled(Link)<{ $variants: LinkVariants }>`
       case LinkVariants.SOLID:
         return `
         color: var(--primary-text-clr);
-        background-color: var(--primary-clr);
+        background-color: var(--secondary-box-bg-clr);
         border: 1.5px solid var(--black-clr);
         &::before {
             content: '';

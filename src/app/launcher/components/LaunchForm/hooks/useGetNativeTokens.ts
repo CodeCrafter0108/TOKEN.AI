@@ -1,11 +1,13 @@
 import { launcherContract, SONIC_DECIMALS, sonicOracle } from '@/constants/blockchain/contracts';
-import { useAccount, useBalance, useReadContract } from 'wagmi';
+import { useAccount } from 'wagmi';
 import launcherAbi from '@/config/abi/launcher.json';
 import { TOTAL_SUPPLY } from '../schema';
 import BigNumber from 'bignumber.js';
 import oracleAbi from '@/config/abi/sonicOracle.json';
 import { formatUnits } from 'viem';
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { getBalance, readContract } from 'wagmi/actions';
+import { config } from '@/config/providers/WagmiProvider/config';
 
 interface UseGetNativeTokensArgs {
   percent?: string;
@@ -13,50 +15,67 @@ interface UseGetNativeTokensArgs {
   isError: boolean;
 }
 
-interface UseGetNativeTokensReturnType {
-  nativeTokensAmount: bigint | undefined;
-  buyTokensAmount: bigint | undefined;
+interface NativeTokensData {
+  nativeTokensAmount: bigint;
   nativeTokePriceUsd: number;
-  userNativeBalance: bigint | undefined;
+  userNativeBalance: bigint;
+  buyTokensAmount?: bigint;
 }
 
-export const useGetNativeTokens = ({
-  percent,
-  chainId,
-  isError
-}: UseGetNativeTokensArgs): UseGetNativeTokensReturnType => {
+export const useGetNativeTokens = ({ percent, chainId, isError }: UseGetNativeTokensArgs): NativeTokensData | null => {
   const { address } = useAccount();
-  const buyTokensAmount: bigint | undefined = percent
-    ? BigInt(new BigNumber(TOTAL_SUPPLY).multipliedBy(percent).dividedBy(100).toFixed(0))
-    : undefined;
+  const buyTokensAmount: bigint | undefined = useMemo(
+    () => (percent ? BigInt(new BigNumber(TOTAL_SUPPLY).multipliedBy(percent).dividedBy(100).toFixed(0)) : undefined),
+    [percent]
+  );
 
-  const { data: nativeTokensAmount } = useReadContract({
-    address: launcherContract,
-    abi: launcherAbi,
-    chainId,
-    functionName: 'quoteInitialBuy',
-    args: [buyTokensAmount],
-    query: { enabled: !!buyTokensAmount && !isError }
-  });
+  const [nativeTokenData, setNativeTokenData] = useState<NativeTokensData | null>(null);
 
-  const { data: sonicPrice } = useReadContract({
-    address: sonicOracle,
-    abi: oracleAbi,
-    chainId,
-    functionName: 'latestAnswer',
-    query: { enabled: typeof nativeTokensAmount === 'bigint' }
-  });
+  const fetchNativeTokensData = useCallback(async (): Promise<void> => {
+    if (!percent || isError || !address) {
+      setNativeTokenData(null);
+      return;
+    }
 
-  const { data: balance } = useBalance({ address, chainId, query: { enabled: !!address && !!buyTokensAmount } });
+    try {
+      const nativeTokensAmount = await readContract(config, {
+        address: launcherContract,
+        abi: launcherAbi,
+        chainId,
+        functionName: 'quoteInitialBuy',
+        args: [buyTokensAmount]
+      });
 
-  const nativeTokePriceUsd: number = typeof sonicPrice === 'bigint' ? +formatUnits(sonicPrice, SONIC_DECIMALS) : 0;
+      const nativeTokenPrice = await readContract(config, {
+        address: sonicOracle,
+        abi: oracleAbi,
+        chainId,
+        functionName: 'latestAnswer'
+      });
 
-  return useMemo(() => {
-    return {
-      nativeTokensAmount: nativeTokensAmount as bigint | undefined,
-      buyTokensAmount,
-      nativeTokePriceUsd,
-      userNativeBalance: balance?.value
-    };
-  }, [nativeTokensAmount, buyTokensAmount, nativeTokePriceUsd, balance]);
+      const balance = await getBalance(config, {
+        chainId,
+        address
+      });
+
+      if (typeof nativeTokensAmount !== 'bigint' || typeof nativeTokenPrice !== 'bigint' || !balance?.value) {
+        throw new Error('Failed to fetch native token data');
+      }
+
+      setNativeTokenData({
+        nativeTokensAmount,
+        userNativeBalance: balance.value,
+        nativeTokePriceUsd: +formatUnits(nativeTokenPrice, SONIC_DECIMALS),
+        buyTokensAmount
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, [address, chainId, isError, percent, buyTokensAmount]);
+
+  useEffect(() => {
+    fetchNativeTokensData();
+  }, [percent]);
+
+  return nativeTokenData;
 };

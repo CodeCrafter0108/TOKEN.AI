@@ -1,8 +1,8 @@
+import SettingIcon from '@/assets/icons/settings.svg';
 import Button from '@/components/shared/Button';
 import { Breakpoints } from '@/styles/breakpoints';
 import { Box } from '@/styles/global';
 import styled from 'styled-components';
-import SettingIcon from '@/assets/icons/settings.svg';
 
 export const Wrapper = styled(Box)`
   width: 100%;
@@ -39,7 +39,7 @@ export const SwapInputsWrapper = styled.div`
 export const ChangeButton = styled(Button)`
   padding: 12px;
   border-radius: 50%;
-  border: 1.5px solid var(--primary-clr);
+  border: 1.5px solid var(--secondary-box-bg-clr);
   z-index: 10;
 
   background-color: var(--white-clr);

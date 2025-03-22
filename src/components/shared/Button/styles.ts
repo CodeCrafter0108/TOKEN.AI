@@ -21,7 +21,7 @@ export const StyledButton = styled.button<{ $variants: ButtonVariants; $isSelect
     switch ($variants) {
       case ButtonVariants.OUTLINE:
         return `
-          color: var(--primary-clr);
+          color: var(--secondary-box-bg-clr);
 
             &:hover {
               border: 1.5px solid var(--accent-clr);

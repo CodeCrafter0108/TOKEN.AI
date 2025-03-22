@@ -41,6 +41,7 @@ import { FieldsFocused, ImageFieldType, LauncherTypeData } from './types';
 import { css } from 'styled-components';
 import { useGetNativeTokens } from './hooks/useGetNativeTokens';
 import { formatNumber } from '@/utils/formatters';
+import { useDebounce } from '@/hooks/useDebounce';
 
 // const MIN_NATIVE_BALANCE = 1;
 
@@ -91,6 +92,8 @@ export const LaunchForm = () => {
   const descriptionValue: string = watch('description');
   const buyValue: string | undefined = watch('buy');
 
+  const debouncedBuyValue = useDebounce(buyValue as string, 300);
+
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [inputKey, setInputKey] = useState(0);
 
@@ -105,12 +108,15 @@ export const LaunchForm = () => {
     buy: false
   });
 
-  const { userNativeBalance, nativeTokensAmount, buyTokensAmount, nativeTokePriceUsd } = useGetNativeTokens({
-    percent: buyValue,
+  const nativeTokenData = useGetNativeTokens({
+    percent: debouncedBuyValue,
     chainId,
     isError: !!formErrors.buy?.message
   });
-  console.log('SONIC_AMOUNT:', nativeTokensAmount);
+
+  console.log('SONIC_DATA:', nativeTokenData);
+
+  const { nativeTokePriceUsd, userNativeBalance, nativeTokensAmount, buyTokensAmount } = nativeTokenData || {};
 
   const handleFocus = useCallback((fieldName: keyof LauncherTypeData): void => {
     setFieldsFocused((prev) => ({ ...prev, [fieldName]: true }));
@@ -418,7 +424,7 @@ export const LaunchForm = () => {
             <Title>{`${formatNumber(humanNativeTokensAmount, 4)} S`}</Title>
             <SubTitle
               style={{ fontSize: '12px' }}
-            >{`$${formatNumber(humanNativeTokensAmount * nativeTokePriceUsd)}`}</SubTitle>
+            >{`$${formatNumber(humanNativeTokensAmount * (nativeTokePriceUsd ?? 0))}`}</SubTitle>
           </Flex>
         </Flex>
       </Accordion>

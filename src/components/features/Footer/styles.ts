@@ -3,7 +3,7 @@ import Link from 'next/link';
 import styled, { css } from 'styled-components';
 
 export const StyledFooter = styled.footer`
-  background-color: var(--header-bg-clr);
+  background-color: var(--footer-bg-clr);
 `;
 
 export const Wrapper = styled.div`

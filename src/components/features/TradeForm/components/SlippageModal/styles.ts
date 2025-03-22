@@ -28,7 +28,7 @@ export const RadioLabel = styled.label<{ $isSelected: boolean }>`
     height: 20px;
     border: 1.5px solid var(--white-clr);
     border-radius: 50%;
-    color: var(--primary-clr);
+    color: var(--secondary-box-bg-clr);
     margin-left: 8px;
   }
 
