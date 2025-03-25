@@ -16,10 +16,10 @@ interface MessagesProps {
   agents?: IToken[];
   isLoading: boolean;
   searchValue: string;
-  setSearchValue: (value: string) => void;
+  handleClear: () => void;
 }
 
-export const Messages = ({ agents = [], isLoading, searchValue, setSearchValue }: MessagesProps) => {
+export const Messages = ({ agents = [], isLoading, searchValue, handleClear }: MessagesProps) => {
   const { isConnected } = useAccount();
 
   if (!isConnected)
@@ -48,9 +48,8 @@ export const Messages = ({ agents = [], isLoading, searchValue, setSearchValue }
     );
 
   if (agents?.length === 0 && !isLoading) {
-    //TODO check it
     if (searchValue) {
-      return <NoResults handleClear={() => setSearchValue('')} />;
+      return <NoResults handleClear={() => handleClear()} />;
     }
     return (
       <AnimatedWrapper.Opacity duration={0.2} delay={0.2}>

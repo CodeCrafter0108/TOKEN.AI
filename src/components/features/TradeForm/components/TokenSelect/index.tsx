@@ -35,7 +35,6 @@ const TokenSelect = ({ token, valueType, selectable = true, onSelect }: TokenSel
           {token && (
               <ImageWithFallback
                 src={'/temp/token.png'}
-                shape='circle'
                 alt='Token logo'
                 fill
                 loading='lazy'
@@ -50,7 +49,7 @@ const TokenSelect = ({ token, valueType, selectable = true, onSelect }: TokenSel
               {'ETH'}
             </Flex>
           )}
-          {!token && <Skeleton width={95} height={24} shape='round' borderRadius={4} />}
+          {!token && <Skeleton width={95} height={24} borderRadius={'4px'} />}
         </Flex>
 
         {selectable && <ChevronIcon style={{ minWidth: '14px' }} />}

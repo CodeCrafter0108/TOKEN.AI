@@ -4,7 +4,7 @@ import Button from '@/components/shared/Button';
 import { ButtonVariants } from '@/components/shared/Button/types';
 import { Flex } from '@/styles/global';
 import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useMemo, useState } from 'react';
 import { useAccount } from 'wagmi';
 import CurrencyInput from './components/CurrencyInput';
 import { QuoteDetails } from './components/QuoteDetails';
@@ -12,6 +12,11 @@ import SelectTokenModal from './components/SelectTokenModal';
 import SlippageModal from './components/SlippageModal';
 import { ChangeButton, Form, FormTitle, Separator, SwapInputsWrapper, Wrapper, StyledSettingIcon } from './styles';
 import { AmountType } from './types';
+import { useQuery } from '@apollo/client';
+import { IToken, ITokensData } from '@/types/common';
+import { GetAgents } from '@/graphql/queries/GetAgents';
+import { getGraphClient } from '@/config/graph/config';
+import { ChainId } from '@/constants/blockchain/networks';
 
 interface TradeFormProps {
   styles?: React.CSSProperties;
@@ -86,6 +91,17 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
     handleReset();
   };
 
+  const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
+
+  const {
+    data: agents,
+    // loading: agentLoading,
+  } = useQuery<ITokensData>(GetAgents, {
+    client,
+    variables: { orderBy: 'marketCap', orderDirection: 'desc', first: 20 },
+    onError: (error) => console.error(error)
+  });
+
   return (
     <Wrapper style={styles}>
       <Form onSubmit={handleSwap} autoComplete='off' autoCorrect='off'>
@@ -123,15 +139,9 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
           />
         </SwapInputsWrapper>
         <QuoteDetails />
-        {isConnected ? (
-          <Button type='submit'>
-              Swap
-          </Button>
-        ) : (
-          <ConnectButton />
-        )}
+        {isConnected ? <Button type='submit'>Swap</Button> : <ConnectButton />}
       </Form>
-      <SelectTokenModal isOpen={isSelectModalOpen} onClose={() => setIsSelectModalOpen(false)} />
+      <SelectTokenModal isOpen={isSelectModalOpen} onClose={() => setIsSelectModalOpen(false)} agentList={agents?.tokens} />
       <SlippageModal isOpen={isSlipageModalOpen} onClose={() => setIsSlipageModalOpen(false)} />
     </Wrapper>
   );

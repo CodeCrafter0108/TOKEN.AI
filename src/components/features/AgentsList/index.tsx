@@ -46,7 +46,6 @@ export const AgentsList = ({ hasArrow = true, hasButton, agents = [], styles }: 
                     sizes='100%'
                     widthSkeleton={60}
                     heightSkeleton={60}
-                    shape={'circle'}
                   />
                   <InfoWrapper>
                     <Title>{name}</Title>
@@ -60,7 +59,6 @@ export const AgentsList = ({ hasArrow = true, hasButton, agents = [], styles }: 
                         sizes='100%'
                         widthSkeleton={16}
                         heightSkeleton={16}
-                        shape='circle'
                       />
                       <TokenSymbol>{symbol}</TokenSymbol>
                     </Flex>

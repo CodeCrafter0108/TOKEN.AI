@@ -44,7 +44,6 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
           sizes='100%'
           widthSkeleton={70}
           heightSkeleton={70}
-          shape='circle'
         />
         <Grid $hasMetrics={hasMetrics}>
           <Title>{name}</Title>
@@ -58,7 +57,7 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
               sizes='100%'
               widthSkeleton={16}
               heightSkeleton={16}
-              shape='circle'
+
             />
             <span>{symbol}</span>
           </Flex>
