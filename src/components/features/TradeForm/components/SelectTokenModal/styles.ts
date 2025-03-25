@@ -29,12 +29,12 @@ export const TokenListItem = styled.li<{$isSelected: boolean}>`
   }
 `;
 
-export const TokenName = styled.div`
+export const Title = styled.div`
   font-size: 16px;
   font-weight: 500;
 `;
 
-export const TokenSymbol = styled.div`
+export const Description = styled.div`
   font-size: 12px;
   color: var(--placeholder-clr);
 `;

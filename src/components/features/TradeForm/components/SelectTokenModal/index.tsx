@@ -4,20 +4,19 @@ import Modal from '@/components/shared/Modal';
 import { ModalHeader } from '@/components/shared/Modal/components/ModalHeader';
 import { useDebounce } from '@/hooks/useDebounce';
 import { Flex } from '@/styles/global';
-import { IToken } from '@/types/common';
+import { ITokenWithBalance } from '@/types/common';
+import { formatBalance, formatNumber } from '@/utils/formatters';
 import { memo, useMemo, useState } from 'react';
 import { css } from 'styled-components';
-import { AmountType } from '../../types';
-import { NotFound, TokenList, TokenListItem, TokenName, TokenSymbol } from './styles';
+import { formatEther } from 'viem';
+import { Description, NotFound, Title, TokenList, TokenListItem } from './styles';
 
 interface SelectTokenModalProps {
   onClose: () => void;
   isOpen: boolean;
-  agentList?: IToken[];
-  handleSelectAgent: (agent: IToken) => void;
-  agent0?: IToken;
-  agent1?: IToken;
-  amountType: AmountType;
+  agentList?: ITokenWithBalance[];
+  handleSelectAgent: (agent: ITokenWithBalance) => void;
+  currentAgent?: ITokenWithBalance;
 }
 
 const SelectTokenModal = ({
@@ -25,13 +24,11 @@ const SelectTokenModal = ({
   onClose,
   agentList,
   handleSelectAgent,
-  amountType,
-  agent0,
-  agent1
+  currentAgent,
 }: SelectTokenModalProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const debouncedSearchValue = useDebounce(searchValue, 300);
-  const filteredAgents: IToken[] = useMemo(() => {
+  const filteredAgents: ITokenWithBalance[] = useMemo(() => {
     if (!agentList) return [];
 
     return agentList.filter(
@@ -59,11 +56,11 @@ const SelectTokenModal = ({
               key={agent.id}
               role='button'
               onClick={() => handleSelectAgent(agent)}
-              $isSelected={amountType === AmountType.IN ? agent0?.id === agent.id : agent1?.id === agent.id}
+              $isSelected={agent?.id === currentAgent?.id}
             >
               <Flex $gap={12} $align='center' style={{ width: 'auto' }}>
                 <ImageWithFallback
-                  src={agent.imageUrl}
+                  src={agent?.imageUrl}
                   alt='Token logo'
                   fill
                   loading='lazy'
@@ -73,13 +70,13 @@ const SelectTokenModal = ({
                   heightSkeleton={24}
                 />
                 <Flex $direction='column' $gap={4}>
-                  <TokenName>{agent.name}</TokenName>
-                  <TokenSymbol>{agent.symbol}</TokenSymbol>
+                  <Title>{agent?.name}</Title>
+                  <Description>{agent?.symbol}</Description>
                 </Flex>
               </Flex>
               <Flex $direction='column' $align='flex-end' $gap={4} style={{ width: 'auto' }}>
-                <TokenName>0</TokenName>
-                <TokenSymbol>$0</TokenSymbol>
+                <Title>{formatBalance(agent?.balance)}</Title>
+                <Description>{`$${formatNumber(Number(formatEther(agent?.balance ?? 0n)) * Number(agent?.price ?? '0'), 2)}`}</Description>
               </Flex>
             </TokenListItem>
           ))

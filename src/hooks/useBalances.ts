@@ -1,17 +1,20 @@
-import { IToken } from '@/types/common';
+import { IToken, ITokenWithBalance } from '@/types/common';
+import { QueryObserverResult } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
-import { Address, erc20Abi } from 'viem';
+import { erc20Abi } from 'viem';
 import { useAccount, useReadContracts } from 'wagmi';
 
 interface UseBalancesProps {
   agents?: IToken[];
 }
 
-interface BalanceType {
-  address: Address;
-  balance: bigint;
+interface UseBalancesReturn {
+  agentsWithBalance: ITokenWithBalance[];
+  refetchBalances: () => Promise<QueryObserverResult>;
+  isLoadingBalances: boolean;
 }
-export const useBalances = ({ agents }: UseBalancesProps): BalanceType[] => {
+
+export const useBalances = ({ agents }: UseBalancesProps): UseBalancesReturn => {
   const { address: account } = useAccount();
   const contracts = useMemo(
     () =>
@@ -26,19 +29,20 @@ export const useBalances = ({ agents }: UseBalancesProps): BalanceType[] => {
     [agents, account]
   );
 
-  const { data, isError } = useReadContracts({ contracts, query: { enabled: !!account && !!agents } });
+  const { data, isError, refetch, isLoading } = useReadContracts({ contracts, query: { enabled: !!account && !!agents } });
 
   useEffect(() => {
     if (isError) console.error('Error fetching balances');
   }, [isError]);
 
-  const userBalances: BalanceType[] = useMemo(() => {
-    return data?.map(({ result, status }, index) => ({
-      address: agents?.[index].address ?? '0x' as Address,
-      balance: status === 'success' ? (result as bigint) : 0n
-    }));
+  const agentsWithBalance: ITokenWithBalance[] = useMemo(() => {
+    return data && agents
+      ? data.map(({ result, status }, index) => ({
+          ...agents[index],
+          balance: status === 'success' ? (result as bigint) : 0n
+        }))
+      : [];
   }, [data, agents]);
-  console.log('🚀 ~ userBalances ~ userBalances:', userBalances);
 
-  return userBalances;
+  return { agentsWithBalance, refetchBalances: refetch, isLoadingBalances: isLoading };
 };

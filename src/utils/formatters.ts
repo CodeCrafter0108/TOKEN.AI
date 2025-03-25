@@ -1,4 +1,4 @@
-import { Address } from "viem";
+import { Address, formatEther } from "viem";
 import { intervalToDuration } from "date-fns";
 
 export const formatAddress = (address: Address | string | undefined) => {
@@ -17,15 +17,22 @@ export const  formatNumber = (num: number | string | undefined, digits = 2) => {
   });
 };
 
-export const  formatBalance = (num: number | string | undefined, digits = 2) => {
-  const _num = parseFloat(String(num));
-  if (!_num || _num === 0) return '0.00';
-  if (_num === 0) return '0.0';
-  return _num.toLocaleString('en-ES', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: digits,
-  });
-};
+// export const  formatBalance = (num: number | string | undefined, digits = 2) => {
+//   const _num = parseFloat(String(num));
+//   if (!_num || _num === 0) return '0.00';
+//   if (_num === 0) return '0.0';
+//   return _num.toLocaleString('en-ES', {
+//       minimumFractionDigits: 0,
+//       maximumFractionDigits: digits,
+//   });
+// };
+
+  export const formatBalance = (amount?: bigint, digits: number = 4):string => {
+    if (!amount) {
+      return '0.00';
+    }
+    return  formatNumber(formatEther(amount), digits);
+  }
 
 export const  abbreviateNumber = (num: number | string | undefined, digits = 2) => {
   const _num = parseFloat(String(num));

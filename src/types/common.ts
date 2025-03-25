@@ -38,6 +38,10 @@ export interface IToken {
   pair?: ITokenPair;
 }
 
+export interface ITokenWithBalance extends IToken {
+  balance: bigint;
+}
+
 export interface ITokensData  {
   tokens: IToken[]
 }

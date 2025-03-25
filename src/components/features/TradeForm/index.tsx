@@ -5,23 +5,21 @@ import { ButtonVariants } from '@/components/shared/Button/types';
 import { getGraphClient } from '@/config/graph/config';
 import { ChainId } from '@/constants/blockchain/networks';
 import { GetAgents } from '@/graphql/queries/GetAgents';
+import { useBalances } from '@/hooks/useBalances';
 import { useDebounce } from '@/hooks/useDebounce';
 import { Flex } from '@/styles/global';
-import { IToken, ITokensData } from '@/types/common';
-import { formatNumber } from '@/utils/formatters';
+import { ITokensData, ITokenWithBalance } from '@/types/common';
+import { formatBalance, formatNumber } from '@/utils/formatters';
 import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
 import { useQuery } from '@apollo/client';
-import { ChangeEvent, useCallback, useMemo, useState } from 'react';
-import { useAccount, useBalance } from 'wagmi';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { useAccount } from 'wagmi';
 import CurrencyInput from './components/CurrencyInput';
-import { QuoteDetails } from './components/QuoteDetails';
-import SelectTokenModal from './components/SelectTokenModal';
 import SlippageModal from './components/SlippageModal';
 import { DEFOULT_DEADLINE, DEFOULT_SLIPAGE } from './components/SlippageModal/constants';
+import { SlippageType } from './components/SlippageModal/types';
 import { ChangeButton, Form, FormTitle, Separator, StyledSettingIcon, SwapInputsWrapper, Wrapper } from './styles';
 import { AmountType } from './types';
-import { SlippageType } from './components/SlippageModal/types';
-import { useBalances } from '@/hooks/useBalances';
 
 interface TradeFormProps {
   styles?: React.CSSProperties;
@@ -29,8 +27,8 @@ interface TradeFormProps {
 
 export const TradeForm = ({ styles }: TradeFormProps) => {
   const { isConnected } = useAccount();
-  const [agent0, setAgent0] = useState<IToken | undefined>();
-  const [agent1, setAgent1] = useState<IToken | undefined>();
+  const [agent0, setAgent0] = useState<ITokenWithBalance | undefined>();
+  const [agent1, setAgent1] = useState<ITokenWithBalance | undefined>();
 
   const [slippageType, setSlippageType] = useState<SlippageType>(SlippageType.AUTO);
   const [slippage, setSlippage] = useState<number>(DEFOULT_SLIPAGE);
@@ -44,14 +42,17 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
   } = useQuery<ITokensData>(GetAgents, {
     client,
     variables: { orderBy: 'marketCap', orderDirection: 'desc', first: 100 },
-    onError: (error) => console.error(error),
-    onCompleted: (data) => {
-      setAgent0(data.tokens[0]); //TODO change
-      setAgent1(data.tokens[1]); //TODO change
-    }
+    onError: (error) => console.error(error)
   });
 
-  useBalances({agents: agents?.tokens});
+  const { agentsWithBalance } = useBalances({ agents: agents?.tokens });
+
+  useEffect(() => {
+    if (agentsWithBalance) {
+      setAgent0(agentsWithBalance[0]); //TODO change
+      setAgent1(agentsWithBalance[1]); //TODO change
+    }
+  }, [agentsWithBalance]);
 
   // const [amount, setAmount] = useState<bigint>(0n);
   const [amountIn, setAmountIn] = useState<string>('');
@@ -60,7 +61,6 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
   // // const [slippage, setSlippage] = useState<SlippageType | number>(SlippageType.AUTO);
 
   const [isSlipageModalOpen, setIsSlipageModalOpen] = useState<boolean>(false);
-  const [isSelectModalOpen, setIsSelectModalOpen] = useState<boolean>(false);
 
   // const [modalTokenSelectType, setModalTokenSelectType] = useState<AmountType>(amountType);
   // const [showModalTokenSelect, setShowModalTokenSelect] = useState(false);
@@ -75,7 +75,7 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
   const debouncedAmountIn = useDebounce(amountIn);
   const debouncedAmountOut = useDebounce(amountOut);
 
-  const handleSwap = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSwap = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
   };
 
@@ -89,25 +89,36 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
     }
   };
 
+  const handleReset = useCallback((): void => {
+    setAmountIn('');
+    setAmountOut('');
+  }, []);
+
+  const handleChangeAmountType = useCallback((amountType: AmountType): void => {
+    setAmountType(amountType);
+  }, []);
+
+  const handleMaxAmount = useCallback((type: AmountType): void => {
+    if (type === AmountType.IN) {
+      setAmountIn((agent0?.balance || 0n).toString());
+    } else {
+      setAmountOut((agent1?.balance || 0n).toString());
+    }
+  }, [agent0, agent1]);
+
   const handleSelectAgent = useCallback(
-    (agent: IToken) => {
+    (agent: ITokenWithBalance): void => {
       if (amountType === AmountType.IN) {
         setAgent0(agent);
       } else {
         setAgent1(agent);
       }
       handleReset();
-      setIsSelectModalOpen(false);
     },
-    [amountType]
+    [amountType, handleReset]
   );
 
-  const handleReset = () => {
-    setAmountIn('');
-    setAmountOut('');
-  };
-
-  const handleToggleAmountType = () => {
+  const handleToggleAmountType = (): void => {
     const type = amountType === AmountType.IN ? AmountType.OUT : AmountType.IN;
     handleReset();
     setAmountType(type);
@@ -115,18 +126,13 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
     setAgent1(agent0);
   };
 
-  const handleOpenModal = useCallback((type: AmountType) => {
-    setAmountType(type);
-    setIsSelectModalOpen(true);
-  }, []);
-
-  const agentList: IToken[] = useMemo(() => {
+  const agentList: ITokenWithBalance[] = useMemo(() => {
     if (amountType === AmountType.IN) {
-      return agents?.tokens?.filter((agent) => agent.id !== agent1?.id) as IToken[];
+      return agentsWithBalance.filter((agent) => agent.id !== agent1?.id) as ITokenWithBalance[];
     } else {
-      return agents?.tokens?.filter((agent) => agent.id !== agent0?.id) as IToken[];
+      return agentsWithBalance.filter((agent) => agent.id !== agent0?.id) as ITokenWithBalance[];
     }
-  }, [amountType, agents, agent0, agent1]);
+  }, [amountType, agentsWithBalance, agent0, agent1]);
 
   const value0Usd: string = useMemo(() => {
     if (agent0) {
@@ -161,10 +167,12 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
             value={amountIn}
             valueUsd={value0Usd}
             valueType={AmountType.IN}
-            balance={'0'}
+            balance={formatBalance(agent1?.balance)}
             onChange={(v) => handleChange(v, AmountType.IN)}
-            onSelect={handleOpenModal}
-            onMax={() => console.log('OnMAX')}
+            agentList={agentList}
+            onChangeAmountType={handleChangeAmountType}
+            onSelectAgent={handleSelectAgent}
+            onMax={handleMaxAmount}
           />
           <Separator />
           <ChangeButton variants={ButtonVariants.CLEAR} onClick={handleToggleAmountType} aria-label='Change currency'>
@@ -176,24 +184,26 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
             value={amountOut}
             valueUsd={value1Usd}
             valueType={AmountType.OUT}
-            balance={'0'}
+            balance={formatBalance(agent1?.balance)}
             onChange={(v) => handleChange(v, AmountType.OUT)}
-            onSelect={handleOpenModal}
-            onMax={() => console.log('OnMAX')}
+            agentList={agentList}
+            onChangeAmountType={handleChangeAmountType}
+            onSelectAgent={handleSelectAgent}
+            onMax={handleMaxAmount}
           />
         </SwapInputsWrapper>
-        <QuoteDetails />
-        {isConnected ? <Button type='submit'>Swap</Button> : <ConnectButton />}
+        {/* <QuoteDetails /> */}
+        {/* Remove div and remove inline style after add QuoteDetails */}
+        <div style={{ marginTop: '24px', width: '100%' }}>
+          {isConnected ? (
+            <Button type='submit' style={{ width: '100%' }}>
+              Swap
+            </Button>
+          ) : (
+            <ConnectButton styles={{ width: '100%' }} />
+          )}
+        </div>
       </Form>
-      <SelectTokenModal
-        isOpen={isSelectModalOpen}
-        onClose={() => setIsSelectModalOpen(false)}
-        agentList={agentList}
-        handleSelectAgent={handleSelectAgent}
-        agent0={agent0}
-        agent1={agent1}
-        amountType={amountType}
-      />
       <SlippageModal
         isOpen={isSlipageModalOpen}
         onClose={() => setIsSlipageModalOpen(false)}
