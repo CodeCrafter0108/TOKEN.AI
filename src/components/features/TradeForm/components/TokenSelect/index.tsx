@@ -6,15 +6,16 @@ import { ImageWithFallback } from '@/components/features/ImageWithFallback';
 import { Skeleton } from '@/components/shared/Skeleton';
 import { AmountType } from '../../types';
 import { TokenSelectWrapper } from './styles';
+import { IToken } from '@/types/common';
 
 interface TokenSelectProps {
-  token?: { id: string; name: string }[]; //TODO : change type
+  agent?: IToken;
   valueType?: AmountType;
   selectable?: boolean;
   onSelect: (valueType: AmountType) => void;
 }
 
-const TokenSelect = ({ token, valueType, selectable = true, onSelect }: TokenSelectProps) => {
+const TokenSelect = ({ agent, valueType, selectable = true, onSelect }: TokenSelectProps) => {
   // const { chainId } = useActiveChainId();
 
   // const imageUrl = useMemo(() => {
@@ -32,24 +33,24 @@ const TokenSelect = ({ token, valueType, selectable = true, onSelect }: TokenSel
     <TokenSelectWrapper>
       <Flex $align='center' onClick={handleSelect} style={{ height: '100%' }} $gap={4} role='button' aria-label='Token select'>
         <Flex $align='center' $gap={8} style={{ minWidth: '95px' }}>
-          {token && (
+          {agent && (
               <ImageWithFallback
-                src={'/temp/token.png'}
+                src={agent.imageUrl}
                 alt='Token logo'
                 fill
                 loading='lazy'
-                style={{ objectFit: 'cover' }}
+                style={{ objectFit: 'cover', borderRadius: '50%' }}
                 sizes='100%'
                 widthSkeleton={24}
                 heightSkeleton={24}
               />
           )}
-          {token && (
+          {agent && (
             <Flex $align='center' $gap={8}>
-              {'ETH'}
+              {agent.symbol}
             </Flex>
           )}
-          {!token && <Skeleton width={95} height={24} borderRadius={'4px'} />}
+          {!agent && <Skeleton width={95} height={24} borderRadius={'4px'} />}
         </Flex>
 
         {selectable && <ChevronIcon style={{ minWidth: '14px' }} />}

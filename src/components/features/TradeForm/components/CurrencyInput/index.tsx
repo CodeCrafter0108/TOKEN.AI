@@ -5,13 +5,14 @@ import { formatBalance } from '@/utils/formatters';
 import TokenSelect from '../TokenSelect';
 import WalletIcon from '@/assets/icons/wallet.svg';
 import { Wrapper, CurrencyWrapperBalance, CurrencyWrapperSelect, Label, StyledInput, FiatValue } from './styles';
+import { IToken } from '@/types/common';
 
 interface CurrencyInputProps {
   value: string;
   label: string;
   disabled?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  token?: { id: string; name: string }[]; //TODO : change type
+  agent?: IToken;
   valueType?: AmountType;
   valueUsd?: string;
   balance?: string;
@@ -21,7 +22,7 @@ interface CurrencyInputProps {
 }
 
 const CurrencyInput = ({
-  token,
+  agent,
   valueType,
   valueUsd,
   balance,
@@ -53,7 +54,7 @@ const CurrencyInput = ({
       </CurrencyWrapperBalance>
 
       <CurrencyWrapperSelect>
-        <TokenSelect token={token} valueType={valueType} selectable={selectable} onSelect={handleSelect} />
+        <TokenSelect agent={agent} valueType={valueType} selectable={selectable} onSelect={handleSelect} />
         <Flex
           $gap={5}
           $align='center'
