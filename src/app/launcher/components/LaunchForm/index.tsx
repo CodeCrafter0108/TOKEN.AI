@@ -114,8 +114,6 @@ export const LaunchForm = () => {
     isError: !!formErrors.buy?.message
   });
 
-  console.log('SONIC_DATA:', nativeTokenData);
-
   const { nativeTokePriceUsd, userNativeBalance, nativeTokensAmount, buyTokensAmount } = nativeTokenData || {};
 
   const handleFocus = useCallback((fieldName: keyof LauncherTypeData): void => {

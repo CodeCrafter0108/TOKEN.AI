@@ -69,6 +69,13 @@ export const useGetNativeTokens = ({ percent, chainId, isError }: UseGetNativeTo
         throw new Error('Failed to fetch native token data');
       }
 
+      console.log('SONIC_DATA:', {
+        nativeTokensAmount,
+        userNativeBalance: balance.value,
+        nativeTokePriceUsd: +formatUnits(nativeTokenPrice, SONIC_DECIMALS),
+        buyTokensAmount
+      });
+
       setNativeTokenData({
         nativeTokensAmount,
         userNativeBalance: balance.value,
