@@ -36,6 +36,13 @@ export const useGetNativeTokens = ({ percent, chainId, isError }: UseGetNativeTo
       setNativeTokenData(null);
       return;
     }
+    console.log('quoteInitialBuy', {
+      address: launcherContract,
+      abi: launcherAbi,
+      chainId,
+      functionName: 'quoteInitialBuy',
+      args: [buyTokensAmount]
+    });
 
     try {
       const nativeTokensAmount = await readContract(config, {
