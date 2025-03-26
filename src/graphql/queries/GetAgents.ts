@@ -8,6 +8,7 @@ export const GetAgents = gql`
       blockTimestamp
       chatUrl
       description
+      decimals
       imageUrl
       marketCap
       name

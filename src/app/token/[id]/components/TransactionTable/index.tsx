@@ -1,25 +1,21 @@
-import { Flex } from '@/styles/global';
-import SortSelector from '@/components/shared/SortSelector';
-import { SortType } from '@/components/shared/SortSelector/types';
-import { NumberBreakpoints } from '@/styles/breakpoints';
-import { TableHead, TableItem, TableWrapper, Text, Title, TableTitle, TableBody } from './styles';
-import { Box } from '@/styles/global';
-import { useTableSort } from '@/hooks/useTableSort';
-import { useWindowSize } from '@/hooks/useWindowSize';
-import { formatAddress, formatNumber, formatTimeAgo } from '@/utils/formatters';
-import { memo, useEffect, useState } from 'react';
-import { ISwapData } from '@/types/common';
+import ExternalLinkIcon from '@/assets/icons/externalLink.svg';
 import CommonLink from '@/components/shared/CommonLink';
 import { LinkVariants } from '@/components/shared/CommonLink/types';
+import SortSelector from '@/components/shared/SortSelector';
+import { SortType } from '@/components/shared/SortSelector/types';
 import { ExternalLinks } from '@/constants/routes';
-import { formatEther } from 'viem';
-import ExternalLinkIcon from '@/assets/icons/externalLink.svg';
+import { useTableSort } from '@/hooks/useTableSort';
+import { useWindowSize } from '@/hooks/useWindowSize';
+import { NumberBreakpoints } from '@/styles/breakpoints';
+import { Box, Flex } from '@/styles/global';
+import { ISwap } from '@/types/common';
 import { RefetchInterval } from '@/types/enum';
-
-
+import { formatAddress, formatNumber, formatTimeAgo } from '@/utils/formatters';
+import { memo, useEffect, useState } from 'react';
+import { TableBody, TableHead, TableItem, TableTitle, TableWrapper, Text, Title } from './styles';
 
 interface TransactionTableProps {
-  data?: ISwapData[];
+  data?: ISwap[];
 }
 
 const TransactionTable = ({ data = [] }: TransactionTableProps) => {
@@ -35,7 +31,6 @@ const TransactionTable = ({ data = [] }: TransactionTableProps) => {
 
     return () => clearInterval(interval);
   }, []);
-
 
   return (
     <Box>
@@ -74,41 +69,50 @@ const TransactionTable = ({ data = [] }: TransactionTableProps) => {
             </div>
           )}
 
-          {data.length > 0 ? <TableBody role='rowgroup'>
-            {sortedData.map((transaction, index) => (
-              <TableItem key={index} role='row'>
-                <Flex $align='center' $justify='space-between' role='cell' aria-labelledby='date-header'>
-                  {width < NumberBreakpoints.md && <Title aria-hidden='true'>Date</Title>}
-                  <Text>{formatTimeAgo(transaction.blockTimestamp, dateNow)}</Text>
-                </Flex>
+          {data.length > 0 ? (
+            <TableBody role='rowgroup'>
+              {sortedData.map((transaction, index) => (
+                <TableItem key={index} role='row'>
+                  <Flex $align='center' $justify='space-between' role='cell' aria-labelledby='date-header'>
+                    {width < NumberBreakpoints.md && <Title aria-hidden='true'>Date</Title>}
+                    <Text>{formatTimeAgo(transaction.blockTimestamp, dateNow)}</Text>
+                  </Flex>
 
-                <Flex $align='center' $justify='space-between' role='cell' aria-labelledby='type-header'>
-                  {width < NumberBreakpoints.md && <Title aria-hidden='true'>Type</Title>}
-                  <Text style={{ color: `${transaction.fromAIToken ? '#34C759' : 'var(--error-clr)'}` }}>
-                    {transaction.fromAIToken ? 'Buy' : 'Sell'}
-                  </Text>
-                </Flex>
+                  <Flex $align='center' $justify='space-between' role='cell' aria-labelledby='type-header'>
+                    {width < NumberBreakpoints.md && <Title aria-hidden='true'>Type</Title>}
+                    <Text style={{ color: `${transaction.fromAIToken ? 'var(--error-clr)' : '#34C759'}` }}>
+                      {transaction.fromAIToken ? 'Sell' : 'Buy'}
+                    </Text>
+                  </Flex>
 
-                <Flex $justify='space-between' role='cell' aria-labelledby='amount-header'>
-                  {width < NumberBreakpoints.md && <Title aria-hidden='true'>Amount</Title>}
-                  <Text>{`${formatNumber(formatEther(BigInt(transaction.amount)))}`}</Text>
-                </Flex>
+                  <Flex $justify='space-between' role='cell' aria-labelledby='amount-header'>
+                    {width < NumberBreakpoints.md && <Title aria-hidden='true'>Amount</Title>}
+                    <Text>{`${formatNumber(transaction.amount)}`}</Text>
+                  </Flex>
 
-                <Flex $justify='space-between' role='cell' aria-labelledby='price-header'>
-                  {width < NumberBreakpoints.md && <Title aria-hidden='true'>Price</Title>}
-                  <Text>{`$${formatNumber(transaction.price)}`}</Text>
-                </Flex>
+                  <Flex $justify='space-between' role='cell' aria-labelledby='price-header'>
+                    {width < NumberBreakpoints.md && <Title aria-hidden='true'>Price</Title>}
+                    <Text>{`$${formatNumber(transaction.price)}`}</Text>
+                  </Flex>
 
-                <Flex $justify='space-between' role='cell' aria-labelledby='txn-header'>
-                  {width < NumberBreakpoints.md && <Title aria-hidden='true'>TXN</Title>}
-                  <CommonLink variants={LinkVariants.CLEAR} isExternal href={`${ExternalLinks.SONIC_SCANER}/tx/${transaction.transactionHash}`} style={{justifyContent: 'space-between', width: '100%'}}>
-                    <Text>{formatAddress(transaction.transactionHash)}</Text>
-                    <ExternalLinkIcon />
-                  </CommonLink>
-                </Flex>
-              </TableItem>
-            ))}
-          </TableBody> : <Text style={{ textAlign: 'center', padding: '20px 0' }}>No transactions found</Text>}
+                  <Flex $justify='space-between' role='cell' aria-labelledby='txn-header'>
+                    {width < NumberBreakpoints.md && <Title aria-hidden='true'>TXN</Title>}
+                    <CommonLink
+                      variants={LinkVariants.CLEAR}
+                      isExternal
+                      href={`${ExternalLinks.SONIC_SCANER}/tx/${transaction.transactionHash}`}
+                      style={{ justifyContent: 'space-between', width: '100%' }}
+                    >
+                      <Text>{formatAddress(transaction.transactionHash)}</Text>
+                      <ExternalLinkIcon />
+                    </CommonLink>
+                  </Flex>
+                </TableItem>
+              ))}
+            </TableBody>
+          ) : (
+            <Text style={{ textAlign: 'center', padding: '20px 0' }}>No transactions found</Text>
+          )}
         </TableWrapper>
       </Flex>
     </Box>

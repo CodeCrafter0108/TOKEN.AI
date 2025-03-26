@@ -60,7 +60,13 @@ const CurrencyInput = ({
   return (
     <Wrapper>
       <Label htmlFor={label}>{label}</Label>
-      <StyledInput value={value} id={label} onChange={onChange} placeholder='0' />
+      <StyledInput
+        value={value}
+        id={label}
+        onChange={onChange}
+        placeholder='0'
+        style={{ pointerEvents: valueType === AmountType.OUT ? 'none' : 'auto' }}
+      />
       <CurrencyWrapperBalance>
         <Flex $align='center'>
           <FiatValue>~ ${valueUsd}</FiatValue>

@@ -1,54 +1,101 @@
 'use client';
-import Button from '@/components/shared/Button';
-import { useState } from 'react';
-import { CardList } from './styles';
-import { LatestTransactionCard } from './components/LatestTransactionCard';
+import { getGraphClient } from '@/config/graph/config';
+import { ChainId } from '@/constants/blockchain/networks';
+import { GetLastSwap } from '@/graphql/queries/GetLastSwap';
+import { GetSwaps } from '@/graphql/queries/GetSwaps';
+import { ISwap, ISwapsData } from '@/types/common';
+import { RefetchInterval } from '@/types/enum';
+import { useQuery } from '@apollo/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import { useMemo, useState } from 'react';
+import { LatestTransactionCard } from './components/LatestTransactionCard';
 import { supportedPages } from './constants';
-
-const mockData = [1];
+import { CardList } from './styles';
 
 export const LatestTransactions = () => {
-  const [transactions, setTransactions] = useState(mockData);
-  const [newCard, setNewCard] = useState<number | null>(null);
+  const [transactions, setTransactions] = useState<ISwap[]>([]);
+  const [newTransaction, setNewTransaction] = useState<ISwap | null>(null);
 
-  const addNewCard = () => {
-    const newId = Date.now();
-    setNewCard(newId);
-    setTransactions((prev) => [newId, ...prev]);
+  const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
 
-    setTimeout(() => {
-      setNewCard(null);
-    }, 500);
-  };
+  const {
+    // loading: agentLoading,
+  } = useQuery<ISwapsData>(GetSwaps, {
+    client,
+    variables: { orderBy: 'blockTimestamp', orderDirection: 'desc', first: 20 },
+    onError: (error) => console.error(error),
+    onCompleted: (data) => {
+      if (data) setTransactions(data.swaps);
+    }
+  });
+
+  const {
+    // loading: agentLoading,
+  } = useQuery<ISwapsData>(GetLastSwap, {
+    client,
+    variables: {
+      orderBy: 'blockTimestamp',
+      orderDirection: 'desc',
+      first: 5,
+      timestamp: transactions?.[0]?.blockTimestamp
+    },
+    pollInterval: RefetchInterval.THREE_SECONDS,
+    onError: (error) => console.error(error),
+    skip: !transactions?.[0],
+    onCompleted: (data) => {
+      if (data) {
+        if (data.swaps?.length === 0) return;
+        if (data.swaps?.length === 1) {
+          setNewTransaction(data.swaps[0]);
+          setTransactions((prev) => [data.swaps[0], ...prev]);
+          setTimeout(() => {
+            setNewTransaction(null);
+          }, 500);
+        }
+
+        if (data.swaps?.length > 1) {
+          let index = 0;
+
+          const interval = setInterval(() => {
+            if (index >= data.swaps.length) {
+              clearInterval(interval);
+              setTimeout(() => setNewTransaction(null), 500);
+              return;
+            }
+
+            const swap = data.swaps[index];
+            setNewTransaction(swap);
+            setTransactions((prev) => [swap, ...prev]);
+            index++;
+          }, 500);
+        }
+      }
+    }
+  });
 
   const pathname = usePathname();
 
   if (!supportedPages.includes(pathname)) return null;
 
   return (
-    <>
-      <CardList>
-        <AnimatePresence initial={false} mode='popLayout'>
-          {transactions.map((item) => (
-            <motion.div
-              key={item}
-              layout
-              initial={{ opacity: 0, x: -100, scale: 0.8 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
-              transition={{
-                layout: { type: 'spring', stiffness: 300, damping: 30 }
-              }}
-            >
-              <LatestTransactionCard id={item} isNewCard={item === newCard} />
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </CardList>
-      {/*TODO remove button */}
-      <Button onClick={() => addNewCard()} style={{width: '20px', padding: '0', position: 'absolute', top: '70px', zIndex: '5'}}>+</Button>
-    </>
+    <CardList>
+      <AnimatePresence initial={false} mode='popLayout'>
+        {transactions?.map((transaction) => (
+          <motion.div
+            key={transaction.id}
+            layout
+            initial={{ opacity: 0, x: -100, scale: 0.8 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+            transition={{
+              layout: { type: 'spring', stiffness: 300, damping: 30 }
+            }}
+          >
+            <LatestTransactionCard transaction={transaction} isNewTransaction={transaction.id === newTransaction?.id} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </CardList>
   );
 };

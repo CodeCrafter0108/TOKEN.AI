@@ -13,6 +13,7 @@ import { formatBalance, formatNumber } from '@/utils/formatters';
 import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
 import { useQuery } from '@apollo/client';
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 import CurrencyInput from './components/CurrencyInput';
 import SlippageModal from './components/SlippageModal';
@@ -20,6 +21,7 @@ import { DEFOULT_DEADLINE, DEFOULT_SLIPAGE } from './components/SlippageModal/co
 import { SlippageType } from './components/SlippageModal/types';
 import { ChangeButton, Form, FormTitle, Separator, StyledSettingIcon, SwapInputsWrapper, Wrapper } from './styles';
 import { AmountType } from './types';
+import { quoter } from './utils';
 
 interface TradeFormProps {
   styles?: React.CSSProperties;
@@ -76,8 +78,27 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
   // const [fromToken, setFromToken] = useState<IToken>(nativeToken as IToken);
   // const [toToken, setToToken] = useState<IToken>(tokens?.filter((t) => t.isAvailable)[0] as IToken);
 
-  const debouncedAmountIn = useDebounce(amountIn);
-  const debouncedAmountOut = useDebounce(amountOut);
+  const debouncedAmountIn: string = useDebounce(amountIn);
+  const debouncedAmountOut: string = useDebounce(amountOut);
+
+  useEffect(() => {
+    const fetchQuote = async () => {
+      if (debouncedAmountIn) {
+        const quote: bigint | undefined = await quoter({
+          chainId: ChainId.SONIC,
+          addressFrom: agent0?.address,
+          addressTo: agent1?.address,
+          amount: parseUnits(debouncedAmountIn, agent0?.decimals ?? 0)
+        });
+        if (quote) {
+          setAmountOut(formatUnits(quote, agent1?.decimals ?? 0));
+        }
+      } else {
+        setAmountOut('');
+      }
+    };
+    fetchQuote();
+  }, [debouncedAmountIn, agent0, agent1]);
 
   const handleSwap = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -105,9 +126,9 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
   const handleMaxAmount = useCallback(
     (type: AmountType): void => {
       if (type === AmountType.IN) {
-        setAmountIn((agent0?.balance || 0n).toString());
+        setAmountIn(formatUnits(agent0?.balance ?? 0n, agent0?.decimals ?? 0));
       } else {
-        setAmountOut((agent1?.balance || 0n).toString());
+        setAmountOut(formatUnits(agent1?.balance ?? 0n, agent1?.decimals ?? 0));
       }
     },
     [agent0, agent1]
@@ -135,9 +156,13 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
 
   const agentList: IToken[] | undefined = useMemo(() => {
     if (amountType === AmountType.IN) {
-      return (isConnected ? agentsWithBalance : formattedAgents)?.filter((agent) => agent.id !== agent1?.id) as IToken[];
+      return (isConnected ? agentsWithBalance : formattedAgents)?.filter(
+        (agent) => agent.id !== agent1?.id
+      ) as IToken[];
     } else {
-      return (isConnected ? agentsWithBalance : formattedAgents)?.filter((agent) => agent.id !== agent0?.id) as IToken[];
+      return (isConnected ? agentsWithBalance : formattedAgents)?.filter(
+        (agent) => agent.id !== agent0?.id
+      ) as IToken[];
     }
   }, [amountType, agentsWithBalance, agent0, agent1, formattedAgents, isConnected]);
 

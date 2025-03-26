@@ -2,21 +2,11 @@ import { Address } from 'viem';
 
 export type BigInt = string;
 
-export interface ISwapData {
-  amount: BigInt;
-  blockTimestamp: string;
-  fromAIToken: boolean;
-  id: string;
-  transactionHash: string;
-  price: string;
-  user: Address;
-}
-
 export interface ITokenPair {
   token0: Address;
   token1: Address;
   id: Address;
-  swaps?: ISwapData[];
+  swaps?: ISwap[];
 }
 
 export interface IToken {
@@ -39,9 +29,24 @@ export interface IToken {
   balance?: bigint;
 }
 
+export interface ISwap {
+  amount: BigInt;
+  blockTimestamp: string;
+  fromAIToken: boolean;
+  id: string;
+  transactionHash: string;
+  price: string;
+  user: Address;
+  token: IToken;
+}
+
 export interface ITokensData {
   tokens: IToken[];
   baseTokens: IToken[];
+}
+
+export interface ISwapsData {
+  swaps: ISwap[];
 }
 
 export interface ITokenData {

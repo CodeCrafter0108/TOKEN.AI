@@ -38,6 +38,7 @@ export const Title = styled.div`
 
 export const Info = styled.div`
   display: flex;
+  justify-content: space-between;
   gap: 4px;
   font-size: 12px;
   line-height: 1;
