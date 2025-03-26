@@ -1,5 +1,5 @@
-import { Address, formatEther } from "viem";
 import { intervalToDuration } from "date-fns";
+import { Address, formatUnits } from "viem";
 
 export const formatAddress = (address: Address | string | undefined) => {
   if (!address) return '';
@@ -27,11 +27,11 @@ export const  formatNumber = (num: number | string | undefined, digits = 2) => {
 //   });
 // };
 
-  export const formatBalance = (amount?: bigint, digits: number = 4):string => {
+  export const formatBalance = (amount?: bigint, decimals: number = 0, digits: number = 4):string => {
     if (!amount) {
       return '0.00';
     }
-    return  formatNumber(formatEther(amount), digits);
+    return  formatNumber(formatUnits(amount, decimals), digits);
   }
 
 export const  abbreviateNumber = (num: number | string | undefined, digits = 2) => {

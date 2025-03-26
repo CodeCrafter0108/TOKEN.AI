@@ -17,10 +17,18 @@ export const GetAgents = gql`
       supply
       symbol
       tokenOwner
+    }
+    baseTokens(first: 10) {
+      address
+      decimals
+      id
+      imageUrl
+      name
+      price
+      symbol
+    }
   }
-}
 `;
-
 
 // tokenCounters {
 //   totalCount

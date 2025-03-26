@@ -1,13 +1,13 @@
-import { launcherContract, SONIC_DECIMALS, sonicOracle } from '@/constants/blockchain/contracts';
-import { useAccount } from 'wagmi';
 import launcherAbi from '@/config/abi/launcher.json';
-import { TOTAL_SUPPLY } from '../schema';
-import BigNumber from 'bignumber.js';
 import oracleAbi from '@/config/abi/sonicOracle.json';
-import { formatUnits } from 'viem';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { getBalance, readContract } from 'wagmi/actions';
 import { config } from '@/config/providers/WagmiProvider/config';
+import { launcherContract, SONIC_ORACLE_DECIMALS, sonicOracle } from '@/constants/blockchain/contracts';
+import BigNumber from 'bignumber.js';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { formatUnits } from 'viem';
+import { useAccount } from 'wagmi';
+import { getBalance, readContract } from 'wagmi/actions';
+import { TOTAL_SUPPLY } from '../schema';
 
 interface UseGetNativeTokensArgs {
   percent?: string;
@@ -65,7 +65,7 @@ export const useGetNativeTokens = ({ percent, chainId, isError }: UseGetNativeTo
       setNativeTokenData({
         nativeTokensAmount,
         userNativeBalance: balance.value,
-        nativeTokePriceUsd: +formatUnits(nativeTokenPrice, SONIC_DECIMALS),
+        nativeTokePriceUsd: +formatUnits(nativeTokenPrice, SONIC_ORACLE_DECIMALS),
         buyTokensAmount
       });
     } catch (error) {

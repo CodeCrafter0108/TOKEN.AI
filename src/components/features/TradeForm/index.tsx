@@ -8,7 +8,7 @@ import { GetAgents } from '@/graphql/queries/GetAgents';
 import { useBalances } from '@/hooks/useBalances';
 import { useDebounce } from '@/hooks/useDebounce';
 import { Flex } from '@/styles/global';
-import { ITokensData, ITokenWithBalance } from '@/types/common';
+import { IToken, ITokensData } from '@/types/common';
 import { formatBalance, formatNumber } from '@/utils/formatters';
 import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
 import { useQuery } from '@apollo/client';
@@ -27,8 +27,8 @@ interface TradeFormProps {
 
 export const TradeForm = ({ styles }: TradeFormProps) => {
   const { isConnected } = useAccount();
-  const [agent0, setAgent0] = useState<ITokenWithBalance | undefined>();
-  const [agent1, setAgent1] = useState<ITokenWithBalance | undefined>();
+  const [agent0, setAgent0] = useState<IToken | undefined>();
+  const [agent1, setAgent1] = useState<IToken | undefined>();
 
   const [slippageType, setSlippageType] = useState<SlippageType>(SlippageType.AUTO);
   const [slippage, setSlippage] = useState<number>(DEFOULT_SLIPAGE);
@@ -45,14 +45,18 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
     onError: (error) => console.error(error)
   });
 
-  const { agentsWithBalance } = useBalances({ agents: agents?.tokens });
+  const formattedAgents: IToken[] | undefined = useMemo(() => {
+    return agents?.baseTokens && agents?.tokens ? [...agents?.baseTokens, ...agents?.tokens] : undefined;
+  }, [agents]);
+
+  const { agentsWithBalance } = useBalances({ tokens: formattedAgents });
 
   useEffect(() => {
-    if (agentsWithBalance) {
-      setAgent0(agentsWithBalance[0]); //TODO change
-      setAgent1(agentsWithBalance[1]); //TODO change
+    if (agentsWithBalance && formattedAgents) {
+      setAgent0(isConnected ? agentsWithBalance[0] : formattedAgents[0]); //TODO change
+      setAgent1(isConnected ? agentsWithBalance[1] : formattedAgents[1]); //TODO change
     }
-  }, [agentsWithBalance]);
+  }, [agentsWithBalance, formattedAgents, isConnected]);
 
   // const [amount, setAmount] = useState<bigint>(0n);
   const [amountIn, setAmountIn] = useState<string>('');
@@ -98,16 +102,19 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
     setAmountType(amountType);
   }, []);
 
-  const handleMaxAmount = useCallback((type: AmountType): void => {
-    if (type === AmountType.IN) {
-      setAmountIn((agent0?.balance || 0n).toString());
-    } else {
-      setAmountOut((agent1?.balance || 0n).toString());
-    }
-  }, [agent0, agent1]);
+  const handleMaxAmount = useCallback(
+    (type: AmountType): void => {
+      if (type === AmountType.IN) {
+        setAmountIn((agent0?.balance || 0n).toString());
+      } else {
+        setAmountOut((agent1?.balance || 0n).toString());
+      }
+    },
+    [agent0, agent1]
+  );
 
   const handleSelectAgent = useCallback(
-    (agent: ITokenWithBalance): void => {
+    (agent: IToken): void => {
       if (amountType === AmountType.IN) {
         setAgent0(agent);
       } else {
@@ -126,13 +133,13 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
     setAgent1(agent0);
   };
 
-  const agentList: ITokenWithBalance[] = useMemo(() => {
+  const agentList: IToken[] | undefined = useMemo(() => {
     if (amountType === AmountType.IN) {
-      return agentsWithBalance.filter((agent) => agent.id !== agent1?.id) as ITokenWithBalance[];
+      return (isConnected ? agentsWithBalance : formattedAgents)?.filter((agent) => agent.id !== agent1?.id) as IToken[];
     } else {
-      return agentsWithBalance.filter((agent) => agent.id !== agent0?.id) as ITokenWithBalance[];
+      return (isConnected ? agentsWithBalance : formattedAgents)?.filter((agent) => agent.id !== agent0?.id) as IToken[];
     }
-  }, [amountType, agentsWithBalance, agent0, agent1]);
+  }, [amountType, agentsWithBalance, agent0, agent1, formattedAgents, isConnected]);
 
   const value0Usd: string = useMemo(() => {
     if (agent0) {
@@ -167,7 +174,7 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
             value={amountIn}
             valueUsd={value0Usd}
             valueType={AmountType.IN}
-            balance={formatBalance(agent1?.balance)}
+            balance={formatBalance(agent0?.balance, agent0?.decimals)}
             onChange={(v) => handleChange(v, AmountType.IN)}
             agentList={agentList}
             onChangeAmountType={handleChangeAmountType}
@@ -184,7 +191,7 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
             value={amountOut}
             valueUsd={value1Usd}
             valueType={AmountType.OUT}
-            balance={formatBalance(agent1?.balance)}
+            balance={formatBalance(agent1?.balance, agent1?.decimals)}
             onChange={(v) => handleChange(v, AmountType.OUT)}
             agentList={agentList}
             onChangeAmountType={handleChangeAmountType}

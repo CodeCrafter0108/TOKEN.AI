@@ -8,7 +8,7 @@ import { Flex } from '@/styles/global';
 import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { memo, useCallback, useEffect, useState } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { DEFOULT_DEADLINE, DEFOULT_SLIPAGE } from './constants';
 import { schema } from './schema';
 import { Form, RadioLabel, SubTitle } from './styles';

@@ -1,27 +1,27 @@
 import WalletIcon from '@/assets/icons/wallet.svg';
 import { Flex } from '@/styles/global';
-import { ITokenWithBalance } from '@/types/common';
+import { IToken } from '@/types/common';
 import { ChangeEvent, memo, useCallback, useState } from 'react';
 import { AmountType } from '../../types';
 import SelectTokenModal from '../SelectTokenModal';
 import TokenSelect from '../TokenSelect';
 import { CurrencyWrapperBalance, CurrencyWrapperSelect, FiatValue, Label, StyledInput, Wrapper } from './styles';
+import { useAccount } from 'wagmi';
 
 interface CurrencyInputProps {
   value: string;
   label: string;
   onChangeAmountType: (type: AmountType) => void;
-  onSelectAgent: (agent: ITokenWithBalance) => void;
+  onSelectAgent: (agent: IToken) => void;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onMax: (type: AmountType) => void;
   valueType: AmountType;
   disabled?: boolean;
-  agent?: ITokenWithBalance;
+  agent?: IToken;
   valueUsd?: string;
   balance?: string;
   selectable?: boolean;
-  agentList?: ITokenWithBalance[];
-
+  agentList?: IToken[];
 }
 
 const CurrencyInput = ({
@@ -38,6 +38,7 @@ const CurrencyInput = ({
   label,
   onMax
 }: CurrencyInputProps) => {
+  const { isConnected } = useAccount();
   const [isSelectModalOpen, setIsSelectModalOpen] = useState<boolean>(false);
 
   const handleOpenModal = useCallback(
@@ -48,10 +49,13 @@ const CurrencyInput = ({
     [onChangeAmountType]
   );
 
-  const handleSelectAgent = useCallback((agent: ITokenWithBalance) => {
-    onSelectAgent(agent);
-    setIsSelectModalOpen(false);
-  },[onSelectAgent]);
+  const handleSelectAgent = useCallback(
+    (agent: IToken) => {
+      onSelectAgent(agent);
+      setIsSelectModalOpen(false);
+    },
+    [onSelectAgent]
+  );
 
   return (
     <Wrapper>
@@ -69,7 +73,7 @@ const CurrencyInput = ({
           $gap={5}
           $align='center'
           $justify='flex-end'
-          style={{ cursor: 'pointer', fontSize: '12px' }}
+          style={{ cursor: 'pointer', fontSize: '12px', pointerEvents: isConnected ? 'auto' : 'none' }}
           onClick={() => onMax(valueType)}
           role='button'
           aria-label='Max balance'

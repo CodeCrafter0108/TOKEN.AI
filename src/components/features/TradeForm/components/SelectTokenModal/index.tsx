@@ -4,31 +4,25 @@ import Modal from '@/components/shared/Modal';
 import { ModalHeader } from '@/components/shared/Modal/components/ModalHeader';
 import { useDebounce } from '@/hooks/useDebounce';
 import { Flex } from '@/styles/global';
-import { ITokenWithBalance } from '@/types/common';
+import { IToken } from '@/types/common';
 import { formatBalance, formatNumber } from '@/utils/formatters';
 import { memo, useMemo, useState } from 'react';
 import { css } from 'styled-components';
-import { formatEther } from 'viem';
+import { formatUnits } from 'viem';
 import { Description, NotFound, Title, TokenList, TokenListItem } from './styles';
 
 interface SelectTokenModalProps {
   onClose: () => void;
   isOpen: boolean;
-  agentList?: ITokenWithBalance[];
-  handleSelectAgent: (agent: ITokenWithBalance) => void;
-  currentAgent?: ITokenWithBalance;
+  agentList?: IToken[];
+  handleSelectAgent: (agent: IToken) => void;
+  currentAgent?: IToken;
 }
 
-const SelectTokenModal = ({
-  isOpen,
-  onClose,
-  agentList,
-  handleSelectAgent,
-  currentAgent,
-}: SelectTokenModalProps) => {
+const SelectTokenModal = ({ isOpen, onClose, agentList, handleSelectAgent, currentAgent }: SelectTokenModalProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const debouncedSearchValue = useDebounce(searchValue, 300);
-  const filteredAgents: ITokenWithBalance[] = useMemo(() => {
+  const filteredAgents: IToken[] = useMemo(() => {
     if (!agentList) return [];
 
     return agentList.filter(
@@ -75,8 +69,8 @@ const SelectTokenModal = ({
                 </Flex>
               </Flex>
               <Flex $direction='column' $align='flex-end' $gap={4} style={{ width: 'auto' }}>
-                <Title>{formatBalance(agent?.balance)}</Title>
-                <Description>{`$${formatNumber(Number(formatEther(agent?.balance ?? 0n)) * Number(agent?.price ?? '0'), 2)}`}</Description>
+                <Title>{formatBalance(agent?.balance, agent?.decimals)}</Title>
+                <Description>{`$${formatNumber(Number(formatUnits(agent?.balance ?? 0n, agent?.decimals ?? 0)) * Number(agent?.price ?? '0'), 2)}`}</Description>
               </Flex>
             </TokenListItem>
           ))
