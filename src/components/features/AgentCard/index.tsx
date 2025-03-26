@@ -23,7 +23,6 @@ import {
 } from './styles';
 
 interface AgentCardProps {
-  // onClick: () => void;
   styles?: RuleSet<object>;
   hasMetrics?: boolean;
   agent: IToken;
@@ -31,7 +30,7 @@ interface AgentCardProps {
 
 export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps) => {
   const router = useRouter();
-  const { imageUrl, name, symbol, marketCap, description, siteUrl, socialUrl, chatUrl, address } = agent || {};
+  const { imageUrl, name, symbol, marketCap = '0', description, siteUrl, socialUrl, chatUrl, address } = agent || {};
   return (
     <Container onClick={() => router.push(`${AppRoutes.TOKEN}/${address}`)} $styles={styles} role='link'>
       <Flex $gap={12} $align='center'>
@@ -44,7 +43,6 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
           sizes='100%'
           widthSkeleton={70}
           heightSkeleton={70}
-          shape='circle'
         />
         <Grid $hasMetrics={hasMetrics}>
           <Title>{name}</Title>
@@ -58,7 +56,7 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
               sizes='100%'
               widthSkeleton={16}
               heightSkeleton={16}
-              shape='circle'
+
             />
             <span>{symbol}</span>
           </Flex>

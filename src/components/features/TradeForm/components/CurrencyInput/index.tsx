@@ -1,46 +1,61 @@
-import { ChangeEvent, memo } from 'react';
-import { AmountType } from '../../types';
-import { Flex } from '@/styles/global';
-import { formatBalance } from '@/utils/formatters';
-import TokenSelect from '../TokenSelect';
 import WalletIcon from '@/assets/icons/wallet.svg';
-import { Wrapper, CurrencyWrapperBalance, CurrencyWrapperSelect, Label, StyledInput, FiatValue } from './styles';
+import { Flex } from '@/styles/global';
+import { IToken } from '@/types/common';
+import { ChangeEvent, memo, useCallback, useState } from 'react';
+import { AmountType } from '../../types';
+import SelectTokenModal from '../SelectTokenModal';
+import TokenSelect from '../TokenSelect';
+import { CurrencyWrapperBalance, CurrencyWrapperSelect, FiatValue, Label, StyledInput, Wrapper } from './styles';
+import { useAccount } from 'wagmi';
 
 interface CurrencyInputProps {
   value: string;
   label: string;
-  disabled?: boolean;
+  onChangeAmountType: (type: AmountType) => void;
+  onSelectAgent: (agent: IToken) => void;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  token?: { id: string; name: string }[]; //TODO : change type
-  valueType?: AmountType;
+  onMax: (type: AmountType) => void;
+  valueType: AmountType;
+  disabled?: boolean;
+  agent?: IToken;
   valueUsd?: string;
   balance?: string;
   selectable?: boolean;
-  onSelect?: (valueType: AmountType) => void;
-  onMax?: (valueType: AmountType) => void;
+  agentList?: IToken[];
 }
 
 const CurrencyInput = ({
-  token,
+  agentList,
+  agent,
   valueType,
   valueUsd,
   balance,
   selectable,
-  onSelect,
-  onMax,
   value,
   onChange,
-  label
+  onChangeAmountType,
+  onSelectAgent,
+  label,
+  onMax
 }: CurrencyInputProps) => {
-  const handleSelect = (valueType: AmountType) => {
-    if (!onSelect || typeof valueType === 'undefined') return;
-    onSelect(valueType);
-  };
+  const { isConnected } = useAccount();
+  const [isSelectModalOpen, setIsSelectModalOpen] = useState<boolean>(false);
 
-  const handleMax = () => {
-    if (!onMax || typeof valueType === 'undefined') return;
-    onMax(valueType);
-  };
+  const handleOpenModal = useCallback(
+    (type: AmountType) => {
+      onChangeAmountType(type);
+      setIsSelectModalOpen(true);
+    },
+    [onChangeAmountType]
+  );
+
+  const handleSelectAgent = useCallback(
+    (agent: IToken) => {
+      onSelectAgent(agent);
+      setIsSelectModalOpen(false);
+    },
+    [onSelectAgent]
+  );
 
   return (
     <Wrapper>
@@ -53,20 +68,27 @@ const CurrencyInput = ({
       </CurrencyWrapperBalance>
 
       <CurrencyWrapperSelect>
-        <TokenSelect token={token} valueType={valueType} selectable={selectable} onSelect={handleSelect} />
+        <TokenSelect agent={agent} valueType={valueType} selectable={selectable} onSelect={handleOpenModal} />
         <Flex
           $gap={5}
           $align='center'
           $justify='flex-end'
-          style={{ cursor: 'pointer', fontSize: '12px' }}
-          onClick={handleMax}
+          style={{ cursor: 'pointer', fontSize: '12px', pointerEvents: isConnected ? 'auto' : 'none' }}
+          onClick={() => onMax(valueType)}
           role='button'
           aria-label='Max balance'
         >
           <WalletIcon />
-          <FiatValue >{formatBalance(balance, 4) || '0.00'}</FiatValue>
+          <FiatValue>{balance}</FiatValue>
         </Flex>
       </CurrencyWrapperSelect>
+      <SelectTokenModal
+        isOpen={isSelectModalOpen}
+        onClose={() => setIsSelectModalOpen(false)}
+        agentList={agentList}
+        handleSelectAgent={handleSelectAgent}
+        currentAgent={agent}
+      />
     </Wrapper>
   );
 };

@@ -1,4 +1,4 @@
-export const AUTO_SLIPAGE = 5;
+export const DEFOULT_SLIPAGE = 5;
 export const MIN_SLIPAGE = 1; //TODO
 export const MAX_SLIPAGE = 100; //TODO
 export const DEFOULT_DEADLINE = 0;

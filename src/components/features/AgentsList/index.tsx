@@ -32,7 +32,7 @@ export const AgentsList = ({ hasArrow = true, hasButton, agents = [], styles }: 
     <Box style={{ gap: '0px', padding: '16px 0', ...styles }}>
       <List>
         {agents.map((agent: IToken) => {
-          const { id, imageUrl, name, symbol, marketCap, address } = agent || {};
+          const { id, imageUrl, name, symbol, marketCap = '0', address } = agent || {};
           return (
             <ListItem key={id}>
               <StyledLink href={`${AppRoutes.TOKEN}/${address}`}>
@@ -46,7 +46,6 @@ export const AgentsList = ({ hasArrow = true, hasButton, agents = [], styles }: 
                     sizes='100%'
                     widthSkeleton={60}
                     heightSkeleton={60}
-                    shape={'circle'}
                   />
                   <InfoWrapper>
                     <Title>{name}</Title>
@@ -60,7 +59,6 @@ export const AgentsList = ({ hasArrow = true, hasButton, agents = [], styles }: 
                         sizes='100%'
                         widthSkeleton={16}
                         heightSkeleton={16}
-                        shape='circle'
                       />
                       <TokenSymbol>{symbol}</TokenSymbol>
                     </Flex>

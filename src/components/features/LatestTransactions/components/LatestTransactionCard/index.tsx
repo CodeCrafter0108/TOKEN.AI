@@ -20,7 +20,6 @@ export const LatestTransactionCard = ({ isNewCard, id }: LatestTransactionCardPr
           sizes='100%'
           widthSkeleton={28}
           heightSkeleton={28}
-          shape='circle'
         />
         <Flex $direction='column'>
           <Title>{id}</Title>

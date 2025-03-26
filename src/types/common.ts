@@ -19,29 +19,31 @@ export interface ITokenPair {
   swaps?: ISwapData[];
 }
 
-
 export interface IToken {
-  blockTimestamp: string;
-  address: Address;
-  chatUrl: string;
-  description: string;
   id: string;
-  imageUrl: string;
-  marketCap: string
+  address: Address;
+  symbol: string;
   name: string;
   price: string;
-  siteUrl: string;
-  socialUrl: string;
-  supply: BigInt;
-  symbol: string;
-  tokenOwner: Address;
+  imageUrl: string;
+  decimals: number;
+  blockTimestamp?: string;
+  chatUrl?: string;
+  description?: string;
+  marketCap?: string;
+  siteUrl?: string;
+  socialUrl?: string;
+  supply?: BigInt;
+  tokenOwner?: Address;
   pair?: ITokenPair;
+  balance?: bigint;
 }
 
-export interface ITokensData  {
-  tokens: IToken[]
+export interface ITokensData {
+  tokens: IToken[];
+  baseTokens: IToken[];
 }
 
-export interface ITokenData  {
-  token: IToken
+export interface ITokenData {
+  token: IToken;
 }

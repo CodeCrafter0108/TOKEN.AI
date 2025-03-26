@@ -94,7 +94,7 @@ export const StyledButton = styled.button<{ $variants: ButtonVariants; $isSelect
             background-color: ${$isSelected ? 'var(--accent-clr)' : 'transparent'};
 
             &:hover {
-              background: rgba(126, 196, 37, 0.08);
+              background: ${$isSelected ? 'var(--accent-clr)' : 'rgba(126, 196, 37, 0.08)'};
             }
 
               svg path {

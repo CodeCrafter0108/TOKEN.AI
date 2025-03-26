@@ -4,9 +4,9 @@ import { Skeleton } from '../../shared/Skeleton';
 import { ImageWrapper } from './styles';
 
 export const ImageWithFallback = (
-  props: ImageProps & { widthSkeleton: number; heightSkeleton: number; shape?: 'rect' | 'circle' | 'round' }
+  props: ImageProps & { widthSkeleton: number; heightSkeleton: number; }
 ) => {
-  const { widthSkeleton, heightSkeleton, shape = 'round', src, ...restProps } = props;
+  const { widthSkeleton, heightSkeleton, src, style, ...restProps } = props;
   const [hasError, setHasError] = useState(false);
 
 
@@ -54,6 +54,7 @@ export const ImageWithFallback = (
       {isValidSrc && !hasError ? (
         <Image
           {...restProps}
+          style={{ ...style}}
           src={src}
           unoptimized //TODO remove after connect ssl certificate
           placeholder='blur'
@@ -62,7 +63,7 @@ export const ImageWithFallback = (
           onError={handleError}
         />
       ) : (
-        <Skeleton width={widthSkeleton} height={heightSkeleton} isLoading shape={shape} />
+        <Skeleton width={widthSkeleton} height={heightSkeleton} isLoading borderRadius={style?.borderRadius?.toString()} />
       )}
     </ImageWrapper>
   );
