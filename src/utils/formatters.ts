@@ -17,16 +17,6 @@ export const  formatNumber = (num: number | string | undefined, digits = 2) => {
   });
 };
 
-// export const  formatBalance = (num: number | string | undefined, digits = 2) => {
-//   const _num = parseFloat(String(num));
-//   if (!_num || _num === 0) return '0.00';
-//   if (_num === 0) return '0.0';
-//   return _num.toLocaleString('en-ES', {
-//       minimumFractionDigits: 0,
-//       maximumFractionDigits: digits,
-//   });
-// };
-
   export const formatBalance = (amount?: bigint, decimals: number = 0, digits: number = 4):string => {
     if (!amount) {
       return '0.00';
@@ -65,8 +55,6 @@ export const shortNumber = (number: number): string => {
     minimumFractionDigits: 2,
   }).format(number);
 };
-
-
 
 export const formatTimeAgo = (timestamp: string, dateNow: number): string => {
   const duration: Duration = intervalToDuration({ start: Number(timestamp) * 1000, end: dateNow * 1000 });

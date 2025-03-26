@@ -72,7 +72,7 @@ export const useGetNativeTokens = ({ percent, chainId, isError }: UseGetNativeTo
       console.log('SONIC_DATA:', {
         nativeTokensAmount,
         userNativeBalance: balance.value,
-        nativeTokePriceUsd: +formatUnits(nativeTokenPrice, SONIC_DECIMALS),
+        nativeTokePriceUsd: +formatUnits(nativeTokenPrice, SONIC_ORACLE_DECIMALS),
         buyTokensAmount
       });
 
