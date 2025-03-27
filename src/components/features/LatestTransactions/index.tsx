@@ -40,7 +40,7 @@ export const LatestTransactions = () => {
       first: 5,
       timestamp: transactions?.[0]?.blockTimestamp
     },
-    pollInterval: RefetchInterval.THREE_SECONDS,
+    pollInterval: RefetchInterval.FAST,
     onError: (error) => console.error(error),
     skip: !transactions?.[0],
     onCompleted: (data) => {
