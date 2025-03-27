@@ -35,18 +35,16 @@ export default function MyAgents() {
 
   const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
 
-  const [fetchMyAgents, { data: myAgents, error: myAgentsError, loading: myAgentsLoading }] = useLazyQuery<ITokensData>(
+  const [fetchMyAgents, { data: myAgents, loading: myAgentsLoading }] = useLazyQuery<ITokensData>(
     GetMyAgents,
     {
-      client
+      client,
+      onError: (error) => console.error('Error fetching my agents:',error),
       // pollInterval: RefetchInterval.FAST
     }
   );
 
 
-  if (myAgentsError) {
-    console.error('Error fetching my agents:', myAgentsError);
-  }
 
   useEffect(() => {
     if (filterFromUrl) {

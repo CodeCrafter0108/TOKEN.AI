@@ -1,13 +1,14 @@
-import { useEffect } from 'react';
+import { ZERO_ADDRESS } from '@/constants/blockchain/contracts';
+import { useEffect, useMemo } from 'react';
 import { Abi, Address, parseUnits } from 'viem';
 import { useAccount, useReadContract, UseReadContractReturnType } from 'wagmi';
 
 interface UseAllowanceProps {
-  tokenAddress: Address;
+  tokenAddress?: Address;
   spenderAddress: Address;
   tokenAbi: Abi;
   amount: string;
-  decimals: number;
+  decimals?: number;
 }
 
 interface ReturnUseAllowanceType {
@@ -29,12 +30,16 @@ export const useAllowance = ({
     abi: tokenAbi,
     functionName: 'allowance',
     args: [address, spenderAddress],
-    query: { enabled: !!amount }
+    query: { enabled: !!amount && !!tokenAddress && tokenAddress !== ZERO_ADDRESS && !!address }
   });
+  console.log('🚀 ~ data:', data);
 
-  const allowance: bigint = (data as bigint) ?? BigInt(0);
+  const allowance: bigint = (data as bigint) ?? 0n;
 
-  const isNeedApprove: boolean = parseUnits(amount, decimals) > allowance;
+  const isNeedApprove: boolean = useMemo(() => {
+    if (tokenAddress === ZERO_ADDRESS) return false;
+    return parseUnits(amount, decimals ?? 0) > allowance;
+  }, [allowance, amount, decimals, tokenAddress]);
 
   useEffect(() => {
     refetchAllowance();

@@ -8,7 +8,7 @@ import { RefetchInterval } from '@/types/enum';
 import { useQuery } from '@apollo/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { LatestTransactionCard } from './components/LatestTransactionCard';
 import { supportedPages } from './constants';
 import { CardList } from './styles';
@@ -16,6 +16,13 @@ import { CardList } from './styles';
 export const LatestTransactions = () => {
   const [transactions, setTransactions] = useState<ISwap[]>([]);
   const [newTransaction, setNewTransaction] = useState<ISwap | null>(null);
+
+  const [isDelayed, setIsDelayed] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setIsDelayed(false), RefetchInterval.FAST);
+    return () => clearTimeout(timeout);
+  }, []);
 
   const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
 
@@ -40,9 +47,9 @@ export const LatestTransactions = () => {
       first: 5,
       timestamp: transactions?.[0]?.blockTimestamp
     },
-    pollInterval: RefetchInterval.THREE_SECONDS,
+    pollInterval: RefetchInterval.FAST,
     onError: (error) => console.error(error),
-    skip: !transactions?.[0],
+    skip: isDelayed || !transactions?.[0],
     onCompleted: (data) => {
       if (data) {
         if (data.swaps?.length === 0) return;

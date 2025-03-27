@@ -2,26 +2,37 @@ import ChangeIcon from '@/assets/icons/change.svg';
 import ConnectButton from '@/components/features/ConnectButton';
 import Button from '@/components/shared/Button';
 import { ButtonVariants } from '@/components/shared/Button/types';
+import { ButtonLoader } from '@/components/shared/ButtonLoader';
+import routerAbi from '@/config/abi/router.json';
 import { getGraphClient } from '@/config/graph/config';
+import { config } from '@/config/providers/WagmiProvider/config';
+import { routerContract, STABLE_TOKEN_ADDRESS, ZERO_ADDRESS } from '@/constants/blockchain/contracts';
 import { ChainId } from '@/constants/blockchain/networks';
 import { GetAgents } from '@/graphql/queries/GetAgents';
+import { useAllowance } from '@/hooks/useAllowance';
 import { useBalances } from '@/hooks/useBalances';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useWrite } from '@/hooks/useWrite';
 import { Flex } from '@/styles/global';
 import { IToken, ITokensData } from '@/types/common';
-import { formatBalance, formatNumber } from '@/utils/formatters';
+import { formatBalance } from '@/utils/formatters';
+import { handleError } from '@/utils/handleError';
 import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
 import { useQuery } from '@apollo/client';
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { formatUnits, parseUnits } from 'viem';
+import BigNumber from 'bignumber.js';
+import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
+import { Address, erc20Abi, formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
+import { waitForTransactionReceipt, writeContract } from 'wagmi/actions';
 import CurrencyInput from './components/CurrencyInput';
 import SlippageModal from './components/SlippageModal';
 import { DEFOULT_DEADLINE, DEFOULT_SLIPAGE } from './components/SlippageModal/constants';
 import { SlippageType } from './components/SlippageModal/types';
 import { ChangeButton, Form, FormTitle, Separator, StyledSettingIcon, SwapInputsWrapper, Wrapper } from './styles';
 import { AmountType } from './types';
-import { quoter } from './utils';
+import { calculateUsdValue, quoter } from './utils';
+import { usePathname } from 'next/navigation';
 
 interface TradeFormProps {
   styles?: React.CSSProperties;
@@ -36,7 +47,21 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
   const [slippage, setSlippage] = useState<number>(DEFOULT_SLIPAGE);
   const [deadLine, setDeadLine] = useState<number>(DEFOULT_DEADLINE);
 
+  const [isApproving, setIsApproving] = useState<boolean>(false);
+  const [isFetchingQuote, setIsFetchingQuote] = useState<boolean>(false);
+
+  const [amountIn, setAmountIn] = useState<string>('');
+  const [amountOut, setAmountOut] = useState<string>('');
+  const [amountType, setAmountType] = useState<AmountType>(AmountType.IN);
+
+  const [isSlipageModalOpen, setIsSlipageModalOpen] = useState<boolean>(false);
+
+  const debouncedAmountIn: string = useDebounce(amountIn);
+  const debouncedAmountOut: string = useDebounce(amountOut);
+
   const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
+
+  const path = usePathname();
 
   const {
     data: agents
@@ -51,58 +76,53 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
     return agents?.baseTokens && agents?.tokens ? [...agents?.baseTokens, ...agents?.tokens] : undefined;
   }, [agents]);
 
-  const { agentsWithBalance } = useBalances({ tokens: formattedAgents });
+  const { agentsWithBalance, refetchBalances } = useBalances({ tokens: formattedAgents });
+
+  const selectedAgentId = amountType === AmountType.IN ? agent1?.id : agent0?.id;
+  const sourceAgents = isConnected ? agentsWithBalance : formattedAgents;
 
   useEffect(() => {
-    if (agentsWithBalance && formattedAgents) {
-      setAgent0(isConnected ? agentsWithBalance[0] : formattedAgents[0]); //TODO change
-      setAgent1(isConnected ? agentsWithBalance[1] : formattedAgents[1]); //TODO change
+    if (sourceAgents) {
+      const nativeToken: IToken | undefined = sourceAgents.find((token) => token.address === ZERO_ADDRESS);
+      const stableToken: IToken | undefined = sourceAgents.find((token) => token.address === STABLE_TOKEN_ADDRESS);
+      if (path.includes('trade') && nativeToken && stableToken) {
+        setAgent0(nativeToken);
+        setAgent1(stableToken);
+      }
+      if (path.includes('token') && nativeToken) {
+        const tokenAddress: Address = path.split('/').pop() as Address;
+        const currentToken: IToken | undefined = sourceAgents.find((token) => token.address === tokenAddress);
+        setAgent0(nativeToken);
+        setAgent1(currentToken);
+      }
     }
-  }, [agentsWithBalance, formattedAgents, isConnected]);
-
-  // const [amount, setAmount] = useState<bigint>(0n);
-  const [amountIn, setAmountIn] = useState<string>('');
-  const [amountOut, setAmountOut] = useState<string>('');
-  const [amountType, setAmountType] = useState<AmountType>(AmountType.IN);
-  // // const [slippage, setSlippage] = useState<SlippageType | number>(SlippageType.AUTO);
-
-  const [isSlipageModalOpen, setIsSlipageModalOpen] = useState<boolean>(false);
-
-  // const [modalTokenSelectType, setModalTokenSelectType] = useState<AmountType>(amountType);
-  // const [showModalTokenSelect, setShowModalTokenSelect] = useState(false);
-
-  // const [swapProcessing, setSwapProcessing] = useState(false);
-  // const [approveProcessing, setApproveProcessing] = useState(false);
-  // const [processingType, setProcessingType] = useState<TokenSwapProcessingType | null>(null);
-
-  // const [fromToken, setFromToken] = useState<IToken>(nativeToken as IToken);
-  // const [toToken, setToToken] = useState<IToken>(tokens?.filter((t) => t.isAvailable)[0] as IToken);
-
-  const debouncedAmountIn: string = useDebounce(amountIn);
-  const debouncedAmountOut: string = useDebounce(amountOut);
+  }, [sourceAgents, path]);
 
   useEffect(() => {
     const fetchQuote = async () => {
-      if (debouncedAmountIn) {
-        const quote: bigint | undefined = await quoter({
-          chainId: ChainId.SONIC,
-          addressFrom: agent0?.address,
-          addressTo: agent1?.address,
-          amount: parseUnits(debouncedAmountIn, agent0?.decimals ?? 0)
-        });
-        if (quote) {
-          setAmountOut(formatUnits(quote, agent1?.decimals ?? 0));
+      try {
+        if (debouncedAmountIn) {
+          setIsFetchingQuote(true);
+          const quote: bigint | undefined = await quoter({
+            chainId: ChainId.SONIC,
+            addressFrom: agent0?.address,
+            addressTo: agent1?.address,
+            amount: parseUnits(debouncedAmountIn, agent0?.decimals ?? 0)
+          });
+          if (quote) {
+            setAmountOut(formatUnits(quote, agent1?.decimals ?? 0));
+          }
+        } else {
+          setAmountOut('');
         }
-      } else {
-        setAmountOut('');
+      } catch (error) {
+        handleError((error as Error).message);
+      } finally {
+        setIsFetchingQuote(false);
       }
     };
     fetchQuote();
   }, [debouncedAmountIn, agent0, agent1]);
-
-  const handleSwap = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, type: AmountType) => {
     const value = validateNumberInputValue(e.target.value);
@@ -154,33 +174,143 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
     setAgent1(agent0);
   };
 
-  const agentList: IToken[] | undefined = useMemo(() => {
-    if (amountType === AmountType.IN) {
-      return (isConnected ? agentsWithBalance : formattedAgents)?.filter(
-        (agent) => agent.id !== agent1?.id
-      ) as IToken[];
-    } else {
-      return (isConnected ? agentsWithBalance : formattedAgents)?.filter(
-        (agent) => agent.id !== agent0?.id
-      ) as IToken[];
-    }
-  }, [amountType, agentsWithBalance, agent0, agent1, formattedAgents, isConnected]);
+  const agentList: IToken[] | undefined = useMemo(
+    () =>
+      sourceAgents
+        ?.filter((agent) => agent.id !== selectedAgentId)
+        .sort(
+          (a, b) => +formatUnits(b.balance ?? 0n, b.decimals ?? 0) - +formatUnits(a.balance ?? 0n, a.decimals ?? 0)
+        ) as IToken[],
+    [selectedAgentId, sourceAgents]
+  );
+  const value0Usd: string | undefined = useMemo(
+    () => calculateUsdValue(agent0, debouncedAmountIn),
+    [agent0, debouncedAmountIn]
+  );
 
-  const value0Usd: string = useMemo(() => {
-    if (agent0) {
-      return formatNumber(+(agent0?.price ?? '0') * +debouncedAmountIn, 2);
-    } else {
-      return '0';
-    }
-  }, [agent0, debouncedAmountIn]);
+  const value1Usd: string | undefined = useMemo(
+    () => calculateUsdValue(agent1, debouncedAmountOut),
+    [agent1, debouncedAmountOut]
+  );
 
-  const value1Usd: string = useMemo(() => {
-    if (agent1) {
-      return formatNumber(+(agent1?.price ?? '0') * +debouncedAmountOut, 2);
-    } else {
-      return '0';
+  const { writeContractAsync, isLoading: isLoadingSwap, isSuccess: isSwapSuccess } = useWrite();
+
+  const { isNeedApprove } = useAllowance({
+    tokenAddress: agent0?.address,
+    spenderAddress: routerContract,
+    tokenAbi: erc20Abi,
+    amount: amountIn,
+    decimals: agent0?.decimals
+  });
+
+  const isLowBalance: boolean = useMemo(
+    () => parseUnits(debouncedAmountIn, agent0?.decimals ?? 0) > (agent0?.balance ?? 0n),
+    [agent0, debouncedAmountIn]
+  );
+  const handleSwap = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
+
+    const minAmountOut: bigint = parseUnits(
+      new BigNumber(amountOut).multipliedBy(1 - slippage / 100).toFixed(agent1?.decimals ?? 0),
+      agent1?.decimals ?? 0
+    );
+
+    try {
+      if (isNeedApprove) {
+        if (!agent0?.address) return;
+        setIsApproving(true);
+        const hash = await writeContract(config, {
+          functionName: 'approve',
+          address: agent0?.address,
+          chainId: ChainId.SONIC,
+          abi: erc20Abi,
+          args: [routerContract, 1n]
+        });
+
+        const txData = await waitForTransactionReceipt(config, { hash });
+        setIsApproving(false);
+
+        if (txData) {
+          await writeContractAsync({
+            functionName: 'swap',
+            address: routerContract,
+            chainId: ChainId.SONIC,
+            abi: routerAbi,
+            args: [agent0?.address, agent1?.address, parseUnits(amountOut, agent1?.decimals ?? 0), minAmountOut]
+          });
+        }
+      } else {
+        await writeContractAsync({
+          functionName: 'swap',
+          address: routerContract,
+          chainId: ChainId.SONIC,
+          abi: routerAbi,
+          args: [agent0?.address, agent1?.address, parseUnits(amountOut, agent1?.decimals ?? 0), minAmountOut]
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      handleError((error as Error).message);
     }
-  }, [agent1, debouncedAmountOut]);
+  };
+
+  useEffect(() => {
+    if (isSwapSuccess) {
+      handleReset();
+      refetchBalances();
+      toast.success('Swap success');
+    }
+  }, [isSwapSuccess]);
+
+  const renderActions = (): React.ReactElement => {
+    const isDisabled: boolean =
+      !isFetchingQuote &&
+      (!agent0 ||
+        !agent1 ||
+        !debouncedAmountIn ||
+        !amountOut ||
+        isLowBalance ||
+        isLoadingSwap ||
+        isApproving ||
+        !value0Usd ||
+        !!(!value1Usd && debouncedAmountOut));
+
+    let label: React.ReactNode = 'Swap';
+
+    const isError: boolean = !!(
+      debouncedAmountIn &&
+      !isFetchingQuote &&
+      (!amountOut || isLowBalance || !value0Usd || (!value1Usd && debouncedAmountOut))
+    );
+
+    if (isApproving) {
+      label = <ButtonLoader text='Approving' />;
+    } else if (isLoadingSwap) {
+      label = <ButtonLoader text='Swapping' />;
+    } else if (isLowBalance) {
+      label = 'Insufficient balance';
+    } else if (isNeedApprove) {
+      label = 'Approve';
+    } else if (debouncedAmountIn && (value0Usd === '0.00' || value1Usd === '0.00')) {
+      label = 'Error calculate price';
+    }
+    //TODO Remove div and remove inline style after add QuoteDetails
+    return (
+      <div style={{ marginTop: '12px', width: '100%' }}>
+        {isConnected ? (
+          <Button
+            type='submit'
+            style={{ width: '100%', backgroundColor: isError ? 'var(--error-clr)' : '' }}
+            disabled={isDisabled}
+          >
+            {label}
+          </Button>
+        ) : (
+          <ConnectButton styles={{ width: '100%' }} />
+        )}
+      </div>
+    );
+  };
 
   return (
     <Wrapper style={styles}>
@@ -197,7 +327,7 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
             agent={agent0}
             label='sell'
             value={amountIn}
-            valueUsd={value0Usd}
+            valueUsd={value0Usd || '0.00'}
             valueType={AmountType.IN}
             balance={formatBalance(agent0?.balance, agent0?.decimals)}
             onChange={(v) => handleChange(v, AmountType.IN)}
@@ -214,7 +344,7 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
             agent={agent1}
             label='buy'
             value={amountOut}
-            valueUsd={value1Usd}
+            valueUsd={value1Usd || '0.00'}
             valueType={AmountType.OUT}
             balance={formatBalance(agent1?.balance, agent1?.decimals)}
             onChange={(v) => handleChange(v, AmountType.OUT)}
@@ -225,16 +355,7 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
           />
         </SwapInputsWrapper>
         {/* <QuoteDetails /> */}
-        {/* Remove div and remove inline style after add QuoteDetails */}
-        <div style={{ marginTop: '24px', width: '100%' }}>
-          {isConnected ? (
-            <Button type='submit' style={{ width: '100%' }}>
-              Swap
-            </Button>
-          ) : (
-            <ConnectButton styles={{ width: '100%' }} />
-          )}
-        </div>
+        {renderActions()}
       </Form>
       <SlippageModal
         isOpen={isSlipageModalOpen}
