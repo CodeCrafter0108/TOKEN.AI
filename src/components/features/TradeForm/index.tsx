@@ -24,7 +24,7 @@ import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'r
 import { toast } from 'react-toastify';
 import { Address, erc20Abi, formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
-import { waitForTransactionReceipt, writeContract } from 'wagmi/actions';
+import { waitForTransactionReceipt, WaitForTransactionReceiptReturnType, writeContract } from 'wagmi/actions';
 import CurrencyInput from './components/CurrencyInput';
 import SlippageModal from './components/SlippageModal';
 import { DEFOULT_DEADLINE, DEFOULT_SLIPAGE } from './components/SlippageModal/constants';
@@ -80,23 +80,36 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
 
   const selectedAgentId = amountType === AmountType.IN ? agent1?.id : agent0?.id;
   const sourceAgents = isConnected ? agentsWithBalance : formattedAgents;
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
 
   useEffect(() => {
     if (sourceAgents) {
       const nativeToken: IToken | undefined = sourceAgents.find((token) => token.address === ZERO_ADDRESS);
       const stableToken: IToken | undefined = sourceAgents.find((token) => token.address === STABLE_TOKEN_ADDRESS);
       if (path.includes('trade') && nativeToken && stableToken) {
-        setAgent0(nativeToken);
-        setAgent1(stableToken);
+        if (isFirstLoad) {
+          setAgent0(nativeToken);
+          setAgent1(stableToken);
+          setIsFirstLoad(false);
+        } else {
+          setAgent0((prev) => sourceAgents.find((agent) => agent.id === prev?.id) || prev);
+          setAgent1((prev) => sourceAgents.find((agent) => agent.id === prev?.id) || prev);
+        }
       }
       if (path.includes('token') && nativeToken) {
-        const tokenAddress: Address = path.split('/').pop() as Address;
-        const currentToken: IToken | undefined = sourceAgents.find((token) => token.address === tokenAddress);
-        setAgent0(nativeToken);
-        setAgent1(currentToken);
+        if (isFirstLoad) {
+          const tokenAddress: Address = path.split('/').pop() as Address;
+          const currentToken: IToken | undefined = sourceAgents.find((token) => token.address === tokenAddress);
+          setAgent0(nativeToken);
+          setAgent1(currentToken);
+          setIsFirstLoad(false);
+        } else {
+          setAgent0((prev) => sourceAgents.find((agent) => agent.id === prev?.id) || prev);
+          setAgent1((prev) => sourceAgents.find((agent) => agent.id === prev?.id) || prev);
+        }
       }
     }
-  }, [sourceAgents, path]);
+  }, [sourceAgents, path, isFirstLoad]);
 
   useEffect(() => {
     const fetchQuote = async () => {
@@ -112,7 +125,8 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
           if (quote) {
             setAmountOut(formatUnits(quote, agent1?.decimals ?? 0));
           }
-        } else {
+        }
+        if (!debouncedAmountIn) {
           setAmountOut('');
         }
       } catch (error) {
@@ -122,7 +136,7 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
       }
     };
     fetchQuote();
-  }, [debouncedAmountIn, agent0, agent1]);
+  }, [debouncedAmountIn]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, type: AmountType) => {
     const value = validateNumberInputValue(e.target.value);
@@ -135,8 +149,8 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
   };
 
   const handleReset = useCallback((): void => {
-    setAmountIn('');
     setAmountOut('');
+    setAmountIn('');
   }, []);
 
   const handleChangeAmountType = useCallback((amountType: AmountType): void => {
@@ -179,7 +193,9 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
       sourceAgents
         ?.filter((agent) => agent.id !== selectedAgentId)
         .sort(
-          (a, b) => +formatUnits(b.balance ?? 0n, b.decimals ?? 0) - +formatUnits(a.balance ?? 0n, a.decimals ?? 0)
+          (a, b) =>
+            +formatUnits(b.balance ?? 0n, b.decimals ?? 0) * +b.price -
+            +formatUnits(a.balance ?? 0n, a.decimals ?? 0) * +a.price
         ) as IToken[],
     [selectedAgentId, sourceAgents]
   );
@@ -193,9 +209,9 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
     [agent1, debouncedAmountOut]
   );
 
-  const { writeContractAsync, isLoading: isLoadingSwap, isSuccess: isSwapSuccess } = useWrite();
+  const { writeContractAsync, isLoading: isLoadingSwap, isSuccess: isSwapSuccess, reset: resetWrite } = useWrite();
 
-  const { isNeedApprove } = useAllowance({
+  const { isNeedApprove, refetchAllowance } = useAllowance({
     tokenAddress: agent0?.address,
     spenderAddress: routerContract,
     tokenAbi: erc20Abi,
@@ -216,6 +232,15 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
     );
 
     try {
+      const swapTx = {
+        functionName: 'swap',
+        address: routerContract,
+        chainId: ChainId.SONIC,
+        abi: routerAbi,
+        args: [agent0?.address, agent1?.address, parseUnits(amountIn, agent0?.decimals ?? 0), minAmountOut],
+        value: agent0?.address === ZERO_ADDRESS ? parseUnits(amountIn, agent0?.decimals ?? 0) : undefined
+      };
+
       if (isNeedApprove) {
         if (!agent0?.address) return;
         setIsApproving(true);
@@ -224,64 +249,69 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
           address: agent0?.address,
           chainId: ChainId.SONIC,
           abi: erc20Abi,
-          args: [routerContract, 1n]
+          args: [routerContract, parseUnits(amountIn, agent0?.decimals ?? 0)]
         });
 
-        const txData = await waitForTransactionReceipt(config, { hash });
+        const txReceipt: WaitForTransactionReceiptReturnType = await waitForTransactionReceipt(config, { hash });
         setIsApproving(false);
 
-        if (txData) {
-          await writeContractAsync({
-            functionName: 'swap',
-            address: routerContract,
-            chainId: ChainId.SONIC,
-            abi: routerAbi,
-            args: [agent0?.address, agent1?.address, parseUnits(amountOut, agent1?.decimals ?? 0), minAmountOut]
-          });
+        if (txReceipt?.status === 'success') {
+          console.log('SWAP ARGS:', swapTx);
+          await writeContractAsync(swapTx);
         }
       } else {
-        await writeContractAsync({
-          functionName: 'swap',
-          address: routerContract,
-          chainId: ChainId.SONIC,
-          abi: routerAbi,
-          args: [agent0?.address, agent1?.address, parseUnits(amountOut, agent1?.decimals ?? 0), minAmountOut]
-        });
+        console.log('SWAP ARGS:', swapTx);
+        await writeContractAsync(swapTx);
       }
     } catch (error) {
       console.error(error);
+      setIsApproving(false);
+      refetchAllowance();
+      resetWrite();
       handleError((error as Error).message);
     }
   };
 
   useEffect(() => {
     if (isSwapSuccess) {
-      handleReset();
-      refetchBalances();
       toast.success('Swap success');
+      refetchBalances();
+      resetWrite();
+      handleReset();
     }
   }, [isSwapSuccess]);
 
   const renderActions = (): React.ReactElement => {
+    // const isDisabled: boolean =
+    //   !isFetchingQuote &&
+    //   (!agent0 ||
+    //     !agent1 ||
+    //     !debouncedAmountIn ||
+    //     !amountOut ||
+    //     isLowBalance ||
+    //     isLoadingSwap ||
+    //     isApproving ||
+    //     !value0Usd ||
+    //     !!(!value1Usd && debouncedAmountOut));
+
     const isDisabled: boolean =
-      !isFetchingQuote &&
-      (!agent0 ||
-        !agent1 ||
-        !debouncedAmountIn ||
-        !amountOut ||
-        isLowBalance ||
-        isLoadingSwap ||
-        isApproving ||
-        !value0Usd ||
-        !!(!value1Usd && debouncedAmountOut));
+      !!(
+        debouncedAmountIn &&
+        !isFetchingQuote &&
+        (!amountOut || isLowBalance || isLoadingSwap || isApproving || !value0Usd || (!value1Usd && debouncedAmountOut))
+      ) ||
+      !agent0 ||
+      !agent1 ||
+      !amountIn ||
+      !amountOut;
 
     let label: React.ReactNode = 'Swap';
 
-    const isError: boolean = !!(
-      debouncedAmountIn &&
-      !isFetchingQuote &&
-      (!amountOut || isLowBalance || !value0Usd || (!value1Usd && debouncedAmountOut))
-    );
+    // const isError: boolean = !!(
+    //   debouncedAmountIn &&
+    //   !isFetchingQuote &&
+    //   (!amountOut || isLowBalance || !value0Usd || (!value1Usd && debouncedAmountOut))
+    // );
 
     if (isApproving) {
       label = <ButtonLoader text='Approving' />;
@@ -291,18 +321,14 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
       label = 'Insufficient balance';
     } else if (isNeedApprove) {
       label = 'Approve';
-    } else if (debouncedAmountIn && (value0Usd === '0.00' || value1Usd === '0.00')) {
+    } else if (debouncedAmountIn && (!value0Usd || (!value1Usd && debouncedAmountOut))) {
       label = 'Error calculate price';
     }
     //TODO Remove div and remove inline style after add QuoteDetails
     return (
       <div style={{ marginTop: '12px', width: '100%' }}>
         {isConnected ? (
-          <Button
-            type='submit'
-            style={{ width: '100%', backgroundColor: isError ? 'var(--error-clr)' : '' }}
-            disabled={isDisabled}
-          >
+          <Button type='submit' style={{ width: '100%' }} disabled={isDisabled}>
             {label}
           </Button>
         ) : (
@@ -337,9 +363,11 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
             onMax={handleMaxAmount}
           />
           <Separator />
-          <ChangeButton variants={ButtonVariants.CLEAR} onClick={handleToggleAmountType} aria-label='Change currency'>
-            <ChangeIcon />
-          </ChangeButton>
+          {path.includes('trade') && (
+            <ChangeButton variants={ButtonVariants.CLEAR} onClick={handleToggleAmountType} aria-label='Change currency'>
+              <ChangeIcon />
+            </ChangeButton>
+          )}
           <CurrencyInput
             agent={agent1}
             label='buy'

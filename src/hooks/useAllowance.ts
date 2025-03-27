@@ -30,9 +30,8 @@ export const useAllowance = ({
     abi: tokenAbi,
     functionName: 'allowance',
     args: [address, spenderAddress],
-    query: { enabled: !!amount && !!tokenAddress && tokenAddress !== ZERO_ADDRESS && !!address }
+    query: { enabled: false }
   });
-  console.log('🚀 ~ data:', data);
 
   const allowance: bigint = (data as bigint) ?? 0n;
 
@@ -42,7 +41,7 @@ export const useAllowance = ({
   }, [allowance, amount, decimals, tokenAddress]);
 
   useEffect(() => {
-    refetchAllowance();
+    if (amount && amount !== '0') refetchAllowance();
   }, [amount, refetchAllowance]);
 
   return { allowance, isNeedApprove, refetchAllowance };

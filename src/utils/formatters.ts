@@ -11,10 +11,15 @@ export const formatNumber = (num: number | string | undefined, digits = 2) => {
   if (!_num || _num === 0) return '0.00';
   if (_num === 0) return '0.0';
   if (_num < 0.001) return '<0.001';
-  return _num.toLocaleString('en-ES', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: digits
-  });
+
+  const [integer, decimal = ''] = _num.toString().split('.');
+  const formattedDecimal = decimal.padEnd(digits, '0').slice(0, digits);
+
+  return `${integer}.${formattedDecimal}`;
+  // return _num.toLocaleString('en-ES', {
+  //   minimumFractionDigits: 2,
+  //   maximumFractionDigits: digits
+  // });
 };
 
 export const formatBalance = (amount?: bigint, decimals: number = 0, digits: number = 4): string => {

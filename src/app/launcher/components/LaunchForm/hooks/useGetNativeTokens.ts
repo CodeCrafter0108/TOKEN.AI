@@ -65,7 +65,7 @@ export const useGetNativeTokens = ({ percent, chainId, isError }: UseGetNativeTo
         address
       });
 
-      if (typeof nativeTokensAmount !== 'bigint' || typeof nativeTokenPrice !== 'bigint' || !balance?.value) {
+      if (typeof nativeTokensAmount !== 'bigint' || typeof nativeTokenPrice !== 'bigint' || !balance) {
         throw new Error('Failed to fetch native token data');
       }
 

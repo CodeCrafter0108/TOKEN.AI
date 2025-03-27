@@ -12,6 +12,7 @@ import { ISwap } from '@/types/common';
 import { RefetchInterval } from '@/types/enum';
 import { formatAddress, formatNumber, formatTimeAgo } from '@/utils/formatters';
 import { memo, useEffect, useState } from 'react';
+import { formatEther } from 'viem';
 import { TableBody, TableHead, TableItem, TableTitle, TableWrapper, Text, Title } from './styles';
 
 interface TransactionTableProps {
@@ -87,10 +88,10 @@ const TransactionTable = ({ data = [] }: TransactionTableProps) => {
 
                   <Flex $justify='space-between' role='cell' aria-labelledby='amount-header'>
                     {width < NumberBreakpoints.md && <Title aria-hidden='true'>Amount</Title>}
-                    <Text>{`${formatNumber(transaction.amount)}`}</Text>
+                    <Text>{`${formatNumber(formatEther(BigInt(transaction?.amount)))}`}</Text>
                   </Flex>
 
-                  <Flex $justify='space-between' role='cell' aria-labelledby='price-header'>
+                  <Flex $justify='space-between' role='cell' aria-labelledby='price-header'>  
                     {width < NumberBreakpoints.md && <Title aria-hidden='true'>Price</Title>}
                     <Text>{`$${formatNumber(transaction.price)}`}</Text>
                   </Flex>
