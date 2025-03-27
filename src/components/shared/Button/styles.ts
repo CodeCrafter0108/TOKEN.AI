@@ -9,7 +9,7 @@ export const StyledButton = styled.button<{ $variants: ButtonVariants; $isSelect
   border-radius: 8px;
   background-color: transparent;
   /* border: 2px solid transparent; */
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   outline: none;
 
   &:disabled {
@@ -65,7 +65,7 @@ export const StyledButton = styled.button<{ $variants: ButtonVariants; $isSelect
             bottom: 0;
             border-radius: 8px;
             background-image: var(--gradient);
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.2s ease-in-out;
             background-position: 100% 0%;
             z-index: -1;
             opacity: 0;
@@ -98,7 +98,7 @@ export const StyledButton = styled.button<{ $variants: ButtonVariants; $isSelect
             }
 
               svg path {
-                transition: all 0.3s ease-in-out;
+                transition: all 0.2s ease-in-out;
                 color: ${$isSelected ? 'var(--black-clr)' : 'var(--accent-clr)'};
                   }
             }

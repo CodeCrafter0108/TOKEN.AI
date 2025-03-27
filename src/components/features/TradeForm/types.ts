@@ -1,3 +1,6 @@
+import { Address } from "viem";
+import { ChainId } from '@/constants/blockchain/networks';
+
 export enum AmountType {
   IN,
   OUT,
@@ -10,3 +13,5 @@ export interface TokenSwapProps {
   onSwap: () => void;
   onApprove: () => void;
 }
+
+export type QuoterArgs = { addressFrom?: Address; addressTo?: Address; amount: bigint; chainId?: ChainId };

@@ -433,8 +433,8 @@ export const LaunchForm = () => {
       {isConnected && DEFAULT_CHAIN_ID === chainId && (
         <Button
           type='submit'
-          disabled={isLoading || !isValid}
-          style={isEnoughBalance ? {} : { backgroundColor: 'var(--error-clr)' }}
+          disabled={isLoading || !isValid || !isEnoughBalance}
+          // style={isEnoughBalance ? {} : { backgroundColor: 'var(--error-clr)' }}
         >
           {isLoading ? (
             <Flex $gap={8} $align='center' $justify='center'>

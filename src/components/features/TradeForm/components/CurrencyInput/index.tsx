@@ -65,7 +65,7 @@ const CurrencyInput = ({
         id={label}
         onChange={onChange}
         placeholder='0'
-        style={{ pointerEvents: valueType === AmountType.OUT ? 'none' : 'auto' }}
+        style={{ pointerEvents: valueType === AmountType.IN ? 'auto' : 'none' }}
       />
       <CurrencyWrapperBalance>
         <Flex $align='center'>
@@ -79,7 +79,11 @@ const CurrencyInput = ({
           $gap={5}
           $align='center'
           $justify='flex-end'
-          style={{ cursor: 'pointer', fontSize: '12px', pointerEvents: isConnected ? 'auto' : 'none' }}
+          style={{
+            cursor: 'pointer',
+            fontSize: '12px',
+            pointerEvents: isConnected && valueType === AmountType.IN ? 'auto' : 'none'
+          }}
           onClick={() => onMax(valueType)}
           role='button'
           aria-label='Max balance'

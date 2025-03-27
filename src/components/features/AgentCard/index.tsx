@@ -74,7 +74,7 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
                 socialUrl={socialUrl}
                 chatUrl={chatUrl}
                 styles={css`
-                  flex-direction: 'row';
+                  flex-direction: row;
                 `}
               />
             </SocialNetworkWrapper>
