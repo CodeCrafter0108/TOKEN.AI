@@ -1,16 +1,28 @@
+import Verified from '@/assets/icons/verified.svg';
 import { ChainId, CHAINS_ICON_PATH } from '@/constants/blockchain/networks';
 import { AppRoutes } from '@/constants/routes';
 import { Flex } from '@/styles/global';
 import { IToken } from '@/types/common';
 import { shortNumber } from '@/utils/formatters';
 import { useRouter } from 'next/navigation';
-import { RuleSet } from 'styled-components';
+import { css, RuleSet } from 'styled-components';
 import { ImageWithFallback } from '../ImageWithFallback';
 import { SocialNetworks } from '../SocialNetworks';
-import { Container, Description, Metrics, Title, Value } from './styles';
+import {
+  Bar,
+  BarTitle,
+  BarValue,
+  BarWrapper,
+  Container,
+  Description,
+  Grid,
+  Metrics,
+  Title,
+  Value,
+  SocialNetworkWrapper
+} from './styles';
 
 interface AgentCardProps {
-  // onClick: () => void;
   styles?: RuleSet<object>;
   hasMetrics?: boolean;
   agent: IToken;
@@ -18,7 +30,7 @@ interface AgentCardProps {
 
 export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps) => {
   const router = useRouter();
-  const { imageUrl, name, symbol, marketCap, description, siteUrl, socialUrl, chatUrl, address } = agent || {};
+  const { imageUrl, name, symbol, marketCap = '0', description, siteUrl, socialUrl, chatUrl, address } = agent || {};
   return (
     <Container onClick={() => router.push(`${AppRoutes.TOKEN}/${address}`)} $styles={styles} role='link'>
       <Flex $gap={12} $align='center'>
@@ -27,12 +39,12 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
           alt='Agent logo'
           src={imageUrl}
           loading='lazy'
-          style={{ objectFit: 'cover', borderRadius: '4px' }}
+          style={{ objectFit: 'cover', borderRadius: '50%' }}
           sizes='100%'
-          widthSkeleton={100}
-          heightSkeleton={100}
+          widthSkeleton={70}
+          heightSkeleton={70}
         />
-        <Flex $direction={'column'} $gap={6}>
+        <Grid $hasMetrics={hasMetrics}>
           <Title>{name}</Title>
           <Flex $gap={4} $align='center'>
             <ImageWithFallback
@@ -44,34 +56,67 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
               sizes='100%'
               widthSkeleton={16}
               heightSkeleton={16}
+
             />
             <span>{symbol}</span>
           </Flex>
-          <Flex $gap={4} $align='baseline'>
-            <span>Market cap:</span>
-            <Value>{`$${shortNumber(+marketCap)}`}</Value>
-          </Flex>
-          <SocialNetworks
-            position='card'
-            siteUrl={siteUrl}
-            socialUrl={socialUrl}
-            chatUrl={chatUrl}
-            styles={{ flexDirection: 'row' }}
-          />
-        </Flex>
+          {!hasMetrics && (
+            <Flex $gap={4} $align='baseline'>
+              <span>Market cap:</span>
+              <Value>{`$${shortNumber(+marketCap)}`}</Value>
+            </Flex>
+          )}
+          {hasMetrics && (
+            <SocialNetworkWrapper>
+              <SocialNetworks
+                position='card'
+                siteUrl={siteUrl}
+                socialUrl={socialUrl}
+                chatUrl={chatUrl}
+                styles={css`
+                  flex-direction: row;
+                `}
+              />
+            </SocialNetworkWrapper>
+          )}
+        </Grid>
       </Flex>
-      <Description $hasMetrics={hasMetrics}>{description}</Description>
-      {hasMetrics && (
+      {!hasMetrics ? (
+        <>
+          <Flex $gap={12}>
+            <SocialNetworks
+              position='card'
+              siteUrl={siteUrl}
+              socialUrl={socialUrl}
+              chatUrl={chatUrl}
+              styles={css`
+                flex-direction: 'column';
+              `}
+            />
+            <Description $hasMetrics={hasMetrics}>{description}</Description>
+          </Flex>
+        </>
+      ) : (
+        <Description $hasMetrics={hasMetrics}>{description}</Description>
+      )}
+      {!hasMetrics ? (
+        <>
+          <Flex $align='center' $justify='space-between'>
+            <BarTitle>Progress market cap</BarTitle>
+            <BarValue>31M$</BarValue>
+          </Flex>
+          <BarWrapper>
+            <Bar width={33} />
+          </BarWrapper>
+        </>
+      ) : (
         <Metrics>
-          <Flex $gap={4} $align='baseline'>
-            <span>Volume:</span>
+          <Flex $gap={4} $align='baseline' style={{ width: 'auto' }}>
+            <span>Market cap:</span>
             <Value>$4.39k</Value>
           </Flex>
-          <Flex $gap={4} $align='baseline'>
-            <span>FDV:</span>
-            <Value>$4.39k</Value>
-          </Flex>
-          <Flex $gap={4} $align='baseline'>
+          <Flex $gap={4} $align='baseline' style={{ width: 'auto' }}>
+            <Verified />
             <span>Liquidity Pool:</span>
             <Value>$4.39k</Value>
           </Flex>

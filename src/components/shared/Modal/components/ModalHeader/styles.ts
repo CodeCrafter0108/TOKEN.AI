@@ -2,8 +2,8 @@ import Button from '@/components/shared/Button';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  padding: 7px 0 27px 0;
-  border-bottom: 1px solid var(--border-clr);
+  padding: 7px 0 17px 0;
+  border-bottom: 1px solid var(--placeholder-clr);
   margin-bottom: 12px;
 
   display: flex;
@@ -19,12 +19,4 @@ export const Title = styled.div`
 export const CloseButton = styled(Button)`
   border-radius: 4px;
   transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background-color: var(--modal-hover-clr);
-  }
-
-  &:active {
-    background-color: var(--primary-clr);
-  }
 `;

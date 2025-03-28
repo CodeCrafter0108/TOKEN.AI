@@ -1,20 +1,23 @@
-import Arrow from '@/assets/icons/right-arrow.svg';
+
 import CommonLink from '@/components/shared/CommonLink';
 import { LinkVariants } from '@/components/shared/CommonLink/types';
 import { AppRoutes } from '@/constants/routes';
-import { LinkContent, LinkText } from './styles';
+import { LinkContent, LinkText, StyledArrow } from './styles';
+import { FilterOption } from '@/app/agents/components/ButtonFilters/types';
+import React from 'react';
 
 interface LinkToTopAgentProps {
   title: string;
-  params?: string;
+  params?: FilterOption | '';
+  styles?: React.CSSProperties;
 }
 
-export const LinkToTopAgent = ({params ='', title}: LinkToTopAgentProps) => {
+export const LinkToTopAgent = ({params = '', title, styles}: LinkToTopAgentProps) => {
   return (
-    <CommonLink href={`${AppRoutes.AGENTS}?${params}`} variants={LinkVariants.CLEAR} style={{ padding: '12px 0' }}>
+    <CommonLink href={`${AppRoutes.AGENTS}?filter=${params}`} variants={LinkVariants.CLEAR} style={styles}>
       <LinkContent>
         <LinkText>{title}</LinkText>
-        <Arrow />
+        <StyledArrow />
       </LinkContent>
     </CommonLink>
   );

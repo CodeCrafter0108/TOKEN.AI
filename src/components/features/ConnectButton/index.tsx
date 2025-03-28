@@ -1,11 +1,10 @@
 'use client';
-import { useAppKitState } from '@reown/appkit/react';
-import { useAccount, useDisconnect } from 'wagmi';
+import { ButtonLoader } from '@/components/shared/ButtonLoader';
 import { formatAddress } from '@/utils/formatters';
+import { useAppKit, useAppKitState } from '@reown/appkit/react';
 import { useCallback } from 'react';
-import { useAppKit } from '@reown/appkit/react';
+import { useAccount, useDisconnect } from 'wagmi';
 import { StyledConnectButton } from './styles';
-import PulseLoader from 'react-spinners/PulseLoader';
 
 interface ConnectButtonProps {
   styles?: React.CSSProperties;
@@ -33,21 +32,7 @@ export default function ConnectButton({ styles }: ConnectButtonProps) {
           <span className='text-secondary'>Disconnect</span>
         </>
       ) : (
-        <span>
-          {isOpen ? (
-            <span>
-              <span>Connecting</span>
-              <PulseLoader
-                color={'var(--primary-clr)'}
-                size={4}
-                cssOverride={{ marginLeft: '4px' }}
-                speedMultiplier={0.7}
-              />
-            </span>
-          ) : (
-            'Connect Wallet'
-          )}
-        </span>
+        <span style={{ whiteSpace: 'nowrap' }}>{isOpen ? <ButtonLoader text='Connecting' /> : 'Connect Wallet'}</span>
       )}
     </StyledConnectButton>
   );

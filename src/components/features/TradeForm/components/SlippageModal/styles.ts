@@ -17,6 +17,26 @@ export const RadioLabel = styled.label<{ $isSelected: boolean }>`
   justify-content: flex-start;
   gap: 4px;
 
+  input {
+    display: none;
+  }
+
+  &:before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--white-clr);
+    border-radius: 50%;
+    color: var(--secondary-box-bg-clr);
+    margin-left: 8px;
+  }
+
+  ${({ $isSelected }) => $isSelected && `
+    &:before {
+      background-color: var(--white-clr);
+    }
+  `}
   cursor: pointer;
 
   transition: all 0.2s ease-in-out;

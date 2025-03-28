@@ -3,29 +3,12 @@ import Stars from '@/assets/icons/stars.svg';
 import CommonLink from '@/components/shared/CommonLink';
 import { LinkVariants } from '@/components/shared/CommonLink/types';
 import { AppRoutes } from '@/constants/routes';
-import {
-    Dot,
-    HeroContainer,
-    HeroWrapper,
-    InfoWrapper,
-    List,
-    ListItem,
-    ListItemTitle,
-    Title,
-    Video,
-    VideoWrapper
-} from './styles';
+import { Dot, HeroContainer, InfoWrapper, List, ListItem, ListItemTitle, Title } from './styles';
+import { Meteorite } from './components/Meteorite';
 
 export const Hero = () => {
   return (
-    <HeroWrapper>
       <HeroContainer>
-        <VideoWrapper>
-          <Video autoPlay muted loop playsInline disablePictureInPicture aria-hidden='true'>
-            <source src={'/videos/hero.webm'} type='video/webm' />
-            <source src={'/videos/hero.mp4'} type='video/mp4' />
-          </Video>
-        </VideoWrapper>
         <InfoWrapper>
           <Title>
             <span>Create and Tokenize your AI Agents</span> <span>in under 1 minute</span>
@@ -51,7 +34,7 @@ export const Hero = () => {
           <CommonLink
             href={AppRoutes.LAUNCHER}
             variants={LinkVariants.SOLID}
-            style={{ width: '100%', maxWidth: '270px' }}
+            style={{ width: '100%', maxWidth: '275px' }}
           >
             <LinkContent>
               <Stars />
@@ -59,7 +42,7 @@ export const Hero = () => {
             </LinkContent>
           </CommonLink>
         </InfoWrapper>
+        <Meteorite />
       </HeroContainer>
-    </HeroWrapper>
   );
 };

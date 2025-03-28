@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   gap: 8px;
 
-  background-color: var(--box-bg-clr);
+  background-color: var(--primary-box-bg-clr);
 `;
 
 export const WalletInfo = styled.div`
@@ -21,6 +21,7 @@ export const WalletInfo = styled.div`
 `;
 
 export const ButtonContent = styled.div`
+  color: var(--placeholder-clr);
   display: flex;
   gap: 8px;
   align-items: center;

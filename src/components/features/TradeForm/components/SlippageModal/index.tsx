@@ -1,17 +1,15 @@
 import InputWrapper from '@/components/features/InputWrapper';
 import { AnimatedWrapper } from '@/components/shared/AnimatedWrapper';
 import Button from '@/components/shared/Button';
-import { ButtonVariants } from '@/components/shared/Button/types';
 import Input from '@/components/shared/Input';
 import Modal from '@/components/shared/Modal';
 import { ModalHeader } from '@/components/shared/Modal/components/ModalHeader';
 import { Flex } from '@/styles/global';
 import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AnimatePresence } from 'framer-motion';
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { AUTO_SLIPAGE, DEFOULT_DEADLINE } from './constants';
+import { DEFOULT_DEADLINE, DEFOULT_SLIPAGE } from './constants';
 import { schema } from './schema';
 import { Form, RadioLabel, SubTitle } from './styles';
 import { FieldsFocused, SlippageModalData, SlippageType } from './types';
@@ -19,9 +17,24 @@ import { FieldsFocused, SlippageModalData, SlippageType } from './types';
 interface SlippageModalProps {
   onClose: () => void;
   isOpen: boolean;
+  slippage: number;
+  setSlippage: (value: number) => void;
+  deadLine: number;
+  setDeadLine: (value: number) => void;
+  slippageType: SlippageType;
+  setSlippageType: (value: SlippageType) => void;
 }
 
-const SlippageModal = ({ onClose, isOpen }: SlippageModalProps) => {
+const SlippageModal = ({
+  onClose,
+  isOpen,
+  setSlippage,
+  slippage,
+  deadLine,
+  setDeadLine,
+  slippageType,
+  setSlippageType
+}: SlippageModalProps) => {
   const {
     register,
     handleSubmit,
@@ -33,8 +46,8 @@ const SlippageModal = ({ onClose, isOpen }: SlippageModalProps) => {
     mode: 'onChange',
     defaultValues: {
       type: SlippageType.AUTO,
-      amount: String(AUTO_SLIPAGE),
-      deadline: String(DEFOULT_DEADLINE)
+      amount: String(slippage),
+      deadline: String(deadLine)
     }
   });
 
@@ -43,7 +56,10 @@ const SlippageModal = ({ onClose, isOpen }: SlippageModalProps) => {
   const deadlineValue: string | undefined = watch('deadline');
 
   const onSubmit = (data: SlippageModalData) => {
-    console.log(data);
+    setSlippage(+data.amount);
+    setSlippageType(data.type);
+    if (data?.deadline) setDeadLine(+data.deadline);
+    onClose();
   };
 
   const [fieldsFocused, setFieldsFocused] = useState<FieldsFocused>({
@@ -51,17 +67,31 @@ const SlippageModal = ({ onClose, isOpen }: SlippageModalProps) => {
     deadline: false
   });
 
-  const handleFocus = useCallback((fieldName: keyof SlippageModalData) => {
+  const handleClose = (): void => {
+    setValue('type', slippageType);
+    setValue('amount', slippage.toString());
+    setValue('deadline', deadLine.toString());
+    onClose();
+  };
+
+  const handleFocus = useCallback((fieldName: keyof SlippageModalData): void => {
     setFieldsFocused((prev) => ({ ...prev, [fieldName]: true }));
   }, []);
 
-  const handleBlur = useCallback((fieldName: keyof SlippageModalData) => {
+  const handleBlur = useCallback((fieldName: keyof SlippageModalData): void => {
     setFieldsFocused((prev) => ({ ...prev, [fieldName]: false }));
   }, []);
 
+  useEffect(() => {
+    if (selectedType === SlippageType.AUTO) {
+      setValue('amount', DEFOULT_SLIPAGE.toString());
+      setValue('deadline', DEFOULT_DEADLINE.toString());
+    }
+  }, [selectedType, setValue]);
+
   return (
-    <Modal isOpen={isOpen} handleClose={onClose}>
-      <ModalHeader title='Settings' onClose={onClose} />
+    <Modal isOpen={isOpen} handleClose={handleClose}>
+      <ModalHeader title='Settings' onClose={handleClose} />
       <Form onSubmit={handleSubmit(onSubmit)} autoComplete='off' autoCorrect='off'>
         <SubTitle>Max slippage</SubTitle>
         <RadioLabel $isSelected={selectedType === SlippageType.AUTO}>
@@ -73,31 +103,29 @@ const SlippageModal = ({ onClose, isOpen }: SlippageModalProps) => {
           Custom
         </RadioLabel>
         <Flex $direction='column'>
-          <AnimatePresence>
-            {selectedType === SlippageType.CUSTOM && (
-              <AnimatedWrapper.Opacity duration={0.2}>
-                <InputWrapper
-                  label='Amount %'
-                  htmlFor='amount'
-                  isActive={fieldsFocused.amount || !!amountValue}
-                  textError={errors.amount?.message}
-                  value={amountValue}
-                  hasCheckIcon={false}
-                >
-                  <Input
-                    id='amount'
-                    {...register('amount', { required: true })}
-                    onFocus={() => handleFocus('amount')}
-                    onBlur={() => handleBlur('amount')}
-                    onChange={(e) => {
-                      const value = validateNumberInputValue(e.target.value);
-                      setValue('amount', value, { shouldValidate: true });
-                    }}
-                  />
-                </InputWrapper>
-              </AnimatedWrapper.Opacity>
-            )}
-          </AnimatePresence>
+          {selectedType === SlippageType.CUSTOM && (
+            <AnimatedWrapper.Opacity duration={0.3}>
+              <InputWrapper
+                label='Amount %'
+                htmlFor='amount'
+                isActive={fieldsFocused.amount || !!amountValue}
+                textError={errors.amount?.message}
+                value={amountValue}
+                hasCheckIcon={false}
+              >
+                <Input
+                  id='amount'
+                  {...register('amount', { required: true })}
+                  onFocus={() => handleFocus('amount')}
+                  onBlur={() => handleBlur('amount')}
+                  onChange={(e) => {
+                    const value = validateNumberInputValue(e.target.value);
+                    setValue('amount', value, { shouldValidate: true });
+                  }}
+                />
+              </InputWrapper>
+            </AnimatedWrapper.Opacity>
+          )}
           <SubTitle>Transaction deadline</SubTitle>
         </Flex>
         <InputWrapper
@@ -122,9 +150,7 @@ const SlippageModal = ({ onClose, isOpen }: SlippageModalProps) => {
             }}
           />
         </InputWrapper>
-        <Button variants={ButtonVariants.SOLID} type='submit'>
-          Apply
-        </Button>
+        <Button type='submit'>Apply</Button>
       </Form>
     </Modal>
   );

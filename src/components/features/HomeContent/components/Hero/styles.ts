@@ -2,13 +2,9 @@ import { Breakpoints } from '@/styles/breakpoints';
 import styled from 'styled-components';
 import { Container } from '@/styles/global';
 
-export const HeroWrapper = styled.div`
-  background-color: var(--hero-bg-clr);
-`;
-
 export const HeroContainer = styled(Container)`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
   justify-content: center;
   padding: 20px 0 20px 0;
@@ -19,31 +15,20 @@ export const HeroContainer = styled(Container)`
   }
 `;
 
-
-export const   VideoWrapper = styled.div`
-flex: 1;
-display: flex;
-align-items: center;
-justify-content: center;
-`;
-
-export const Video = styled.video`
-  width: 100%;
-  max-width: 750px;
-`;
-
 export const InfoWrapper = styled.div`
-  flex: 1;
+  max-width: 425px;
+  flex: 1.5;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   gap: 24px;
   padding: 0 12px;
 
-  @media screen and (min-width: ${Breakpoints.md}) {
-    flex: 1.5;
-    align-items: flex-start;
-    padding: 0;
+  @media screen and (min-width: ${Breakpoints.lg}) {
+    max-width: 600px;
+    padding: 110px 12px;
+    
+    /* align-items: flex-start; */
   }
 
   @media screen and (min-width: 920px) {
@@ -51,9 +36,7 @@ export const InfoWrapper = styled.div`
   }
 `;
 
-
 export const Title = styled.h1`
-  max-width: 400px;
   font-size: 24px;
   line-height: 1.11;
   letter-spacing: 0.72px;
@@ -75,7 +58,11 @@ export const Title = styled.h1`
 export const List = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 12px;
+
+  @media screen and (min-width: ${Breakpoints.md}) {
+    gap: 24px;
+  }
 `;
 
 export const ListItem = styled.li`

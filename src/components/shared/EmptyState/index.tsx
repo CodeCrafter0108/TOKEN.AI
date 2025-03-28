@@ -7,12 +7,13 @@ interface EmptyStateProps {
   icon?: React.ReactNode;
   children?: React.ReactNode;
   styles?: React.CSSProperties;
+  hasBgImage?: boolean
 }
 
-export const EmptyState = ({title, description, icon = null, styles, children}: EmptyStateProps) => {
+export const EmptyState = ({title, description, icon = null, styles, children, hasBgImage}: EmptyStateProps) => {
   return (
-    <Wrapper style={styles}>
-      <Content>
+    <Wrapper style={styles} $hasBgImage={hasBgImage}>
+      <Content $hasBgImage={hasBgImage}>
         {icon}
         <div>
           <Title>{title}</Title>

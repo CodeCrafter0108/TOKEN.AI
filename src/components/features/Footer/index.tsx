@@ -1,19 +1,8 @@
 'use client';
-import { Logo } from '@/components/shared/Logo/index';
 import { Container } from '@/styles/global';
 import { MarqueeAnimation } from '@/components/shared/Marquee';
 import { SocialNetworks } from '../SocialNetworks';
-import {
-  BlockWrapper,
-  Copyright,
-  DesktopContainer,
-  LogoWrapper,
-  MobileContainer,
-  StyledFooter,
-  StyledLink,
-  Title,
-  Wrapper
-} from './styles';
+import { BlockWrapper, Copyright, socialNetworksStyles, StyledFooter, StyledLink, Wrapper } from './styles';
 
 export const Footer = () => {
   return (
@@ -23,25 +12,12 @@ export const Footer = () => {
         <Container>
           <Wrapper>
             <BlockWrapper>
-              <Title>Documentation</Title>
-              <StyledLink href={'#'}>Terms of use</StyledLink>
+              <StyledLink href={'#'}>Documentation</StyledLink>
               <StyledLink href={'#'}>Privacy</StyledLink>
-              <DesktopContainer>
-                <Copyright>{`© ${new Date().getFullYear()} TOKIO.AI. All Rights Reserved.`}</Copyright>
-              </DesktopContainer>
             </BlockWrapper>
-            <BlockWrapper>
-              <Title>Socials</Title>
-              <SocialNetworks socialUrl='#' chatUrl='#' />
-            </BlockWrapper>
-            <LogoWrapper>
-              <Logo />
-            </LogoWrapper>
-          </Wrapper>
-          <MobileContainer>
-            <Logo />
+            <SocialNetworks styles={socialNetworksStyles} socialUrl='#' chatUrl='#' />
             <Copyright>{`© ${new Date().getFullYear()} TOKIO.AI. All Rights Reserved.`}</Copyright>
-          </MobileContainer>
+          </Wrapper>
         </Container>
       </StyledFooter>
     </>

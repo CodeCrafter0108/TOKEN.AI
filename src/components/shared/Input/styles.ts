@@ -6,6 +6,7 @@ export const StyledInput = styled.input`
   font-weight: 500;
   font-size: 16px;
   line-height: 1.5;
+  color: var(--primary-text-clr);
 
   padding: 12px 28px 0 12px;
 
@@ -14,7 +15,7 @@ export const StyledInput = styled.input`
   }
 
   &[type='radio'] {
-    accent-color: var(--primary-clr);
+    accent-color: var(--secondary-box-bg-clr);
     height: auto;
     width: auto;
   }

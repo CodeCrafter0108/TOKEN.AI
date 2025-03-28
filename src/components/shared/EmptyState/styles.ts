@@ -1,27 +1,43 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ $hasBgImage?: boolean }>`
   flex: 1;
-  padding: 60px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 24px;
+
+  ${(props) =>
+    props.$hasBgImage &&
+    `
+      border-radius: 16px;
+      background: rgba(14, 14, 14, 0.6);
+      box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1);
+  `}
 `;
 
-export const Content = styled.div`
+export const Content = styled.div<{ $hasBgImage?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 24px;
-  padding: 40px 0;
 
   border-radius: 16px;
-  background: var(--box-bg-clr);
   width: 100%;
   max-width: 600px;
+  padding-top: 70px;
+
+  ${(props) =>
+    props.$hasBgImage &&
+    `
+    background-image: url('/images/info/bg-nodata.png');
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+  `}
 `;
 
 export const Title = styled.p`

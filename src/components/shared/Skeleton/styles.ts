@@ -2,21 +2,20 @@ import styled, { keyframes } from 'styled-components';
 
 const pulse = keyframes`
   0% {
-    background-color: #d0d0d0;
+    background-color: #818181;
   }
   50% {
-    background-color: #e5e5e5;
+    background-color: #413f3f;
   }
   100% {
-    background-color: #d0d0d0; 
+    background-color: #818181;
   }
 `;
 
 export const SkeletonWrapper = styled.div<{
   $width: number;
   $height: number;
-  $shape?: 'rect' | 'circle' | 'round';
-  $borderRadius?: number;
+  $borderRadius?: string;
 }>`
   width: ${(props: { $width: number }) => props.$width}px;
   height: ${(props: { $height: number }) => props.$height}px;
@@ -24,8 +23,7 @@ export const SkeletonWrapper = styled.div<{
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: ${(props: { $shape?: 'rect' | 'circle' | 'round', $borderRadius?: number }) =>
-    props.$shape === 'circle' ? '50%' : props.$shape === 'round' ? `${props.$borderRadius}px` : '0'};
+  border-radius: ${(props) => `${props.$borderRadius}` };
   position: relative;
   animation: ${pulse} 2s infinite ease-in-out;
 `;

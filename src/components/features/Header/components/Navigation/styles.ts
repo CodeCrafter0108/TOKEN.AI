@@ -15,7 +15,7 @@ export const NavigationContent = styled.nav`
 `;
 
 export const StyledLink = styled(Link)<{ $isActive: boolean }>`
-  color: ${({ $isActive }) => ($isActive ? 'var(--accent-clr)' : 'var(--primary-text-clr)')};
+  color: ${({ $isActive }) => ($isActive ? 'var(--accent-clr)' : 'var(--navigation-text-clr)')};
   padding: 8px 12px;
   font-weight: ${({ $isActive }) => ($isActive ? 600 : 500)};
   font-size: 18px;

@@ -58,29 +58,41 @@ dR = (x, y, w, h, c) => {
 
 think = () => {
   let sC = mR(2, 1);
-  fX <= doc.width() / 2 + doc.width() / 4 && mouse == false
-    ? fX++
-    : mouse == false
-      ? (fX = doc.width() / 2 - doc.width() / 4)
-      : (fX = mX);
-  sC == 1 || sC == 3
-    ? letter.push([
-        fX - 10 + mR(30, 0),
-        mY + mR(30, 0),
-        letters[mR(letters.length, 0)],
-        mR(20, 8),
-        1,
-        mR(6, 2) + Math.random(10) / 10,
-        mR(30, 0)
-      ])
-    : null;
-  for (let i = 0; i < letter.length; i++) {
-    sC == 2 ? (letter ? (letter[i][2] = letters[mR(letters.length, 0)]) : null) : null;
-    letter ? (letter[i][1] -= letter[i][5]) : null;
-    letter[i][4] >= 0 ? (letter[i][4] -= 0.01) : letter.splice(i, 1);
+
+  if (!mouse) {
+  } else {
+    fX = mX;
   }
+
+  if (sC == 1 || sC == 3) {
+    letter.push([
+      fX - 10 + mR(30, 0),
+      mY + mR(15, 0),
+      letters[mR(letters.length, 0)],
+      mR(20, 8),
+      mR(4, 2) / 10,
+      mR(4, 1) + Math.random(10) / 10,
+      mR(30, 0)
+    ]);
+  }
+
+  for (let i = 0; i < letter.length; i++) {
+    if (sC == 2) {
+      letter[i][2] = letters[mR(letters.length, 0)];
+    }
+    letter[i][1] -= letter[i][5];
+    if (letter[i][4] >= 0) {
+      letter[i][4] -= 0.01;
+    } else {
+      letter.splice(i, 1);
+    }
+  }
+
   animate();
-  mouse == true ? (mouse = false) : null;
+
+  if (mouse) {
+    mouse = false;
+  }
 };
 
 animate = () => {

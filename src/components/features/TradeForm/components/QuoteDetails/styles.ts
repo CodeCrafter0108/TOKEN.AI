@@ -4,10 +4,9 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  padding: 8px 12px;
-  background-color: rgba(71, 101, 255, 0.1);
+  padding: 8px 0;
   border-radius: 8px;
-  margin-top: 8px;
+  margin-bottom: 12px;
 `;
 
 export const Text = styled.span`

@@ -1,0 +1,95 @@
+import launcherAbi from '@/config/abi/launcher.json';
+import oracleAbi from '@/config/abi/sonicOracle.json';
+import { config } from '@/config/providers/WagmiProvider/config';
+import { launcherContract, SONIC_ORACLE_DECIMALS, sonicOracle } from '@/constants/blockchain/contracts';
+import BigNumber from 'bignumber.js';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { formatUnits } from 'viem';
+import { useAccount } from 'wagmi';
+import { getBalance, readContract } from 'wagmi/actions';
+import { TOTAL_SUPPLY } from '../schema';
+
+interface UseGetNativeTokensArgs {
+  percent?: string;
+  chainId?: number;
+  isError: boolean;
+}
+
+interface NativeTokensData {
+  nativeTokensAmount: bigint;
+  nativeTokePriceUsd: number;
+  userNativeBalance: bigint;
+  buyTokensAmount?: bigint;
+}
+
+export const useGetNativeTokens = ({ percent, chainId, isError }: UseGetNativeTokensArgs): NativeTokensData | null => {
+  const { address } = useAccount();
+  const buyTokensAmount: bigint | undefined = useMemo(
+    () => (percent ? BigInt(new BigNumber(TOTAL_SUPPLY).multipliedBy(percent).dividedBy(100).toFixed(0)) : undefined),
+    [percent]
+  );
+
+  const [nativeTokenData, setNativeTokenData] = useState<NativeTokensData | null>(null);
+
+  const fetchNativeTokensData = useCallback(async (): Promise<void> => {
+    if (!percent || isError || !address) {
+      setNativeTokenData(null);
+      return;
+    }
+    console.log('quoteInitialBuy', {
+      address: launcherContract,
+      abi: launcherAbi,
+      chainId,
+      functionName: 'quoteInitialBuy',
+      args: [buyTokensAmount]
+    });
+
+    try {
+      const nativeTokensAmount = await readContract(config, {
+        address: launcherContract,
+        abi: launcherAbi,
+        chainId,
+        functionName: 'quoteInitialBuy',
+        args: [buyTokensAmount]
+      });
+
+      const nativeTokenPrice = await readContract(config, {
+        address: sonicOracle,
+        abi: oracleAbi,
+        chainId,
+        functionName: 'latestAnswer'
+      });
+
+      const balance = await getBalance(config, {
+        chainId,
+        address
+      });
+
+      if (typeof nativeTokensAmount !== 'bigint' || typeof nativeTokenPrice !== 'bigint' || !balance) {
+        throw new Error('Failed to fetch native token data');
+      }
+
+      console.log('SONIC_DATA:', {
+        nativeTokensAmount,
+        userNativeBalance: balance.value,
+        nativeTokePriceUsd: +formatUnits(nativeTokenPrice, SONIC_ORACLE_DECIMALS),
+        buyTokensAmount
+      });
+
+      setNativeTokenData({
+        nativeTokensAmount,
+        userNativeBalance: balance.value,
+        nativeTokePriceUsd: +formatUnits(nativeTokenPrice, SONIC_ORACLE_DECIMALS),
+        buyTokensAmount
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, [address, chainId, isError, percent, buyTokensAmount]);
+
+  useEffect(() => {
+    fetchNativeTokensData();
+  }, [percent]);
+
+  return nativeTokenData;
+};

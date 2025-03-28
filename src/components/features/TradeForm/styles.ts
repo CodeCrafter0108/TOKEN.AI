@@ -1,3 +1,4 @@
+import SettingIcon from '@/assets/icons/settings.svg';
 import Button from '@/components/shared/Button';
 import { Breakpoints } from '@/styles/breakpoints';
 import { Box } from '@/styles/global';
@@ -14,7 +15,7 @@ export const Form = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 `;
 
 export const FormTitle = styled.h2`
@@ -38,10 +39,10 @@ export const SwapInputsWrapper = styled.div`
 export const ChangeButton = styled(Button)`
   padding: 12px;
   border-radius: 50%;
-  border: 1.5px solid var(--primary-clr);
+  border: 1.5px solid var(--secondary-box-bg-clr);
   z-index: 10;
 
-  background-color: var(--box-bg-clr);
+  background-color: var(--white-clr);
 
   box-shadow: var(--box-shadow);
 
@@ -50,26 +51,23 @@ export const ChangeButton = styled(Button)`
   left: 50%;
   transform: translate(-50%, -50%);
 
-  &:hover {
-    border: 1.5px solid var(--accent-clr);
-  }
-
-  &:active {
-    background-color: var(--primary-clr);
-
-    svg path {
-      color: var(--accent-clr);
-    }
-  }
-
 `;
 
 export const Separator = styled.div`
   width: 100%;
   height: 1px;
-  background-color: var(--border-clr);
+  background-color: var(--separator-clr);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   
+`;
+
+export const StyledSettingIcon = styled(SettingIcon)`
+  color: #8E8E93;
+  transition: all 0.2s ease-in-out;
+  
+  &:hover {
+    color: var(--accent-clr);
+  }
 `;

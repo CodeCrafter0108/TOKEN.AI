@@ -6,16 +6,16 @@ export const Container = styled.div<{ $isDragging: boolean; $isError: boolean }>
   width: 100%;
   height: 120px;
   padding: 16px;
-  border: 1px dashed ${({ $isDragging }) => ($isDragging ? 'var(--accent-clr)' : 'transparent')};
+  border: 1px  ${({ $isDragging }) => ($isDragging ? 'dashed var(--accent-clr)' : 'solid rgba(255, 255, 255, 0.04)')};
   outline: 1px solid ${({ $isError }) => ($isError ? 'var(--error-clr)' : 'transparent')};
-  border-radius: 8px;
-  background-color: var(--field-bg-clr);
+  border-radius: 16px;
+  background-color: rgba(19, 19, 19, 0.60);
   margin-bottom: 24px;
 `;
 
 export const Preview = styled(Image)`
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 8px;
 `;
 
 export const PreviewWrapper = styled.div`

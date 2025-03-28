@@ -1,7 +1,8 @@
+import Button from '@/components/shared/Button';
 import { Breakpoints } from '@/styles/breakpoints';
 import Image from 'next/image';
 import Link from 'next/link';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const List = styled.ul`
   width: 100%;
@@ -10,7 +11,7 @@ export const List = styled.ul`
 
   li:not(:last-child) {
     padding-bottom: 12px;
-    border-bottom: 1px solid #ececec;
+    border-bottom: 1px solid rgba(236, 236, 236, 0.12);
   }
 
   li:not(:first-child) {
@@ -18,23 +19,14 @@ export const List = styled.ul`
   }
 `;
 
-export const ListItem = styled.li`
-  scale: 1;
-  transition: all 0.1s ease-in-out;
-  cursor: pointer;
-
-  &:hover {
-    scale: 1.01;
-  }
-`;
-
 export const StyledLink = styled(Link)`
   width: 100%;
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  gap: 24px;
 
   @media screen and (min-width: ${Breakpoints.md}) {
-    gap: 24px;
+    flex-direction: row;
   }
 `;
 
@@ -57,9 +49,7 @@ export const AgentLogo = styled(Image)`
   object-fit: cover;
 `;
 
-export const TokenLogo = styled(Image)``;
-
-export const Title = styled.span`
+const commonTitleStyles = css`
   width: 100%;
   font-size: 16px;
   /* font-weight: 500; */
@@ -76,13 +66,62 @@ export const Title = styled.span`
   text-overflow: ellipsis;
 `;
 
-export const TokenSymbol = styled(Title)`
+export const TokenLogo = styled(Image)``;
+
+export const Title = styled.span`
+  ${commonTitleStyles}
+`;
+
+export const ListItem = styled.li`
+  scale: 1;
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  &:hover {
+    scale: 1.01;
+  }
+
+  &:hover ${Title} {
+    color: var(--accent-clr);
+  }
+`;
+
+export const TokenSymbol = styled.span`
+  ${commonTitleStyles}
   font-size: 14px;
   font-weight: 400;
 `;
 
-export const MarketCapValue = styled(Title)`
-  /* font-weight: 700; */
+export const MarketCupWrapper = styled.div`
+  display: flex;
+  gap: 4px;
+
+  @media screen and (min-width: ${Breakpoints.sm}) {
+    align-items: flex-end;
+  }
+`;
+
+export const MarketCapValue = styled.span`
+  ${commonTitleStyles}
   font-size: 14px;
-  /* font-weight: 400; */
+  width: auto;
+`;
+
+export const ArrowWrapper = styled.div`
+  display: none;
+
+  @media screen and (min-width: ${Breakpoints.sm}) {
+    display: flex;
+    align-items: center;
+  }
+`;
+
+export const ViewMoreButton = styled(Button)`
+  width: 100%;
+
+  @media screen and (min-width: ${Breakpoints.sm}) {
+    display: none;
+  }
 `;

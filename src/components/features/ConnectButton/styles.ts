@@ -2,12 +2,6 @@ import styled from 'styled-components';
 import Button from '../../shared/Button';
 
 export const StyledConnectButton = styled(Button)`
-  position: relative;
-
-  .text-primary {
-    color: inherit;
-    transition: color 0.3s ease-in-out;
-  }
 
   .text-secondary {
     color: transparent;
@@ -15,7 +9,6 @@ export const StyledConnectButton = styled(Button)`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: color 0.3s ease-in-out;
   }
 
   &:hover {
@@ -24,7 +17,7 @@ export const StyledConnectButton = styled(Button)`
     }
 
     .text-secondary {
-      color: var(--primary-clr);
+      color: var(--black-text-clr);
     }
   }
 `;

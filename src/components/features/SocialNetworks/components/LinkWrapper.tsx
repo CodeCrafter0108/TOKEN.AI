@@ -11,7 +11,7 @@ interface LinkWrapperProps {
   position?: 'card' | 'footer';
 }
 
-const LinkWrapper = ({ href, target, rel, ariaLabel, icon, title, position }: LinkWrapperProps) => (
+const LinkWrapper = ({ href, target, rel, ariaLabel, icon, title, position}: LinkWrapperProps) => (
   <StyledLink href={href} target={target} rel={rel} aria-label={ariaLabel}>
     <IconWrapper>
       {icon}

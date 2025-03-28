@@ -1,13 +1,14 @@
 import { gql } from '@apollo/client';
 
 export const GetAgents = gql`
-  query GetAgents($orderBy: String, $orderDirection: String, $first: Int) {
-    tokens(orderBy: $orderBy, orderDirection: $orderDirection, first: $first) {
+  query GetAgents($orderBy: String, $orderDirection: String, $first: Int, $skip: Int) {
+    tokens(orderBy: $orderBy, orderDirection: $orderDirection, first: $first, skip: $skip) {
       id
       address
       blockTimestamp
       chatUrl
       description
+      decimals
       imageUrl
       marketCap
       name
@@ -18,5 +19,18 @@ export const GetAgents = gql`
       symbol
       tokenOwner
     }
+    baseTokens(first: 10) {
+      address
+      decimals
+      id
+      imageUrl
+      name
+      price
+      symbol
+    }
   }
 `;
+
+// tokenCounters {
+//   totalCount
+// }

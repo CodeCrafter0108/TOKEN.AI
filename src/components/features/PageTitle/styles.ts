@@ -1,5 +1,5 @@
 import { Breakpoints } from '@/styles/breakpoints';
-import styled from 'styled-components';
+import styled, { RuleSet } from 'styled-components';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -7,14 +7,17 @@ export const Wrapper = styled.div`
   gap: 12px;
 `;
 
-export const TitleContainer = styled.div`
+export const TitleContainer = styled.div<{ $styles?: RuleSet<object> }>`
   display: flex;
   align-items: center;
   gap: 12px;
 
   @media screen and (min-width: ${Breakpoints.md}) {
     padding: 10px 0;
+    justify-content: space-between;
   }
+
+  ${({ $styles }) => $styles && $styles}
 `;
 
 export const Title = styled.h1`
@@ -39,7 +42,6 @@ export const SubTitle = styled.h2`
   @media screen and (min-width: ${Breakpoints.md}) {
     font-size: 18px;
   }
-
 `;
 
 export const Badge = styled.div`
@@ -47,13 +49,11 @@ export const Badge = styled.div`
   align-items: center;
   gap: 6px;
   padding: 4px 12px;
-  border-radius: 4px;
+  border-radius: 32px;
   background-color: var(--badge-bg-clr);
   height: 30px;
 `;
 
 export const BadgeDescription = styled.p`
-color: var(--white-clr);
-font-size: 14px;
-font-weight: 700;
+  font-size: 14px;
 `;

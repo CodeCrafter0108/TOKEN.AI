@@ -6,10 +6,10 @@ export const LogoLink = styled(Link)`
   font-weight: 600;
 
   :first-child {
-    color: var(--primary-clr);
+    color: var(--accent-clr);
   }
 
   :last-child {
-    color: var(--accent-clr);
+    color: #3E3E3E;
   }
 `;

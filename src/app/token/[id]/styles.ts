@@ -7,6 +7,7 @@ export const BackButton = styled(Button)`
     transform: rotate(180deg);
   }
 
+  color: var(--primary-text-clr);
   font-feature-settings:
     'liga' off,
     'clig' off;
@@ -51,7 +52,12 @@ export const RightContent = styled.div`
   flex-direction: column;
   gap: 16px;
 
+  @media screen and (min-width: ${Breakpoints.md}) {
+    flex-direction: row;
+  }
+
   @media screen and (min-width: ${Breakpoints.lg}) {
+    flex-direction: column;
     width: 30%;
   }
 `;

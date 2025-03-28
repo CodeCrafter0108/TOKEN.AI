@@ -14,7 +14,7 @@ export const NoResults = ({ handleClear }: NoResultsProps) => {
         description='Please try to adjust your search request'
         styles={{ padding: '0', justifyContent: 'flex-start' }}
       >
-        <Button style={{ width: '100%', maxWidth: '270px' }} onClick={handleClear}>
+        <Button style={{ width: '100%', maxWidth: '275px' }} onClick={handleClear}>
           Clear search results
         </Button>
       </EmptyState>

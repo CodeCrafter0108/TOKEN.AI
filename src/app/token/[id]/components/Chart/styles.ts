@@ -6,7 +6,7 @@ export const StyledChart = styled(ReactEcharts)`
     border-radius: 16px;
     min-height: 450px;
     padding: 25px 0 16px 0;
-    background-color: var(--box-bg-clr);
+    background-color: var(--primary-box-bg-clr);
 
     /* @media screen and (min-width: 1200px) {
         min-height: 100%;

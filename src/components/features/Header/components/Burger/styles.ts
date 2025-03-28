@@ -11,13 +11,14 @@ export const BurgerWrapper = styled.div<{ $isOpen: boolean }>`
   justify-content: center;
   flex-direction: column;
   gap: 6px;
+  cursor: pointer;
 
   z-index: 40;
 
   span {
     width: 27px;
     height: 2px;
-    background: var(--primary-clr);
+    background: var(--accent-clr);
     position: ${({ $isOpen }) => ($isOpen ? 'absolute' : 'static')};
     transition: all 0.2s ease;
   }

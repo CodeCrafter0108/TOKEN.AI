@@ -12,6 +12,8 @@ import Script from 'next/script';
 import 'react-toastify/dist/ReactToastify.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { LatestTransactions } from '@/components/features/LatestTransactions';
+import { ConditionalScript } from '@/components/features/ConditionalScript';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -24,20 +26,22 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const headersObj = await headers();
-  const cookies = headersObj.get('cookie')
+  const cookies = headersObj.get('cookie');
   return (
     <html lang='en'>
       <body className={montserrat.className}>
         <Script src='/scripts/jquery-3.6.4.min.js' strategy='beforeInteractive' />
-        <Script src='/scripts/animationCursor.js' strategy='afterInteractive' />
+        {/* <Script src='/scripts/animationCursor.js' strategy='afterInteractive' /> */}
+        <ConditionalScript />
         <StyledComponentsProvider>
           <Web3ModalProvider cookies={cookies}>
             <Header />
-            <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <LatestTransactions />
+            <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
               <BackGround>{children}</BackGround>
             </main>
             <Footer />
-            <Toast/>
+            <Toast />
           </Web3ModalProvider>
         </StyledComponentsProvider>
       </body>

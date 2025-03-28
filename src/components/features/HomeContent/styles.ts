@@ -7,6 +7,12 @@ export const Content = styled.div`
   gap: 24px;
 `;
 
+export const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -22,4 +28,18 @@ export const ListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+`;
+
+export const CoinAnimationWrapper = styled.div`
+display: flex;
+flex-direction: column;
+gap: 12px;
+align-items: center;
+
+margin-top: 20px;
+
+@media screen and (min-width: ${Breakpoints.lg}) {
+  margin-top: 80px;
+}
+
 `;

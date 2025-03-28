@@ -28,8 +28,6 @@ export const FiltersWrapper = styled.div`
 
   padding-bottom: 12px;
 
-  border-bottom: 1px solid var(--border-clr);
-
   @media screen and (min-width: ${Breakpoints.md}) {
     flex-direction: row;
   }

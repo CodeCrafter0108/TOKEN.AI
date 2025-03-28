@@ -2,7 +2,34 @@ import { Address } from 'viem';
 
 export type BigInt = string;
 
-export interface ISwapData {
+export interface ITokenPair {
+  token0: Address;
+  token1: Address;
+  id: Address;
+  swaps?: ISwap[];
+}
+
+export interface IToken {
+  id: string;
+  address: Address;
+  symbol: string;
+  name: string;
+  price: string;
+  imageUrl: string;
+  decimals: number;
+  blockTimestamp?: string;
+  chatUrl?: string;
+  description?: string;
+  marketCap?: string;
+  siteUrl?: string;
+  socialUrl?: string;
+  supply?: BigInt;
+  tokenOwner?: Address;
+  pair?: ITokenPair;
+  balance?: bigint;
+}
+
+export interface ISwap {
   amount: BigInt;
   blockTimestamp: string;
   fromAIToken: boolean;
@@ -10,38 +37,19 @@ export interface ISwapData {
   transactionHash: string;
   price: string;
   user: Address;
+  token: IToken;
 }
 
-export interface ITokenPair {
-  token0: Address;
-  token1: Address;
-  id: Address;
-  swaps?: ISwapData[];
+export interface ITokensData {
+  tokens: IToken[];
+  baseTokens: IToken[];
 }
 
-
-export interface IToken {
-  blockTimestamp: string;
-  address: Address;
-  chatUrl: string;
-  description: string;
-  id: string;
-  imageUrl: string;
-  marketCap: string
-  name: string;
-  price: string;
-  siteUrl: string;
-  socialUrl: string;
-  supply: BigInt;
-  symbol: string;
-  tokenOwner: Address;
-  pair?: ITokenPair;
+export interface ITransactionsData {
+  swaps: ISwap[];
+  tokens: IToken[];
 }
 
-export interface ITokensData  {
-  tokens: IToken[]
-}
-
-export interface ITokenData  {
-  token: IToken
+export interface ITokenData {
+  token: IToken;
 }

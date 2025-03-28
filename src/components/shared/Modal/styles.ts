@@ -20,7 +20,7 @@ export const Wrapper = styled(motion.div)<{ $styles?: RuleSet<object> }>`
   max-width: 410px;
   padding: 16px;
   ${({ $styles }) => $styles && $styles};
-  background-color: var(--box-bg-clr);
+  background-color: var(--modal-bg-clr);
   border-radius: 8px;
   outline: none;
 `;

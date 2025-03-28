@@ -5,18 +5,19 @@ import Planet from '@/assets/icons/planet.svg';
 import { Wrapper } from './styles';
 import React from 'react';
 import LinkWrapper from './components/LinkWrapper';
+import { RuleSet } from 'styled-components';
 
 interface SocialNetworksProps {
   siteUrl?: string;
   socialUrl?: string;
   chatUrl?: string;
   position?: 'card' | 'footer';
-  styles?: React.CSSProperties;
+  styles?: RuleSet<object>;
 }
 
 export const SocialNetworks = ({ styles, position = 'footer', siteUrl, socialUrl, chatUrl }: SocialNetworksProps) => {
   return (
-      <Wrapper style={styles} onClick={(e) => e.stopPropagation()}>
+      <Wrapper $styles={styles} onClick={(e) => e.stopPropagation()}>
         {position === 'footer' ? (
           <LinkWrapper
             href='#'

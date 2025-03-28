@@ -1,26 +1,31 @@
 'use client';
-import Image from 'next/image';
-import { BackgroundWrapper } from './styles';
+import { BackgroundWrapper, BottomBgHomeIcon, LeftBgTradeIcon, RightBgHomeIcon, RightBgTradeIcon } from './styles';
+
+import { AppRoutes } from '@/constants/routes';
+import { usePathname } from 'next/navigation';
 
 interface BackGroundProps {
   children: React.ReactNode;
 }
 
 export const BackGround = ({ children }: BackGroundProps) => {
+  const pathname = usePathname();
+
   return (
     <BackgroundWrapper>
-      <Image
-        alt='bg'
-        src={'/images/background.png'}
-        quality={100}
-        priority
-        fill
-        sizes='100vw'
-        style={{
-          objectFit: 'cover',
-          zIndex: -1,
-        }}
-      />
+      {pathname === AppRoutes.HOME && (
+        <>
+          <BottomBgHomeIcon />
+          <RightBgHomeIcon />
+        </>
+      )}
+
+      {pathname === AppRoutes.TRADE && (
+        <>
+          <LeftBgTradeIcon />
+          <RightBgTradeIcon />
+        </>
+      )}
       {children}
     </BackgroundWrapper>
   );

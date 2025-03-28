@@ -4,9 +4,9 @@ import { Skeleton } from '../../shared/Skeleton';
 import { ImageWrapper } from './styles';
 
 export const ImageWithFallback = (
-  props: ImageProps & { widthSkeleton: number; heightSkeleton: number; shape?: 'rect' | 'circle' | 'round' }
+  props: ImageProps & { widthSkeleton: number; heightSkeleton: number; }
 ) => {
-  const { widthSkeleton, heightSkeleton, shape = 'round', src, ...restProps } = props;
+  const { widthSkeleton, heightSkeleton, src, style, ...restProps } = props;
   const [hasError, setHasError] = useState(false);
 
 
@@ -23,13 +23,13 @@ export const ImageWithFallback = (
 
   const skeletonSVG = `
     <svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200" preserveAspectRatio="none">
-      <rect x="0" y="0" width="400" height="200" fill="#d0d0d0" />
+      <rect x="0" y="0" width="400" height="200" fill="#413f3f" />
       <rect x="0" y="0" width="400" height="200" fill="url(#gradient)" />
       <defs>
         <linearGradient id="gradient">
-          <stop offset="0%" stop-color="#e5e5e5" />
-          <stop offset="50%" stop-color="#d0d0d0" />
-          <stop offset="100%" stop-color="#e5e5e5" />
+          <stop offset="0%" stop-color="#818181" />
+          <stop offset="50%" stop-color="#413f3f" />
+          <stop offset="100%" stop-color="#818181" />
         </linearGradient>
       </defs>
       <animateTransform
@@ -54,6 +54,7 @@ export const ImageWithFallback = (
       {isValidSrc && !hasError ? (
         <Image
           {...restProps}
+          style={{ ...style}}
           src={src}
           unoptimized //TODO remove after connect ssl certificate
           placeholder='blur'
@@ -62,7 +63,7 @@ export const ImageWithFallback = (
           onError={handleError}
         />
       ) : (
-        <Skeleton width={widthSkeleton} height={heightSkeleton} isLoading shape={shape} />
+        <Skeleton width={widthSkeleton} height={heightSkeleton} isLoading borderRadius={style?.borderRadius?.toString()} />
       )}
     </ImageWrapper>
   );
