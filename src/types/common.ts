@@ -45,8 +45,9 @@ export interface ITokensData {
   baseTokens: IToken[];
 }
 
-export interface ISwapsData {
+export interface ITransactionsData {
   swaps: ISwap[];
+  tokens: IToken[];
 }
 
 export interface ITokenData {

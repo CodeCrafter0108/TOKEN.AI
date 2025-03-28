@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
+import { TransactionType } from 'viem';
 
-export const Card = styled.li<{ $isNew: boolean; $isSell: boolean }>`
+export const Card = styled.li<{ $isNew: boolean; $type: TransactionType }>`
   border-radius: 76px;
   background-color: var(--header-bg-clr);
   padding: 8px 12px;
@@ -10,21 +11,21 @@ export const Card = styled.li<{ $isNew: boolean; $isSell: boolean }>`
   transition: all 0.2s ease-in-out;
   translate: 0;
 
-  ${({ $isNew, $isSell }) =>
-    $isNew &&
-    css`
-      box-shadow: ${$isSell
-        ? '0px 0px 11.4px 0px #ff9500, 0px 2px 0px 0px rgba(0, 0, 0, 0.1)'
-        : '0px 0px 11.4px 0px #7ec425, 0px 2px 0px 0px rgba(0, 0, 0, 0.1)'};
-      transition: box-shadow 0.5s ease-in-out;
-    `}
+  ${({ $isNew, $type }) => css`
+    ${$isNew && $type === 'sell' && `box-shadow: 0px 0px 11.4px 0px #ff9500, 0px 2px 0px 0px rgba(0, 0, 0, 0.1);`}
+
+    ${$isNew && $type === 'buy' && `box-shadow: 0px 0px 11.4px 0px #7ec425, 0px 2px 0px 0px rgba(0, 0, 0, 0.1);`}
+
+  ${$isNew && $type === 'launch' && `box-shadow: 0px 0px 11.4px 0px #f064c6, 0px 2px 0px 0px rgba(0, 0, 0, 0.1);`}
+  `}
 
   &:hover {
-    ${({ $isSell }) => css`
-      box-shadow: ${$isSell
-        ? '0px 0px 11.4px 0px #ff9500, 0px 2px 0px 0px rgba(0, 0, 0, 0.1)'
-        : '0px 0px 11.4px 0px #7ec425, 0px 2px 0px 0px rgba(0, 0, 0, 0.1)'};
-      transition: box-shadow 0.5s ease-in-out;
+    ${({ $type }) => css`
+      ${$type === 'sell' && `box-shadow: 0px 0px 11.4px 0px #ff9500, 0px 2px 0px 0px rgba(0, 0, 0, 0.1);`}
+
+      ${$type === 'buy' && `box-shadow: 0px 0px 11.4px 0px #7ec425, 0px 2px 0px 0px rgba(0, 0, 0, 0.1);`}
+
+  ${$type === 'launch' && `box-shadow: 0px 0px 11.4px 0px #f064c6, 0px 2px 0px 0px rgba(0, 0, 0, 0.1);`}
     `}
   }
 `;
