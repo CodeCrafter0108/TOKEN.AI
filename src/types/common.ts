@@ -69,6 +69,12 @@ export interface ITokensData {
   baseTokens: IToken[];
 }
 
+export interface ITokensGroupData {
+  topAgents: IToken[];
+  latestAgents: IToken[];
+  marketCapAgents: IToken[];
+}
+
 export interface ITransactionsData {
   swaps: ISwap[];
   tokens: IToken[];
@@ -76,8 +82,4 @@ export interface ITransactionsData {
 
 export interface ITokenData {
   token: IToken;
-  // token24HDatas: ITokenData24h[];
-  // tokenPrice6Hs: ITokenPriceData[];
-  // tokenPriceHours: ITokenPriceData[];
-  // tokenPrice5Ms: ITokenPriceData[];
 }

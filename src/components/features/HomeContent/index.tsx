@@ -4,11 +4,10 @@ import { LinkVariants } from '@/components/shared/CommonLink/types';
 import { getGraphClient } from '@/config/graph/config';
 import { ChainId } from '@/constants/blockchain/networks';
 import { AppRoutes } from '@/constants/routes';
-import { GetAgents } from '@/graphql/queries/GetAgents';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { NumberBreakpoints } from '@/styles/breakpoints';
 import { Flex, H2, H3 } from '@/styles/global';
-import { ITokensData } from '@/types/common';
+import { ITokensGroupData } from '@/types/common';
 import { RefetchInterval } from '@/types/enum';
 import { useQuery } from '@apollo/client';
 import { useMemo } from 'react';
@@ -19,58 +18,27 @@ import { LinkToTopAgent } from './components/LinkToTopAgent';
 import SpinningCoin from './components/SpinningCoin';
 import { TopAgents } from './components/TopAgents';
 import { CoinAnimationWrapper, ListWrapper, TitleWrapper, Wrapper } from './styles';
+import { GetAgentsGroup } from '@/graphql/queries/GetAgentsGroup';
 
 export const HomeContent = () => {
   const { width } = useWindowSize();
   const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
 
-  const {
-    data: latestAgents,
-    loading: latestAgentsLoading,
-    error: latestAgentsError
-  } = useQuery<ITokensData>(GetAgents, {
+  const { data: agentsGroup, loading: agentsGroupLoading } = useQuery<ITokensGroupData>(GetAgentsGroup, {
     client,
-    variables: { orderBy: 'blockTimestamp', orderDirection: 'desc', first: 5 },
-    pollInterval: RefetchInterval.FAST
+    pollInterval: RefetchInterval.SLOW,
+    onError(error) {
+      console.error(error);
+    }
   });
 
-  if (latestAgentsError) {
-    console.error('Error fetching latest agents:', latestAgentsError);
-  }
-
-  const {
-    data: marketCapAgents,
-    loading: marketCapAgentsLoading,
-    error: marketCapAgentsError
-  } = useQuery<ITokensData>(GetAgents, {
-    client,
-    variables: { orderBy: 'marketCap', orderDirection: 'desc', first: 5 },
-    pollInterval: RefetchInterval.FAST
-  });
-
-  if (marketCapAgentsError) {
-    console.error('Error fetching market cap agents:', marketCapAgentsError);
-  }
-
-  const {
-    data: topAgents,
-    loading: topAgentsLoading,
-    error: topAgentsError
-  } = useQuery<ITokensData>(GetAgents, {
-    client,
-    variables: { orderBy: 'marketCap', orderDirection: 'desc', first: 30 }, //TODO change query
-    pollInterval: RefetchInterval.FAST
-  });
-
-  if (topAgentsError) {
-    console.error('Error fetching top agents:', topAgentsError);
-  }
+  const { topAgents, latestAgents, marketCapAgents } = agentsGroup || {};
 
   return (
     <>
       <Hero />
       <H2 style={{ marginBottom: '12px' }}>Available tokens</H2>
-      <TopAgents agents={topAgents?.tokens} isLoading={topAgentsLoading} />
+      <TopAgents agents={topAgents} isLoading={agentsGroupLoading} />
       <Wrapper>
         <ListWrapper>
           <TitleWrapper>
@@ -78,8 +46,8 @@ export const HomeContent = () => {
             <LinkToTopAgent title='View all Latest' params='latest' />
           </TitleWrapper>
           <AgentsList
-            agents={latestAgents?.tokens}
-            isLoading={latestAgentsLoading}
+            agents={latestAgents}
+            isLoading={agentsGroupLoading}
             hasArrow={false}
             styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }}
           />
@@ -90,8 +58,8 @@ export const HomeContent = () => {
             <LinkToTopAgent title='View all Top cap' params='marketcap' />
           </TitleWrapper>
           <AgentsList
-            agents={marketCapAgents?.tokens}
-            isLoading={marketCapAgentsLoading}
+            agents={marketCapAgents}
+            isLoading={agentsGroupLoading}
             hasArrow={false}
             styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }}
           />
