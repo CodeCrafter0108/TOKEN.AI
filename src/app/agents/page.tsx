@@ -75,9 +75,9 @@ export default function TopAgents() {
 
     return agents?.tokens?.filter(
       (agent) =>
-        agent?.name.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
-        agent?.symbol.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
-        agent?.address.toLowerCase().includes(debouncedSearchValue.toLowerCase())
+        agent?.name?.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
+        agent?.symbol?.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
+        agent?.address?.toLowerCase().includes(debouncedSearchValue.toLowerCase())
     );
   }, [agents?.tokens, debouncedSearchValue]);
 

@@ -10,6 +10,7 @@ export const agentCardStyles = css`
   @media screen and (min-width: ${Breakpoints.xl}) {
     max-width: 250px;
     min-width: 230px;
+    min-height: 295px; // FIX
   }
 `;
 

@@ -21,12 +21,12 @@ export const ProgressBar = ({
 }: ProgressBarProps) => {
   const total = secondParam + firstParam;
 
-  const secondParamPercentage = (secondParam / total) * 100;
-  const firstParamPercentage = (firstParam / total) * 100;
+  const secondParamPercentage = firstParam === 0 && secondParam === 0 ? 50 : (secondParam / total) * 100;
+  const firstParamPercentage = firstParam === 0 && secondParam === 0 ? 50 : (firstParam / total) * 100;
 
   return (
     <Flex $direction={'column'} $gap={4}>
-      <Flex style={{ height: '6px', margin: '8px 0' }}>
+      <Flex style={{ height: '6px', margin: '8px 0', borderRadius: '4px', overflow: 'hidden' }}>
         <Bar
           width={firstParamPercentage}
           style={{ borderTopLeftRadius: '4px', borderBottomLeftRadius: '4px', backgroundColor: '#F79D00' }}

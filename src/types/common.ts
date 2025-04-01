@@ -15,6 +15,7 @@ export interface IToken {
   symbol: string;
   name: string;
   price: string;
+  priceInNative: string;
   imageUrl: string;
   decimals: number;
   blockTimestamp?: string;
@@ -27,17 +28,40 @@ export interface IToken {
   tokenOwner?: Address;
   pair?: ITokenPair;
   balance?: bigint;
+  liquidityPool?: string;
+  token24hData?: ITokenData24h[];
+  tokenPrice6h?: ITokenPriceData[];
+  tokenPriceHour?: ITokenPriceData[];
+  tokenPrice5m?: ITokenPriceData[];
 }
+
+export type SwapType = 'buy' | 'sell';
 
 export interface ISwap {
   amount: BigInt;
   blockTimestamp: string;
-  fromAIToken: boolean;
+  type: SwapType;
   id: string;
   transactionHash: string;
   price: string;
   user: Address;
   token: IToken;
+}
+
+export interface ITokenPriceData {
+  id: string;
+  date: string;
+  token: IToken;
+  price: string;
+}
+
+export interface ITokenData24h extends ITokenPriceData {
+  buys24h: string;
+  sells24h: string;
+  buyVolumeUsd24h: string;
+  sellVolumeUsd24h: string;
+  sellers24h: Address[];
+  buyers24h: Address[];
 }
 
 export interface ITokensData {
@@ -52,4 +76,8 @@ export interface ITransactionsData {
 
 export interface ITokenData {
   token: IToken;
+  // token24HDatas: ITokenData24h[];
+  // tokenPrice6Hs: ITokenPriceData[];
+  // tokenPriceHours: ITokenPriceData[];
+  // tokenPrice5Ms: ITokenPriceData[];
 }

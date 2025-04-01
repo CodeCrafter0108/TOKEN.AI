@@ -41,11 +41,17 @@ const TransactionTable = ({ data = [] }: TransactionTableProps) => {
           {width > NumberBreakpoints.md && (
             <div role='rowgroup'>
               <TableHead role='row'>
-                <SortSelector text='Date' value={SortType.NONE} id='date-header' disabled />
+                {/* <SortSelector text='Date' value={SortType.NONE} id='date-header' disabled /> */}
+                <SortSelector
+                  text='Date'
+                  value={sortConfig.key === 'blockTimestamp' ? sortConfig.direction : SortType.NONE}
+                  onChange={() => handleSortChange('blockTimestamp')}
+                  id='type-header'
+                />
                 <SortSelector
                   text='Type'
-                  value={sortConfig.key === 'fromAIToken' ? sortConfig.direction : SortType.NONE}
-                  onChange={() => handleSortChange('fromAIToken')}
+                  value={sortConfig.key === 'type' ? sortConfig.direction : SortType.NONE}
+                  onChange={() => handleSortChange('type')}
                   id='type-header'
                 />
                 <SortSelector
@@ -81,8 +87,8 @@ const TransactionTable = ({ data = [] }: TransactionTableProps) => {
 
                   <Flex $align='center' $justify='space-between' role='cell' aria-labelledby='type-header'>
                     {width < NumberBreakpoints.md && <Title aria-hidden='true'>Type</Title>}
-                    <Text style={{ color: `${transaction.fromAIToken ? 'var(--error-clr)' : '#34C759'}` }}>
-                      {transaction.fromAIToken ? 'Sell' : 'Buy'}
+                    <Text style={{ color: `${transaction.type === 'sell' ? 'var(--error-clr)' : '#34C759'}`, textTransform: 'capitalize' }}>
+                      {transaction.type}
                     </Text>
                   </Flex>
 
@@ -102,7 +108,7 @@ const TransactionTable = ({ data = [] }: TransactionTableProps) => {
                       variants={LinkVariants.CLEAR}
                       isExternal
                       href={`${ExternalLinks.SONIC_SCANER}/tx/${transaction.transactionHash}`}
-                      style={{ justifyContent: 'space-between', width: '100%' }}
+                      style={{width: '100%', justifyContent: width < NumberBreakpoints.md ?  'flex-end' : 'space-between', gap: '4px'}}
                     >
                       <Text>{formatAddress(transaction.transactionHash)}</Text>
                       <ExternalLinkIcon />
