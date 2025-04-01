@@ -27,17 +27,16 @@ export default function Token() {
   const {
     data: agent,
     // loading: agentLoading,
-    error: agentError
   } = useQuery<ITokenData>(GetOneAgent, {
     client,
-    variables: { id: id },
-    pollInterval: RefetchInterval.FAST,
-    skip: !id
+    variables: { id: id, orderBy: 'blockTimestamp', orderDirection: 'desc' },
+    pollInterval: RefetchInterval.MEDIUM,
+    skip: !id,
+    onError(error) {
+      console.error(error);
+    }
   });
-
-  if (agentError) {
-    console.error('Error fetching my agents:', agentError);
-  }
+    console.log("🚀 ~ Token ~ agent:", agent)
 
   return (
     <PageWrapper hasPaddingTop>
@@ -54,8 +53,8 @@ export default function Token() {
           <TransactionTable data={agent?.token?.pair?.swaps} />
         </LeftContent>
         <RightContent>
-            <TradeForm styles={{ maxWidth: 'inherit' }} />
-            <TokenInfo />
+          <TradeForm styles={{ maxWidth: 'inherit' }} />
+          <TokenInfo agent={agent?.token} />
         </RightContent>
       </Content>
     </PageWrapper>

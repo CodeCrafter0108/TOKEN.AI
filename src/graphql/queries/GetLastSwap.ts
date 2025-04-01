@@ -5,7 +5,7 @@ export const GetLastSwap = gql`
     swaps(orderBy: $orderBy, orderDirection: $orderDirection, first: $first, where: { blockTimestamp_gt: $timestamp }) {
       amount
       blockTimestamp
-      fromAIToken
+      type
       id
       price
       transactionHash

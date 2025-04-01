@@ -17,6 +17,34 @@ export const GetOneAgent = gql`
       supply
       symbol
       tokenOwner
+      liquidityPool
+      priceInNative
+      token24hData(orderBy: date, orderDirection: desc, first: 1) {
+        id
+        date
+        sellers24h
+        sells24h
+        buys24h
+        buyers24h
+        buyVolumeUsd24h
+        sellVolumeUsd24h
+        price
+      }
+      tokenPrice6h(orderBy: date, orderDirection: desc, first: 1) {
+        id
+        date
+        price
+      }
+      tokenPriceHour(orderBy: date, orderDirection: desc, first: 1) {
+        id
+        date
+        price
+      }
+      tokenPrice5m(orderBy: date, orderDirection: desc, first: 1) {
+        id
+        date
+        price
+      }
       pair {
         token0
         token1
@@ -24,7 +52,7 @@ export const GetOneAgent = gql`
         swaps(orderBy: $orderBy, orderDirection: $orderDirection) {
           amount
           blockTimestamp
-          fromAIToken
+          type
           id
           transactionHash
           price

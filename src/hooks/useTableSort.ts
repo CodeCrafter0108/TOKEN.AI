@@ -1,4 +1,4 @@
-import { SortType } from "@/components/shared/SortSelector/types";
+import { SortType } from '@/components/shared/SortSelector/types';
 import { useCallback, useMemo, useState } from 'react';
 
 interface UseTableArgs<T> {
@@ -22,8 +22,12 @@ export const useTableSort = <T>({ data }: UseTableArgs<T>) => {
         const key = sortConfig.key;
         const directionMultiplier = sortConfig.direction === SortType.ASC ? 1 : -1;
 
-        if (a[key] < b[key]) return -1 * directionMultiplier;
-        if (a[key] > b[key]) return 1 * directionMultiplier;
+        const valueA = a[key] !== isNaN(+a[key]) ? Number(a[key]) : a[key];
+        const valueB = b[key] !== isNaN(+b[key]) ? Number(b[key]) : b[key];
+
+        if (valueA < valueB) return -1 * directionMultiplier;
+        if (valueA > valueB) return 1 * directionMultiplier;
+
         return 0;
       }),
     [sortConfig, data]

@@ -21,6 +21,7 @@ import {
   Value,
   SocialNetworkWrapper
 } from './styles';
+import { MAX_MARKETCAP_VALUE } from './constants';
 
 interface AgentCardProps {
   styles?: RuleSet<object>;
@@ -30,7 +31,18 @@ interface AgentCardProps {
 
 export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps) => {
   const router = useRouter();
-  const { imageUrl, name, symbol, marketCap = '0', description, siteUrl, socialUrl, chatUrl, address } = agent || {};
+  const {
+    imageUrl,
+    name,
+    symbol,
+    marketCap = '0',
+    liquidityPool = '0',
+    description,
+    siteUrl,
+    socialUrl,
+    chatUrl,
+    address
+  } = agent || {};
   return (
     <Container onClick={() => router.push(`${AppRoutes.TOKEN}/${address}`)} $styles={styles} role='link'>
       <Flex $gap={12} $align='center'>
@@ -56,7 +68,6 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
               sizes='100%'
               widthSkeleton={16}
               heightSkeleton={16}
-
             />
             <span>{symbol}</span>
           </Flex>
@@ -103,22 +114,22 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
         <>
           <Flex $align='center' $justify='space-between'>
             <BarTitle>Progress market cap</BarTitle>
-            <BarValue>31M$</BarValue>
+            <BarValue>{`$${shortNumber(+marketCap)}`}</BarValue>
           </Flex>
           <BarWrapper>
-            <Bar width={33} />
+            <Bar width={Math.min((+marketCap / MAX_MARKETCAP_VALUE) * 100, 100)} />
           </BarWrapper>
         </>
       ) : (
         <Metrics>
           <Flex $gap={4} $align='baseline' style={{ width: 'auto' }}>
             <span>Market cap:</span>
-            <Value>$4.39k</Value>
+            <Value>{`$${shortNumber(+marketCap)}`}</Value>
           </Flex>
           <Flex $gap={4} $align='baseline' style={{ width: 'auto' }}>
             <Verified />
             <span>Liquidity Pool:</span>
-            <Value>$4.39k</Value>
+            <Value>{`$${shortNumber(+liquidityPool)}`}</Value>
           </Flex>
         </Metrics>
       )}

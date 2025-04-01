@@ -5,7 +5,7 @@ export const GetTransactions = gql`
     swaps(orderBy: $orderBy, orderDirection: $orderDirection, first: $first) {
       amount
       blockTimestamp
-      fromAIToken
+      type
       id
       price
       transactionHash

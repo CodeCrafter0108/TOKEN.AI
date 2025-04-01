@@ -1,0 +1,1 @@
+export const MAX_MARKETCAP_VALUE = 10000000;

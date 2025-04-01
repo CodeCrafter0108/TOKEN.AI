@@ -61,9 +61,9 @@ export default function MyAgents() {
     if (!myAgents?.tokens) return [];
     return myAgents?.tokens?.filter(
       (agent) =>
-        agent?.name.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
-        agent?.symbol.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
-        agent?.address.toLowerCase().includes(debouncedSearchValue.toLowerCase())
+        agent?.name?.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
+        agent?.symbol?.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
+        agent?.address?.toLowerCase().includes(debouncedSearchValue.toLowerCase())
     );
   }, [myAgents?.tokens, debouncedSearchValue]);
 

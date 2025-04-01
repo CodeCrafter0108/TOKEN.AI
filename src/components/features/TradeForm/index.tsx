@@ -83,7 +83,7 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
 
   useEffect(() => {
-    if (sourceAgents) {
+    if (sourceAgents && sourceAgents?.length > 1) {
       const nativeToken: IToken | undefined = sourceAgents.find((token) => token.address === ZERO_ADDRESS);
       const stableToken: IToken | undefined = sourceAgents.find((token) => token.address === STABLE_TOKEN_ADDRESS);
       if (path.includes('trade') && nativeToken && stableToken) {

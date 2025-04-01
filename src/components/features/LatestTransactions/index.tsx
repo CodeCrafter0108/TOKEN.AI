@@ -60,7 +60,7 @@ export const LatestTransactions = () => {
       first: 5,
       timestamp: lastTransaction?.current?.blockTimestamp
     },
-    pollInterval: RefetchInterval.FIVE_SECONDS,
+    pollInterval: RefetchInterval.FAST,
     onError: (error) => console.error(error),
     skip: isDelayed || !lastTransaction?.current?.blockTimestamp
   });
@@ -76,7 +76,7 @@ export const LatestTransactions = () => {
       first: 5,
       timestamp: lastLaunchedTransaction?.current?.blockTimestamp
     },
-    pollInterval: RefetchInterval.FIVE_SECONDS,
+    pollInterval: RefetchInterval.FAST,
     onError: (error) => console.error(error),
     skip: isDelayed || !lastLaunchedTransaction?.current?.blockTimestamp
   });

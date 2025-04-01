@@ -1,13 +1,13 @@
 import { ImageWithFallback } from '@/components/features/ImageWithFallback';
+import { AppRoutes } from '@/constants/routes';
 import { Flex } from '@/styles/global';
 import { ISwap, IToken } from '@/types/common';
 import { formatAddress, formatNumber } from '@/utils/formatters';
-import { Card, Info, Title } from './styles';
-import { AppRoutes } from '@/constants/routes';
 import { useRouter } from 'next/navigation';
-import { TransactionType } from '../../types';
-import { cardData } from '../../constants';
 import { formatEther } from 'viem';
+import { cardData } from '../../constants';
+import { TransactionType } from '../../types';
+import { Card, Info, Title } from './styles';
 // import BigNumber from 'bignumber.js';
 
 interface LatestTransactionCardProps {
@@ -18,14 +18,28 @@ interface LatestTransactionCardProps {
 export const LatestTransactionCard = ({ isNewTransaction, transaction }: LatestTransactionCardProps) => {
   const router = useRouter();
 
-  const isLaunch = 'fromAIToken' in transaction ? false : true;
+  const isLaunch = 'type' in transaction ? false : true;
 
   const launchTransaction = transaction as IToken;
   const swapTransaction = transaction as ISwap;
-  const transactionType: TransactionType = isLaunch ? 'launch' : swapTransaction.fromAIToken ? 'sell' : 'buy';
+  const transactionType: TransactionType = isLaunch ? 'launch' : swapTransaction.type;
   const amountValue: string = !isLaunch
     ? ` $${formatNumber(+formatEther(BigInt((transaction as ISwap).amount)) * +(transaction as ISwap).price)}`
     : '';
+
+  // const priceBaks = new BigNumber('999999685124816892582271066')
+  //   .div(new BigNumber(10 ** 18))
+  //   .div(new BigNumber('100000031565043923697636').div(new BigNumber(10 ** 18)))
+  //   .multipliedBy(new BigNumber('0.00005384180702095185703854267598324135'));
+  // console.log('🚀 ~ LatestTransactionCard ~ priceBaks:', priceBaks.toString());
+
+  // const volumeBaks = new BigNumber('999999685124816892582271066').div(new BigNumber(10 ** 18)).multipliedBy(priceBaks);
+  // console.log('🚀 ~ LatestTransactionCard ~ volumeBaks:', volumeBaks.toString());
+
+  // const liquditi = volumeBaks.plus(
+  //   new BigNumber('100000031565043923697636').div(new BigNumber(10 ** 18)).multipliedBy(new BigNumber('0.00005384180702095185703854267598324135'))
+  // );
+  // console.log('🚀 ~ LatestTransactionCard ~ liquditi:', liquditi.toString());
 
   // const N_18 = new BigNumber(10).pow(18);
   // const supply_decimal = new BigNumber('1000000000000000000000000000').div(N_18);
