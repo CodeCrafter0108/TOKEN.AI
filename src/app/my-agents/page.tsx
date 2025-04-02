@@ -19,6 +19,7 @@ import Filter from './components/Filter';
 import { FilterWrapper } from './styles';
 import { useSearchParams } from 'next/navigation';
 import { FilterOption } from '../agents/components/ButtonFilters/types';
+import { AgentsListSkeleton } from '@/components/Skeletons/AgentsListSkeleton';
 
 export default function MyAgents() {
   const { isConnected, address } = useAccount();
@@ -35,14 +36,11 @@ export default function MyAgents() {
 
   const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
 
-  const [fetchMyAgents, { data: myAgents, loading: myAgentsLoading }] = useLazyQuery<ITokensData>(
-    GetMyAgents,
-    {
-      client,
-      onError: (error) => console.error('Error fetching my agents:',error),
-      // pollInterval: RefetchInterval.FAST
-    }
-  );
+  const [fetchMyAgents, { data: myAgents, loading: isMyAgentsLoading }] = useLazyQuery<ITokensData>(GetMyAgents, {
+    client,
+    onError: (error) => console.error('Error fetching my agents:', error)
+    // pollInterval: RefetchInterval.FAST
+  });
 
   useEffect(() => {
     if (filterFromUrl) {
@@ -74,15 +72,19 @@ export default function MyAgents() {
           <Filter />
         </FilterWrapper>
         <AnimatedWrapper.Opacity
-          condition={isConnected && !myAgentsLoading && filteredAgents.length > 0}
+          condition={isConnected && !isMyAgentsLoading && filteredAgents.length > 0}
           duration={0.2}
         >
-          <AgentsList agents={filteredAgents} isLoading={myAgentsLoading} hasButton />
+          {isMyAgentsLoading ? (
+            <AgentsListSkeleton rows={6} hasButton />
+          ) : (
+            <AgentsList agents={filteredAgents} hasButton />
+          )}
         </AnimatedWrapper.Opacity>
       </Flex>
       <Messages
         agents={filteredAgents}
-        isLoading={myAgentsLoading}
+        isLoading={isMyAgentsLoading}
         searchValue={debouncedSearchValue}
         handleClear={handleClear}
       />

@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, RuleSet } from 'styled-components';
 
 const pulse = keyframes`
   0% {
@@ -16,9 +16,12 @@ export const SkeletonWrapper = styled.div<{
   $width: number;
   $height: number;
   $borderRadius?: string;
+  $styles?: RuleSet<object>;
 }>`
   width: ${(props: { $width: number }) => props.$width}px;
   height: ${(props: { $height: number }) => props.$height}px;
+  min-width: ${(props: { $width: number }) => props.$width}px;
+  min-height: ${(props: { $height: number }) => props.$height}px;
   background-color: #e5e5e5;
   display: flex;
   justify-content: center;
@@ -26,4 +29,6 @@ export const SkeletonWrapper = styled.div<{
   border-radius: ${(props) => `${props.$borderRadius}` };
   position: relative;
   animation: ${pulse} 2s infinite ease-in-out;
+
+  ${({ $styles }) => $styles && $styles};
 `;

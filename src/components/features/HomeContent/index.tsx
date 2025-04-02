@@ -19,12 +19,13 @@ import SpinningCoin from './components/SpinningCoin';
 import { TopAgents } from './components/TopAgents';
 import { CoinAnimationWrapper, ListWrapper, TitleWrapper, Wrapper } from './styles';
 import { GetAgentsGroup } from '@/graphql/queries/GetAgentsGroup';
+import { AgentsListSkeleton } from '@/components/Skeletons/AgentsListSkeleton';
 
 export const HomeContent = () => {
   const { width } = useWindowSize();
   const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
 
-  const { data: agentsGroup, loading: agentsGroupLoading } = useQuery<ITokensGroupData>(GetAgentsGroup, {
+  const { data: agentsGroup, loading: isAgentsGroupLoading } = useQuery<ITokensGroupData>(GetAgentsGroup, {
     client,
     pollInterval: RefetchInterval.SLOW,
     onError(error) {
@@ -38,31 +39,37 @@ export const HomeContent = () => {
     <>
       <Hero />
       <H2 style={{ marginBottom: '12px' }}>Available tokens</H2>
-      <TopAgents agents={topAgents} isLoading={agentsGroupLoading} />
+      <TopAgents agents={topAgents} isLoading={isAgentsGroupLoading} />
       <Wrapper>
         <ListWrapper>
           <TitleWrapper>
             <H3>Latest</H3>
             <LinkToTopAgent title='View all Latest' params='latest' />
           </TitleWrapper>
-          <AgentsList
-            agents={latestAgents}
-            isLoading={agentsGroupLoading}
-            hasArrow={false}
-            styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }}
-          />
+          {isAgentsGroupLoading ? (
+            <AgentsListSkeleton hasArrow={false} rows={6} styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }} />
+          ) : (
+            <AgentsList
+              agents={latestAgents}
+              hasArrow={false}
+              styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }}
+            />
+          )}
         </ListWrapper>
         <ListWrapper>
           <TitleWrapper>
             <H3>Top Market cap</H3>
             <LinkToTopAgent title='View all Top cap' params='marketcap' />
           </TitleWrapper>
-          <AgentsList
-            agents={marketCapAgents}
-            isLoading={agentsGroupLoading}
-            hasArrow={false}
-            styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }}
-          />
+          {isAgentsGroupLoading ? (
+            <AgentsListSkeleton hasArrow={false} rows={6} styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }} />
+          ) : (
+            <AgentsList
+              agents={marketCapAgents}
+              hasArrow={false}
+              styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }}
+            />
+          )}
         </ListWrapper>
       </Wrapper>
       <ListWrapper>

@@ -20,7 +20,6 @@ import {
 } from './styles';
 
 interface AgentCardProps {
-  isLoading: boolean;
   agents?: IToken[];
   hasArrow?: boolean;
   styles?: CSSProperties;
@@ -36,7 +35,7 @@ export const AgentsList = ({ hasArrow = true, hasButton, agents = [], styles }: 
           return (
             <ListItem key={id}>
               <StyledLink href={`${AppRoutes.TOKEN}/${address}`}>
-                <Flex $gap={12}>
+                <Flex $gap={12} $align='center'>
                   <ImageWithFallback
                     fill
                     alt='Agent logo'
@@ -44,8 +43,8 @@ export const AgentsList = ({ hasArrow = true, hasButton, agents = [], styles }: 
                     loading='lazy'
                     style={{ objectFit: 'cover', borderRadius: '50%' }}
                     sizes='100%'
-                    widthSkeleton={60}
-                    heightSkeleton={60}
+                    widthSkeleton={65}
+                    heightSkeleton={65}
                   />
                   <InfoWrapper>
                     <Title>{name}</Title>
