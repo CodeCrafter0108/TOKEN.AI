@@ -40,7 +40,6 @@ export const LatestTransactions = () => {
     onError: (error) => console.error(error),
     onCompleted: (data) => {
       if (data) {
-        console.log("🚀 ~ LatestTransactions ~ data:", data)
         const formatedTransactions: (ISwap | IToken)[] = [...data.swaps, ...data.tokens]
           .sort((a, b) => +(b?.blockTimestamp ?? '0') - +(a?.blockTimestamp ?? '0'))
           .slice(0, COUNT_LAST_TRANSACTIONS);
@@ -61,7 +60,7 @@ export const LatestTransactions = () => {
       timestampSwap: lastTransaction?.current?.blockTimestamp,
       timestampLaunch: lastLaunchedTransaction?.current?.blockTimestamp
     },
-    pollInterval: RefetchInterval.FAST,
+    pollInterval: RefetchInterval.FIVE_SECONDS,
     onError: (error) => console.error(error),
     skip:
       isDelayed ||
