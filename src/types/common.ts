@@ -80,6 +80,11 @@ export interface ITransactionsData {
   tokens: IToken[];
 }
 
+export interface ILastTransactionData {
+  lastSwaps: ISwap[];
+  lastLaunchs: IToken[];
+}
+
 export interface ITokenData {
   token: IToken;
 }
