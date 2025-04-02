@@ -37,7 +37,7 @@ export default function TopAgents() {
     setSearchValue('');
     // setSearchParam('filter', 'all');
   };
-  const countLoadAgents: number = 10;
+  const countLoadAgents: number = 100;
 
   const filterFromUrl = useMemo(() => searchParams.get('filter') as FilterOption, [searchParams]);
 

@@ -29,14 +29,14 @@ export const ProgressBar = ({
       <Flex style={{ height: '6px', margin: '8px 0', borderRadius: '4px', overflow: 'hidden' }}>
         <Bar
           width={firstParamPercentage}
-          style={{ borderTopLeftRadius: '4px', borderBottomLeftRadius: '4px', backgroundColor: '#F79D00' }}
+          style={{ borderTopLeftRadius: '4px', borderBottomLeftRadius: '4px', backgroundColor: '#94E927' }}
         />
         <Bar
           width={secondParamPercentage}
           style={{
             borderTopRightRadius: '4px',
             borderBottomRightRadius: '4px',
-            backgroundColor: '#94E927'
+            backgroundColor: '#F79D00'
           }}
         />
       </Flex>

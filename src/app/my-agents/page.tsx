@@ -44,8 +44,6 @@ export default function MyAgents() {
     }
   );
 
-
-
   useEffect(() => {
     if (filterFromUrl) {
       if (filterFromUrl === 'marketcap') {

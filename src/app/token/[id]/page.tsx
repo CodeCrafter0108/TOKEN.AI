@@ -36,7 +36,6 @@ export default function Token() {
       console.error(error);
     }
   });
-    console.log("🚀 ~ Token ~ agent:", agent)
 
   return (
     <PageWrapper hasPaddingTop>

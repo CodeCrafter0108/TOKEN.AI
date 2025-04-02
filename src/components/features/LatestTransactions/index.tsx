@@ -1,10 +1,8 @@
 'use client';
 import { getGraphClient } from '@/config/graph/config';
 import { ChainId } from '@/constants/blockchain/networks';
-import { GetLastLaunch } from '@/graphql/queries/GetLastLaunch';
-import { GetLastSwap } from '@/graphql/queries/GetLastSwap';
 import { GetTransactions } from '@/graphql/queries/GetTransactions';
-import { ISwap, IToken, ITransactionsData } from '@/types/common';
+import { ILastTransactionData, ISwap, IToken, ITransactionsData } from '@/types/common';
 import { RefetchInterval } from '@/types/enum';
 import { useQuery } from '@apollo/client';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -13,6 +11,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { LatestTransactionCard } from './components/LatestTransactionCard';
 import { COUNT_LAST_TRANSACTIONS, supportedPages } from './constants';
 import { CardList } from './styles';
+import { GetLastTransactions } from '@/graphql/queries/GetLastTransactions';
+import { formatterPath } from './utils';
 
 export const LatestTransactions = () => {
   const [transactions, setTransactions] = useState<(ISwap | IToken)[]>([]);
@@ -22,9 +22,10 @@ export const LatestTransactions = () => {
 
   const [isDelayed, setIsDelayed] = useState(true);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => setIsDelayed(false), RefetchInterval.THREE_SECONDS);
+  const pathname = usePathname();
 
+  useEffect(() => {
+    const timeout = setTimeout(() => setIsDelayed(false), 1000);
     return () => clearTimeout(timeout);
   }, []);
 
@@ -35,9 +36,11 @@ export const LatestTransactions = () => {
   } = useQuery<ITransactionsData>(GetTransactions, {
     client,
     variables: { orderBy: 'blockTimestamp', orderDirection: 'desc', first: COUNT_LAST_TRANSACTIONS },
+    // skip: !supportedPages.includes(pathname),
     onError: (error) => console.error(error),
     onCompleted: (data) => {
       if (data) {
+        console.log("🚀 ~ LatestTransactions ~ data:", data)
         const formatedTransactions: (ISwap | IToken)[] = [...data.swaps, ...data.tokens]
           .sort((a, b) => +(b?.blockTimestamp ?? '0') - +(a?.blockTimestamp ?? '0'))
           .slice(0, COUNT_LAST_TRANSACTIONS);
@@ -50,111 +53,67 @@ export const LatestTransactions = () => {
   });
 
   const {
-    // loading: agentLoading,
-    data: lastSwaps
-  } = useQuery<ITransactionsData>(GetLastSwap, {
+    // loading: lastTransactionsLoading,
+    data: lastTransactions
+  } = useQuery<ILastTransactionData>(GetLastTransactions, {
     client,
     variables: {
-      orderBy: 'blockTimestamp',
-      orderDirection: 'desc',
-      first: 5,
-      timestamp: lastTransaction?.current?.blockTimestamp
+      timestampSwap: lastTransaction?.current?.blockTimestamp,
+      timestampLaunch: lastLaunchedTransaction?.current?.blockTimestamp
     },
     pollInterval: RefetchInterval.FAST,
     onError: (error) => console.error(error),
-    skip: isDelayed || !lastTransaction?.current?.blockTimestamp
+    skip:
+      isDelayed ||
+      !lastTransaction?.current?.blockTimestamp ||
+      !lastLaunchedTransaction?.current?.blockTimestamp ||
+      !supportedPages.includes(pathname)
   });
 
-  const {
-    // loading: agentLoading,
-    data: lastLaunch
-  } = useQuery<ITransactionsData>(GetLastLaunch, {
-    client,
-    variables: {
-      orderBy: 'blockTimestamp',
-      orderDirection: 'desc',
-      first: 5,
-      timestamp: lastLaunchedTransaction?.current?.blockTimestamp
-    },
-    pollInterval: RefetchInterval.FAST,
-    onError: (error) => console.error(error),
-    skip: isDelayed || !lastLaunchedTransaction?.current?.blockTimestamp
-  });
-
-  //TODO : Refactor
   useEffect(() => {
-    if (lastLaunch) {
-      if (lastLaunch.tokens?.length === 0) return;
-      if (lastLaunch.tokens?.length === 1) {
-        setNewTransaction(lastLaunch.tokens[0]);
-        lastLaunchedTransaction.current = lastLaunch.tokens[0];
-        setTransactions((prev) => [lastLaunch.tokens[0], ...prev]);
-        setTimeout(() => {
-          setNewTransaction(null);
-        }, 300);
-      }
+    if (lastTransactions) {
+      const processTransactions = (
+        transactions: ISwap[] | IToken[],
+        lastTransactionRef: React.RefObject<ISwap | IToken | null>
+      ) => {
+        if (transactions.length === 0) return;
+        if (transactions.length === 1) {
+          setNewTransaction(transactions[0]);
+          lastTransactionRef.current = transactions[0];
+          setTransactions((prev) => [transactions[0], ...prev]);
+          setTimeout(() => {
+            setNewTransaction(null);
+          }, 300);
+        }
+        if (transactions?.length > 1) {
+          let index = transactions.length - 1;
 
-      if (lastLaunch.tokens?.length > 1) {
-        let index = lastLaunch.tokens.length - 1;
+          const interval = setInterval(() => {
+            if (index === -1) {
+              clearInterval(interval);
+              setTimeout(() => setNewTransaction(null), 500);
+              return;
+            }
 
-        const interval = setInterval(() => {
-          if (index === -1) {
-            clearInterval(interval);
-            setTimeout(() => setNewTransaction(null), 500);
-            return;
-          }
+            if (index === 0) {
+              lastTransactionRef.current = transactions[index];
+            }
 
-          if (index === 0) {
-            lastLaunchedTransaction.current = lastLaunch.tokens[index];
-          }
+            const swap = transactions[index];
+            setNewTransaction(swap);
+            setTransactions((prev) => [swap, ...prev]);
+            index--;
+          }, 500);
+        }
+      };
 
-          const swap = lastLaunch.tokens[index];
-          setNewTransaction(swap);
-          setTransactions((prev) => [swap, ...prev]);
-          index--;
-        }, 500);
-      }
+      const { lastLaunchs = [], lastSwaps = [] } = lastTransactions;
+      processTransactions(lastSwaps, lastTransaction);
+      processTransactions(lastLaunchs, lastLaunchedTransaction);
     }
-  }, [lastLaunch]);
+  }, [lastTransactions]);
 
-  useEffect(() => {
-    if (lastSwaps) {
-      if (lastSwaps.swaps?.length === 0) return;
-      if (lastSwaps.swaps?.length === 1) {
-        setNewTransaction(lastSwaps.swaps[0]);
-        lastTransaction.current = lastSwaps.swaps[0];
-        setTransactions((prev) => [lastSwaps.swaps[0], ...prev]);
-        setTimeout(() => {
-          setNewTransaction(null);
-        }, 300);
-      }
-
-      if (lastSwaps.swaps?.length > 1) {
-        let index = lastSwaps.swaps.length - 1;
-
-        const interval = setInterval(() => {
-          if (index === -1) {
-            clearInterval(interval);
-            setTimeout(() => setNewTransaction(null), 500);
-            return;
-          }
-
-          if (index === 0) {
-            lastTransaction.current = lastSwaps.swaps[index];
-          }
-
-          const swap = lastSwaps.swaps[index];
-          setNewTransaction(swap);
-          setTransactions((prev) => [swap, ...prev]);
-          index--;
-        }, 500);
-      }
-    }
-  }, [lastSwaps]);
-
-  const pathname = usePathname();
-
-  if (!supportedPages.includes(pathname)) return null;
+  if (!supportedPages.includes(formatterPath(pathname))) return null;
 
   return (
     <CardList>

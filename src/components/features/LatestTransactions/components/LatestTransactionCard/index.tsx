@@ -24,8 +24,10 @@ export const LatestTransactionCard = ({ isNewTransaction, transaction }: LatestT
   const swapTransaction = transaction as ISwap;
   const transactionType: TransactionType = isLaunch ? 'launch' : swapTransaction.type;
   const amountValue: string = !isLaunch
-    ? ` $${formatNumber(+formatEther(BigInt((transaction as ISwap).amount)) * +(transaction as ISwap).price)}`
+    ? ` $${formatNumber(+formatEther(BigInt((transaction as ISwap).amount ?? '0')) * +((transaction as ISwap).price ?? '0'))}`
     : '';
+
+  // console.log('🚀 ~ LatestTransactionCard ~ amountValue:', amountValue);
 
   // const priceBaks = new BigNumber('999999685124816892582271066')
   //   .div(new BigNumber(10 ** 18))
