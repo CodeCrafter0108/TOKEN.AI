@@ -1,3 +1,4 @@
+'use client';
 import PlusIcon from '@/assets/icons/plus.svg';
 import CommonLink from '@/components/shared/CommonLink';
 import { LinkVariants } from '@/components/shared/CommonLink/types';
@@ -21,7 +22,16 @@ import { CoinAnimationWrapper, ListWrapper, TitleWrapper, Wrapper } from './styl
 import { GetAgentsGroup } from '@/graphql/queries/GetAgentsGroup';
 import { AgentsListSkeleton } from '@/components/Skeletons/AgentsListSkeleton';
 
-export const HomeContent = () => {
+interface HomeContentProps {
+  initialData?: ITokensGroupData;
+}
+
+export const HomeContent = ({ initialData }: HomeContentProps) => {
+  const {
+    latestAgents: initialLatestAgents,
+    topAgents: initialTopAgents,
+    marketCapAgents: initialMarketCapAgents
+  } = initialData || {};
   const { width } = useWindowSize();
   const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
 
@@ -39,7 +49,7 @@ export const HomeContent = () => {
     <>
       <Hero />
       <H2 style={{ marginBottom: '12px' }}>Available tokens</H2>
-      <TopAgents agents={topAgents} isLoading={isAgentsGroupLoading} />
+      <TopAgents agents={topAgents ?? initialTopAgents} isLoading={isAgentsGroupLoading} />
       <Wrapper>
         <ListWrapper>
           <TitleWrapper>
@@ -50,7 +60,7 @@ export const HomeContent = () => {
             <AgentsListSkeleton hasArrow={false} rows={6} styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }} />
           ) : (
             <AgentsList
-              agents={latestAgents}
+              agents={latestAgents ?? initialLatestAgents}
               hasArrow={false}
               styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }}
             />
@@ -65,7 +75,7 @@ export const HomeContent = () => {
             <AgentsListSkeleton hasArrow={false} rows={6} styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }} />
           ) : (
             <AgentsList
-              agents={marketCapAgents}
+              agents={marketCapAgents ?? initialMarketCapAgents}
               hasArrow={false}
               styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }}
             />
