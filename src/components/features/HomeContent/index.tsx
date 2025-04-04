@@ -49,14 +49,20 @@ export const HomeContent = ({ initialData }: HomeContentProps) => {
     <>
       <Hero />
       <H2 style={{ marginBottom: '12px' }}>Available tokens</H2>
-      <TopAgents agents={topAgents ?? initialTopAgents} isLoading={isAgentsGroupLoading} />
+      <TopAgents
+        agents={topAgents ?? initialTopAgents}
+        isLoading={
+          (!initialTopAgents && isAgentsGroupLoading) || (!latestAgents && !initialTopAgents && !isAgentsGroupLoading)
+        }
+      />
       <Wrapper>
         <ListWrapper>
           <TitleWrapper>
             <H3>Latest</H3>
             <LinkToTopAgent title='View all Latest' params='latest' />
           </TitleWrapper>
-          {isAgentsGroupLoading ? (
+          {(!initialLatestAgents && isAgentsGroupLoading) ||
+          (!latestAgents && !initialLatestAgents && !isAgentsGroupLoading) ? (
             <AgentsListSkeleton hasArrow={false} rows={6} styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }} />
           ) : (
             <AgentsList
@@ -71,7 +77,8 @@ export const HomeContent = ({ initialData }: HomeContentProps) => {
             <H3>Top Market cap</H3>
             <LinkToTopAgent title='View all Top cap' params='marketcap' />
           </TitleWrapper>
-          {isAgentsGroupLoading ? (
+          {(!initialTopAgents && isAgentsGroupLoading) ||
+          (!latestAgents && !initialTopAgents && !isAgentsGroupLoading) ? (
             <AgentsListSkeleton hasArrow={false} rows={6} styles={{ backgroundColor: 'var(--secondary-box-bg-clr)' }} />
           ) : (
             <AgentsList
