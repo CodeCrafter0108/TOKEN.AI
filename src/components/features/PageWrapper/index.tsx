@@ -1,3 +1,4 @@
+'use client';
 import { AnimatedWrapper } from '@/components/shared/AnimatedWrapper';
 import { Container, FirstBlur, PageContainer, SecondBlur } from '@/styles/global';
 

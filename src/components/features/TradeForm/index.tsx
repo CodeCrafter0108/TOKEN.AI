@@ -1,14 +1,13 @@
+'use client';
 import ChangeIcon from '@/assets/icons/change.svg';
 import ConnectButton from '@/components/features/ConnectButton';
 import Button from '@/components/shared/Button';
 import { ButtonVariants } from '@/components/shared/Button/types';
 import { ButtonLoader } from '@/components/shared/ButtonLoader';
 import routerAbi from '@/config/abi/router.json';
-import { getGraphClient } from '@/config/graph/config';
 import { config } from '@/config/providers/WagmiProvider/config';
 import { routerContract, STABLE_TOKEN_ADDRESS, ZERO_ADDRESS } from '@/constants/blockchain/contracts';
 import { ChainId } from '@/constants/blockchain/networks';
-import { GetAgents } from '@/graphql/queries/GetAgents';
 import { useAllowance } from '@/hooks/useAllowance';
 import { useBalances } from '@/hooks/useBalances';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -18,8 +17,8 @@ import { IToken, ITokensData } from '@/types/common';
 import { formatBalance } from '@/utils/formatters';
 import { handleError } from '@/utils/handleError';
 import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
-import { useQuery } from '@apollo/client';
 import BigNumber from 'bignumber.js';
+import { usePathname } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Address, erc20Abi, formatUnits, parseUnits } from 'viem';
@@ -32,13 +31,13 @@ import { SlippageType } from './components/SlippageModal/types';
 import { ChangeButton, Form, FormTitle, Separator, StyledSettingIcon, SwapInputsWrapper, Wrapper } from './styles';
 import { AmountType } from './types';
 import { calculateUsdValue, quoter } from './utils';
-import { usePathname } from 'next/navigation';
 
 interface TradeFormProps {
+  initialData?: ITokensData;
   styles?: React.CSSProperties;
 }
 
-export const TradeForm = ({ styles }: TradeFormProps) => {
+export const TradeForm = ({ styles, initialData }: TradeFormProps) => {
   const { isConnected } = useAccount();
   const [agent0, setAgent0] = useState<IToken | undefined>();
   const [agent1, setAgent1] = useState<IToken | undefined>();
@@ -59,22 +58,24 @@ export const TradeForm = ({ styles }: TradeFormProps) => {
   const debouncedAmountIn: string = useDebounce(amountIn);
   const debouncedAmountOut: string = useDebounce(amountOut);
 
-  const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
+  // const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
 
   const path = usePathname();
 
-  const {
-    data: agents
-    // loading: agentLoading,
-  } = useQuery<ITokensData>(GetAgents, {
-    client,
-    variables: { orderBy: 'marketCap', orderDirection: 'desc', first: 100 },
-    onError: (error) => console.error(error)
-  });
+  // const {
+  //   data: agents
+  //   // loading: agentLoading,
+  // } = useQuery<ITokensData>(GetAgents, {
+  //   client,
+  //   variables: { orderBy: 'marketCap', orderDirection: 'desc', first: 100 },
+  //   onError: (error) => console.error(error)
+  // });
 
   const formattedAgents: IToken[] | undefined = useMemo(() => {
-    return agents?.baseTokens && agents?.tokens ? [...agents?.baseTokens, ...agents?.tokens] : undefined;
-  }, [agents]);
+    return initialData?.baseTokens && initialData?.tokens
+      ? [...initialData?.baseTokens, ...initialData?.tokens]
+      : undefined;
+  }, [initialData]);
 
   const { agentsWithBalance, refetchBalances } = useBalances({ tokens: formattedAgents });
 

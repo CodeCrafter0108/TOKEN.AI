@@ -1,3 +1,4 @@
+'use client'
 import { DeFAI } from "@/components/shared/DeFAI";
 import { Wrapper, TitleContainer, Title, SubTitle, Badge, BadgeDescription } from './styles';
 import { RuleSet } from "styled-components";
