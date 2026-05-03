@@ -10,8 +10,6 @@ import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import Script from 'next/script';
 import 'react-toastify/dist/ReactToastify.css';
-import 'swiper/css';
-import 'swiper/css/navigation';
 import { LatestTransactions } from '@/components/features/LatestTransactions';
 import { ConditionalScript } from '@/components/features/ConditionalScript';
 
