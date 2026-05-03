@@ -38,6 +38,7 @@ interface TradeFormProps {
 }
 
 export const TradeForm = ({ styles, initialData }: TradeFormProps) => {
+  console.log("🚀 ~ TradeForm ~ initialData:", initialData)
   const { isConnected } = useAccount();
   const [agent0, setAgent0] = useState<IToken | undefined>();
   const [agent1, setAgent1] = useState<IToken | undefined>();
@@ -339,6 +340,7 @@ export const TradeForm = ({ styles, initialData }: TradeFormProps) => {
     );
   };
 
+            console.log("🚀 ~ TradeForm ~ agent0:", agent0)
   return (
     <Wrapper style={styles}>
       <Form onSubmit={handleSwap} autoComplete='off' autoCorrect='off'>

@@ -34,7 +34,6 @@ export const HomeContent = ({ initialData }: HomeContentProps) => {
   } = initialData || {};
   const { width } = useWindowSize();
   const client = useMemo(() => getGraphClient(ChainId.SONIC), []);
-
   const { data: agentsGroup, loading: isAgentsGroupLoading } = useQuery<ITokensGroupData>(GetAgentsGroup, {
     client,
     pollInterval: RefetchInterval.SLOW,
