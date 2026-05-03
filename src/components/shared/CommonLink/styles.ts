@@ -80,7 +80,7 @@ export const StyledLink = styled(Link)<{ $variants: LinkVariants }>`
               linear-gradient(#fff 0 0);
             mask-composite: exclude;
             padding: 2px;
-            box-sizing: border-box;
+            -webkit-mask-composite: xor;
         }
           
           &::after {

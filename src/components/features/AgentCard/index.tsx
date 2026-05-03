@@ -93,25 +93,25 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
         </Grid>
       </Flex>
       {!hasMetrics ? (
-        <>
-          <Flex $gap={12}>
+        <div style={{flex: '1', display: 'flex', flexDirection: 'column', width: '100%', justifyContent: 'space-between', gap: '8px'}}>
+            <Description $hasMetrics={hasMetrics}>{description}</Description>
+            <Flex $justify='center'>
             <SocialNetworks
               position='card'
               siteUrl={siteUrl}
               socialUrl={socialUrl}
               chatUrl={chatUrl}
               styles={css`
-                flex-direction: 'column';
-              `}
+                  flex-direction: row;
+                `}
             />
-            <Description $hasMetrics={hasMetrics}>{description}</Description>
-          </Flex>
-        </>
+            </Flex>
+        </div>
       ) : (
         <Description $hasMetrics={hasMetrics}>{description}</Description>
       )}
       {!hasMetrics ? (
-        <>
+        <Flex $direction='column' $gap={8}>
           <Flex $align='center' $justify='space-between'>
             <BarTitle>Progress market cap</BarTitle>
             <BarValue>{`$${shortNumber(+marketCap)}`}</BarValue>
@@ -119,7 +119,7 @@ export const AgentCard = ({ styles, hasMetrics = false, agent }: AgentCardProps)
           <BarWrapper>
             <Bar width={Math.min((+marketCap / MAX_MARKETCAP_VALUE) * 100, 100)} />
           </BarWrapper>
-        </>
+        </Flex>
       ) : (
         <Metrics>
           <Flex $gap={4} $align='baseline' style={{ width: 'auto' }}>

@@ -4,44 +4,37 @@ import { Accordion } from '@/components/shared/Accordion';
 import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
 import launcherAbi from '@/config/abi/launcher.json';
-import { preSaveImage, saveImage } from '@/config/api/servises';
+import { saveImage } from '@/config/api/servises';
+import { config } from '@/config/providers/WagmiProvider/config';
 import { launcherContract } from '@/constants/blockchain/contracts';
 import { DEFAULT_CHAIN_ID } from '@/constants/blockchain/networks';
-import { useWrite } from '@/hooks/useWrite';
+import { useDebounce } from '@/hooks/useDebounce';
 import { Flex } from '@/styles/global';
-import { generateRandomBytes } from '@/utils/generateRandomBytes';
-import { handleError } from '@/utils/handleError';
 import { validateNumberInputValue } from '@/utils/validateNumberInputValue';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { toast } from 'react-toastify';
-import { formatEther, Hex } from 'viem';
+import { css } from 'styled-components';
 import { useAccount, useSwitchChain } from 'wagmi';
+import { waitForTransactionReceipt, writeContract } from 'wagmi/actions';
 import InputWrapper from '../../../../components/features/InputWrapper';
 import FileInputWrapper from '../FileInputWrapper';
-import { BuyButtons } from './components/BuyButtons';
+import { useGetNativeTokens } from './hooks/useGetNativeTokens';
 import { schema, TOTAL_SUPPLY } from './schema';
 import {
   FieldPairContainer,
   Form,
+  MetaTitle,
   SectionTitle,
   SubTitle,
-  Title,
-  accordionStyles,
-  BuyControls,
-  TextArea,
-  MetaTitle,
   SupplyStub,
-  Percent
+  TextArea,
+  Title
 } from './styles';
 import { FieldsFocused, ImageFieldType, LauncherTypeData } from './types';
-import { css } from 'styled-components';
-import { useGetNativeTokens } from './hooks/useGetNativeTokens';
-import { formatNumber } from '@/utils/formatters';
-import { useDebounce } from '@/hooks/useDebounce';
 
 // const MIN_NATIVE_BALANCE = 1;
 
@@ -49,13 +42,7 @@ export const LaunchForm = () => {
   const { isConnected, chainId, address } = useAccount();
   const { switchChain } = useSwitchChain();
   // const { data: userBalance, refetch: refetchBalance } = useBalance({ address, chainId, query: { enabled: false } });
-  const {
-    writeContract,
-    isLoading: isLoadingWrite,
-    isSuccess: isSuccessWrite,
-    reset: resetWriteState,
-    error: errorWrite
-  } = useWrite();
+  const [isPendingCreate, setIsPendingCreate] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -80,8 +67,6 @@ export const LaunchForm = () => {
       buy: ''
     }
   });
-
-  const randomBytes = useRef<Hex | null>(null);
 
   const nameValue: string = watch('name');
   const symbolValue: string = watch('symbol');
@@ -114,7 +99,7 @@ export const LaunchForm = () => {
     isError: !!formErrors.buy?.message
   });
 
-  const { nativeTokePriceUsd, userNativeBalance, nativeTokensAmount, buyTokensAmount } = nativeTokenData || {};
+  const { userNativeBalance, nativeTokensAmount, buyTokensAmount } = nativeTokenData || {};
 
   const handleFocus = useCallback((fieldName: keyof LauncherTypeData): void => {
     setFieldsFocused((prev) => ({ ...prev, [fieldName]: true }));
@@ -137,78 +122,62 @@ export const LaunchForm = () => {
     [setValue, clearErrors]
   );
 
-  const { mutateAsync: preSaveImageAsync, isPending: isPendingPreSave } = useMutation({
-    mutationFn: preSaveImage
-  });
-
-  const { mutate: saveImg, isPending: isPendingSave } = useMutation({
+  const { mutateAsync: saveImgAsync} = useMutation({
     mutationFn: saveImage,
     onSuccess: () => {
       resetForm();
       toast.success('Agent created successfully');
     },
-    onError: (error) => {
-      console.error(error);
-      toast.error('Error creating agent');
-    }
   });
 
   const onSubmit = async (data: LauncherTypeData): Promise<void> => {
     if (!address || !chainId) return;
 
-    randomBytes.current = generateRandomBytes(address);
-
     const { name, symbol, websiteUrl, socialUrl, chatUrl, description } = data;
 
     const formData = new FormData();
     formData.append('file', data.imageUrl[0] as Blob);
+    formData.append("upload_preset", "tokens_upload");
 
-    let recivedImgUrl = '';
+    let receivedImgUrl = '';
     try {
-      const { data } = await preSaveImageAsync({
-        chainId,
-        userAddress: address,
-        randomBytes: randomBytes.current,
-        formData
+      setIsPendingCreate(true);
+      const data = await saveImgAsync(formData);
+      console.log('data', data);
+
+      if (data?.secure_url) receivedImgUrl = data?.secure_url;
+
+      console.log('ARGS and VALUE', {
+        value: nativeTokensAmount,
+        args: [name, symbol, websiteUrl, receivedImgUrl, description, chatUrl, socialUrl, buyTokensAmount ?? '0']
       });
 
-      if (data?.url) recivedImgUrl = data?.url;
+      if (receivedImgUrl) {
+        const hash = await writeContract(config, {
+          abi: launcherAbi,
+          address: launcherContract,
+          functionName: 'pro_listing',
+          chainId,
+          args: [name, symbol, websiteUrl, receivedImgUrl, description, chatUrl, socialUrl, buyTokensAmount ?? '0'],
+          value: nativeTokensAmount
+        });
+
+        await waitForTransactionReceipt(config, { hash });
+      }
     } catch (error) {
       console.error(error);
       toast.error('Error creating agent');
     }
-    console.log('ARGS and VALUE', {
-      value: nativeTokensAmount,
-      args: [name, symbol, websiteUrl, recivedImgUrl, description, chatUrl, socialUrl, buyTokensAmount ?? '0']
-    });
-
-    if (recivedImgUrl) {
-      writeContract({
-        abi: launcherAbi,
-        address: launcherContract,
-        functionName: 'pro_listing',
-        chainId,
-        args: [name, symbol, websiteUrl, recivedImgUrl, description, chatUrl, socialUrl, buyTokensAmount ?? '0'],
-        value: nativeTokensAmount
-      });
+    finally {
+      setIsPendingCreate(false);
     }
   };
 
-  useEffect(() => {
-    if (isSuccessWrite && randomBytes.current) {
-      saveImg(randomBytes.current);
-      resetWriteState();
-    }
-    if (errorWrite) {
-      randomBytes.current = null;
-      toast.error(handleError(errorWrite.message));
-    }
-  }, [isSuccessWrite, resetWriteState, errorWrite, saveImg]);
 
-  const isLoading: boolean = isLoadingWrite || isPendingPreSave || isPendingSave || isSubmitting;
+  const isLoading: boolean = isPendingCreate || isSubmitting;
   const isEnoughBalance: boolean =
     isConnected && buyValue ? (nativeTokensAmount ?? 0) <= (userNativeBalance ?? 0) : true;
-  const humanNativeTokensAmount: number = useMemo(() => +formatEther(nativeTokensAmount ?? 0n), [nativeTokensAmount]);
+  // const humanNativeTokensAmount: number = useMemo(() => +formatEther(nativeTokensAmount ?? 0n), [nativeTokensAmount]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} autoComplete='off' autoCorrect='off'>
@@ -380,7 +349,7 @@ export const LaunchForm = () => {
           />
         </InputWrapper>
       </Accordion>
-      <Accordion
+      {/* <Accordion
         title={
           <Flex $gap={4} $align='center'>
             <Title>{'Prebuy'}</Title>
@@ -425,7 +394,7 @@ export const LaunchForm = () => {
             >{`$${formatNumber(humanNativeTokensAmount * (nativeTokePriceUsd ?? 0))}`}</SubTitle>
           </Flex>
         </Flex>
-      </Accordion>
+      </Accordion> */}
       {!isConnected && <ConnectButton />}
       {isConnected && DEFAULT_CHAIN_ID !== chainId && (
         <Button onClick={() => switchChain({ chainId: DEFAULT_CHAIN_ID })}>Switch network</Button>
@@ -434,7 +403,7 @@ export const LaunchForm = () => {
         <Button
           type='submit'
           disabled={isLoading || !isValid || !isEnoughBalance}
-          // style={isEnoughBalance ? {} : { backgroundColor: 'var(--error-clr)' }}
+        // style={isEnoughBalance ? {} : { backgroundColor: 'var(--error-clr)' }}
         >
           {isLoading ? (
             <Flex $gap={8} $align='center' $justify='center'>

@@ -9,7 +9,7 @@ import { PageWrapper } from '@/components/features/PageWrapper';
 import { getGraphClient } from '@/config/graph/config';
 import { ChainId, CHAINS_NAME } from '@/constants/blockchain/networks';
 import { GetOneAgent } from '@/graphql/queries/GetOneAgent';
-import { ITokenData } from '@/types/common';
+import { ITokenData, ITokensData } from '@/types/common';
 import { RefetchInterval } from '@/types/enum';
 import { useQuery } from '@apollo/client';
 import { useMemo } from 'react';
@@ -17,6 +17,7 @@ import CoinGeckoChart from './components/CoinGeckoChart';
 import { TokenInfo } from './components/TokenInfo';
 import TransactionTable from './components/TransactionTable';
 import { BackButton, cardsStyles, Content, LeftContent, RightContent } from './styles';
+import { GetAgents } from '@/graphql/queries/GetAgents';
 
 export default function Token() {
   const router = useRouter();
@@ -37,6 +38,15 @@ export default function Token() {
     }
   });
 
+    const {
+    data: agents
+    // loading: agentLoading,
+  } = useQuery<ITokensData>(GetAgents, {
+    client,
+    variables: { orderBy: 'marketCap', orderDirection: 'desc', first: 100 },
+    onError: (error) => console.error(error)
+  });
+
   return (
     <PageWrapper hasPaddingTop>
       <BackButton onClick={() => router.back()} variants={ButtonVariants.CLEAR}>
@@ -52,7 +62,7 @@ export default function Token() {
           <TransactionTable data={agent?.token?.pair?.swaps} />
         </LeftContent>
         <RightContent>
-          <TradeForm styles={{ maxWidth: 'inherit' }} />
+          <TradeForm styles={{ maxWidth: 'inherit' }} initialData={agents} />
           <TokenInfo agent={agent?.token} />
         </RightContent>
       </Content>

@@ -6,11 +6,16 @@ import styled, { css } from 'styled-components';
 export const agentCardStyles = css`
   background-color: var(--secondary-box-bg-clr);
   width: 100%;
+   min-height: 250px;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
 
-  @media screen and (min-width: ${Breakpoints.xl}) {
+
+  @media screen and (min-width: ${Breakpoints.lg}) {
     max-width: 250px;
     min-width: 230px;
-    min-height: 295px; // FIX
+    min-height: 280px; // FIX
   }
 `;
 

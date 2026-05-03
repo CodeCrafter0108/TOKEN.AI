@@ -1,9 +1,14 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { ChainId } from '@/constants/blockchain/networks';
 
+const GRAPH_URL = process.env.NEXT_PUBLIC_GRAPH_URL;
+
+if (!GRAPH_URL) {
+    throw new Error('GRAPH_URL is not defined');
+}
+
 export const LAUNCHPAD_GRAPH: Record<number, string> = {
-    [ChainId.SONIC]: 'https://api.studio.thegraph.com/query/104145/token-ai/version/latest',
-    // [ChainId.SONIC]: 'http://localhost:8000/subgraphs/name/ai-token-launchpad'
+    [ChainId.SONIC]: GRAPH_URL,
 };
 
 export const getGraphClient = (chainId: ChainId) => {
